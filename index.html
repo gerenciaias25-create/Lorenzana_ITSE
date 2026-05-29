@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tensiones Sociales México 2027 | Dashboard de Inteligencia</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --critica: #C0392B;
+      --alta: #E67E22;
+      --media: #2980B9;
+      --baja: #27AE60;
+      --bg: #0D0D0D;
+      --bg2: #141414;
+      --bg3: #1C1C1C;
+      --border: rgba(255,255,255,0.08);
+      --text: #F0F0F0;
+      --text2: #A0A0A0;
+      --accent: #D4A843;
+    }
+
+    body { 
+      margin: 0; 
+      background-color: var(--bg); 
+      color: var(--text); 
+      font-family: 'DM Sans', sans-serif; 
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    /* Header */
+    .header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 { font-family: 'Syne', sans-serif; font-size: 1.2rem; letter-spacing: -0.02em; }
+
+    /* Barra de Capas / Filtros */
+    .filter-container {
+      background: var(--bg2);
+      padding: 0.75rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .filter-container label { font-size: 0.8rem; text-transform: uppercase; color: var(--text2); font-weight: bold; }
+    
+    .filter-select {
+      background: var(--bg3);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      min-width: 320px;
+    }
+
+    /* Layout Estructurado */
+    .layout { display: grid; grid-template-columns: 1fr 420px; flex: 1; overflow: hidden; position: relative; }
+    
+    .map-wrapper { position: relative; height: 100%; width: 100%; }
+    #map { background: #090909; height: 100%; width: 100%; }
+    
+    /* Panel Lateral con Pestañas */
+    .side-panel { 
+      background: var(--bg2); 
+      border-left: 1px solid var(--border); 
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .tabs-header {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 1rem;
+      background: transparent;
+      border: none;
+      color: var(--text2);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.02); }
+    .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); background: var(--bg2); }
+
+    .tabs-content { flex: 1; overflow-y: auto; padding: 1.5rem; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Medidor de Aguja / Gauge (NUEVO) */
+    .gauge-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .gauge-svg { width: 220px; height: 115px; }
+    .gauge-bg { fill: none; stroke: var(--bg3); stroke-width: 14; stroke-linecap: round; }
+    .gauge-fill { fill: none; stroke-width: 14; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283; transition: stroke-dashoffset 0.8s ease, stroke 0.5s ease; }
+    .gauge-needle { fill: #FFF; transition: transform 0.8s cubic-bezier(0.1, 0.8, 0.25, 1); transform-origin: 110px 105px; }
+    .gauge-value { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; margin-top: -15px; }
+    .gauge-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text2); letter-spacing: 0.05em; }
+
+    /* Cajas de Datos */
+    .data-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .data-box h3 { font-size: 0.75rem; text-transform: uppercase; color: var(--text2); margin-bottom: 0.6rem; }
+    
+    .progress-bar {
+      background: rgba(255,255,255,0.05);
+      height: 6px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress-fill { height: 100%; transition: width 0.4s ease, background-color 0.4s ease; }
+
+    /* Cuadro Desglose Alertas Flotante (NUEVO - Esquina inferior izquierda) */
+    .alerts-summary-box {
+      position: absolute;
+      bottom: 25px;
+      left: 25px;
+      z-index: 1000;
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid var(--border);
+      padding: 15px;
+      border-radius: 6px;
+      min-width: 220px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+    }
+    .alerts-summary-box h4 { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: var(--text2); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+    .alert-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 6px; }
+    .alert-count-badge { padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.75rem; color: #FFF; }
+
+    /* Estilos de Tablas y Ranks */
+    .ranking-list { display: flex; flex-direction: column; gap: 8px; }
+    .ranking-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; }
+    .table-view { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .table-view th, .table-view td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); }
+    .table-view th { color: var(--text2); text-transform: uppercase; font-size: 0.7rem; font-family: 'Syne', sans-serif; }
+
+    /* Tooltip de Leaflet */
+    .leaflet-tooltip-custom {
+      background: #1C1C1C !important;
+      border: 1px solid rgba(255,255,255,0.15) !important;
+      color: #FFF !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 0.8rem !important;
+      border-radius: 4px !important;
+      padding: 6px 10px !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>RADAR DE TENSIONES SOCIALES · MÉXICO 2027</h1>
+</div>
+
+<div class="filter-container">
+  <label for="metricFilter">Visualizar Capa:</label>
+  <select id="metricFilter" class="filter-select" onchange="updateMapLayers()">
+    <option value="violencia">Filtro 1: Índices de Violencia</option>
+    <option value="conflictos">Filtro 2: Conflictos Sectoriales Organizados</option>
+    <option value="gobernabilidad">Filtro 3: Gobernabilidad Local y Escándalos</option>
+    <option value="exposicion">Filtro 4: Exposición Electoral 2027</option>
+    <option value="narrativa">Filtro 5: Capacidad Narrativa Opositora</option>
+  </select>
+</div>
+
+<div class="layout">
+  <div class="map-wrapper">
+    <div id="map"></div>
+    
+    <div class="alerts-summary-box">
+      <h4>Alertas por Criticidad</h4>
+      <div class="alert-row">
+        <span>Crítico (&ge;75%)</span>
+        <span class="alert-count-badge" style="background: var(--critica);" id="count-critica">0</span>
+      </div>
+      <div class="alert-row">
+        <span>Alto (50%-74%)</span>
+        <span class="alert-count-badge" style="background: var(--alta);" id="count-alta">0</span>
+      </div>
+      <div class="alert-row">
+        <span>Estable (&lt;50%)</span>
+        <span class="alert-count-badge" style="background: var(--baja);" id="count-baja">0</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="side-panel">
+    <div class="tabs-header">
+      <button class="tab-btn active" onclick="switchTab('mapa')">Metricas</button>
+      <button class="tab-btn" onclick="switchTab('tabla')">Tabla</button>
+      <button class="tab-btn" onclick="switchTab('ranking')">Ranking ITSE</button>
+    </div>
+    
+    <div class="tabs-content">
+      <div id="pane-mapa" class="tab-pane active">
+        <div id="selectedStatePanel">
+          <div style="color: var(--text2); text-align: center; margin-top: 3rem;">
+            <p>Selecciona un estado en el mapa para auditar su vector de tensiones y aguja analítica.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div id="pane-tabla" class="tab-pane">
+        <table class="table-view">
+          <thead>
+            <tr><th>Estado</th><th>Violencia</th><th>Gob.</th><th>Electoral</th></tr>
+          </thead>
+          <tbody id="tabla-body"></tbody>
+        </table>
+      </div>
+      
+      <div id="pane-ranking" class="tab-pane">
+        <div class="ranking-list" id="ranking-container"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="mapa_mexico.js"></script>
+
+<script>
+  // 1. Inicializar mapa e inyectar configuración
+  const map = L.map('map').setView([23.6345, -102.5528], 5);
+  let geojsonLayer;
+
+  // Base de datos sincronizada
+  const dataset = {
+    "Aguascalientes": { violencia: 30, conflictos: 40, gobernabilidad: 55, exposicion: 40, narrativa: 65 },
+    "Baja California": { violencia: 85, conflictos: 65, gobernabilidad: 45, exposicion: 90, narrativa: 70 },
+    "Baja California Sur": { violencia: 35, conflictos: 30, gobernabilidad: 40, exposicion: 50, narrativa: 45 },
+    "Campeche": { violencia: 45, conflictos: 55, gobernabilidad: 70, exposicion: 45, narrativa: 50 },
+    "Coahuila": { violencia: 40, conflictos: 45, gobernabilidad: 50, exposicion: 60, narrativa: 75 },
+    "Colima": { violencia: 95, conflictos: 70, gobernabilidad: 65, exposicion: 55, narrativa: 50 },
+    "Chiapas": { violencia: 90, conflictos: 95, gobernabilidad: 85, exposicion: 80, narrativa: 40 },
+    "Chihuahua": { violencia: 72, conflictos: 50, gobernabilidad: 80, exposicion: 75, narrativa: 85 },
+    "Ciudad de México": { violencia: 55, conflictos: 75, gobernabilidad: 60, exposicion: 95, narrativa: 75 },
+    "Durango": { violencia: 50, conflictos: 40, gobernabilidad: 45, exposicion: 50, narrativa: 60 },
+    "Guanajuato": { violencia: 93, conflictos: 85, gobernabilidad: 75, exposicion: 85, narrativa: 80 },
+    "Guerrero": { violencia: 96, conflictos: 90, gobernabilidad: 90, exposicion: 75, narrativa: 35 },
+    "Hidalgo": { violencia: 40, conflictos: 50, gobernabilidad: 45, exposicion: 55, narrativa: 40 },
+    "Jalisco": { violencia: 82, conflictos: 78, gobernabilidad: 80, exposicion: 90, narrativa: 78 },
+    "México": { violencia: 88, conflictos: 82, gobernabilidad: 70, exposicion: 95, narrativa: 65 },
+    "Michoacán": { violencia: 91, conflictos: 88, gobernabilidad: 75, exposicion: 70, narrativa: 45 },
+    "Morelos": { violencia: 85, conflictos: 70, gobernabilidad: 80, exposicion: 60, narrativa: 50 },
+    "Nayarit": { violencia: 45, conflictos: 40, gobernabilidad: 50, exposicion: 45, narrativa: 40 },
+    "Nuevo León": { violencia: 75, conflictos: 72, gobernabilidad: 82, exposicion: 85, narrativa: 72 },
+    "Oaxaca": { violencia: 65, conflictos: 85, gobernabilidad: 60, exposicion: 65, narrativa: 35 },
+    "Puebla": { violencia: 70, conflictos: 68, gobernabilidad: 55, exposicion: 80, narrativa: 55 },
+    "Querétaro": { violencia: 35, conflictos: 35, gobernabilidad: 40, exposicion: 65, narrativa: 70 },
+    "Quintana Roo": { violencia: 78, conflictos: 60, gobernabilidad: 55, exposicion: 70, narrativa: 45 },
+    "San Luis Potosí": { violencia: 68, conflictos: 55, gobernabilidad: 65, exposicion: 60, narrativa: 50 },
+    "Sinaloa": { violencia: 94, conflictos: 75, gobernabilidad: 80, exposicion: 70, narrativa: 40 },
+    "Sonora": { violencia: 89, conflictos: 80, gobernabilidad: 65, exposicion: 75, narrativa: 55 },
+    "Tabasco": { violencia: 80, conflictos: 65, gobernabilidad: 50, exposicion: 65, narrativa: 30 },
+    "Tamaulipas": { violencia: 86, conflictos: 70, gobernabilidad: 75, exposicion: 75, narrativa: 60 },
+    "Tlaxcala": { violencia: 35, conflictos: 40, gobernabilidad: 45, exposicion: 40, narrativa: 35 },
+    "Veracruz": { violencia: 82, conflictos: 75, gobernabilidad: 78, exposicion: 85, narrativa: 50 },
+    "Yucatán": { violencia: 15, conflictos: 20, gobernabilidad: 30, exposicion: 50, narrativa: 55 },
+    "Zacatecas": { violencia: 87, conflictos: 65, gobernabilidad: 70, exposicion: 55, narrativa: 50 }
+  };
+
+  function getColor(val) {
+    return val >= 75 ? 'var(--critica)' : val >= 50 ? 'var(--alta)' : 'var(--baja)';  
+  }
+
+  // Lógica de Pestañas
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+    
+    event.currentTarget.classList.add('active');
+    document.getElementById('pane-' + tabId).classList.add('active');
+  }
+
+  function styleFeature(feature) {
+    const activeFilter = document.getElementById('metricFilter').value;
+    const info = dataset[feature.properties.name] || { violencia: 0, conflictos: 0, gobernabilidad: 0, exposicion: 0, narrativa: 0 };
+    return {
+      fillColor: getColor(info[activeFilter] || 0),
+      weight: 1.2, color: '#0D0D0D', fillOpacity: 0.8
+    };
+  }
+
+  // Renderizar e inyectar el Gauge de Aguja dinámicamente (NUEVO)
+  function renderGauge(score) {
+    const color = getColor(score);
+    // Calcular rotación de aguja (-90 deg a 90 deg para un semicírculo)
+    const angle = (score / 100) * 180 - 90;
+    // Calcular el perímetro relleno (Semicírculo mapeado a stroke-dashoffset)
+    const dashOffset = 283 - ((score / 100) * 283);
+
+    return `
+      <div class="gauge-wrapper">
+        <svg class="gauge-svg">
+          <path class="gauge-bg" d="M 20 105 A 90 90 0 0 1 200 105" />
+          <path class="gauge-fill" style="stroke: ${color}; stroke-dashoffset: ${dashOffset};" d="M 20 105 A 90 90 0 0 1 200 105" />
+          <polygon class="gauge-needle" style="transform: rotate(${angle}deg);" points="107,105 113,105 110,15" />
+          <circle cx="110" cy="105" r="6" fill="#FFF" />
+        </svg>
+        <div class="gauge-value" style="color: ${color};">${score}%</div>
+        <div class="gauge-label">Índice ITSE Promedio</div>
+      </div>
+    `;
+  }
+
+  // Actualizar los datos de las subpestañas y contadores flotantes
+  function calculateGlobalOutputs() {
+    const filter = document.getElementById('metricFilter').value;
+    let criticos = 0, altos = 0, bajos = 0;
+
+    // 1. Procesar contadores de alertas generales
+    Object.keys(dataset).forEach(key => {
+      const val = dataset[key][filter];
+      if (val >= 75) criticos++;
+      else if (val >= 50) altos++;
+      else bajos++;
+    });
+
+    document.getElementById('count-critica').innerText = criticos;
+    document.getElementById('count-alta').innerText = altos;
+    document.getElementById('count-baja').innerText = bajos;
+
+    // 2. Poblar Pestaña de Tabla Comparativa
+    const tbody = document.getElementById('tabla-body');
+    tbody.innerHTML = Object.keys(dataset).map(name => `
+      <tr>
+        <td><strong>${name}</strong></td>
+        <td style="color:${getColor(dataset[name].violencia)}">${dataset[name].violencia}%</td>
+        <td style="color:${getColor(dataset[name].gobernabilidad)}">${dataset[name].gobernabilidad}%</td>
+        <td style="color:${getColor(dataset[name].exposicion)}">${dataset[name].exposicion}%</td>
+      </tr>
+    `).join('');
+
+    // 3. Poblar Pestaña de Ranking
+    const rankContainer = document.getElementById('ranking-container');
+    const sortedStates = Object.keys(dataset).map(name => ({name, val: dataset[name][filter]}))
+                          .sort((a,b) => b.val - a.val);
+
+    rankContainer.innerHTML = sortedStates.map((item, idx) => `
+      <div class="ranking-item">
+        <span>${idx+1}. ${item.name}</span>
+        <span style="font-weight:bold; color:${getColor(item.val)}">${item.val}%</span>
+      </div>
+    `).join('');
+  }
+
+  function updateMapLayers() {
+    if (geojsonLayer) {
+      const activeFilter = document.getElementById('metricFilter').value;
+      geojsonLayer.eachLayer(layer => {
+        geojsonLayer.resetStyle(layer);
+        const name = layer.feature.properties.name;
+        const val = dataset[name] ? dataset[name][activeFilter] : 0;
+        layer.setTooltipContent(`<strong>${name}</strong>: ${val}%`);
+      });
+      calculateGlobalOutputs();
+    }
+  }
+
+  // Inyección del mapa vectorial e interactividad
+  if (typeof mexicoGeoJSON !== 'undefined') {
+    geojsonLayer = L.geoJSON(mexicoGeoJSON, {
+      style: styleFeature,
+      onEachFeature: function (feature, layer) {
+        const name = feature.properties.name;
+        const activeFilter = document.getElementById('metricFilter').value;
+        const val = dataset[name] ? dataset[name][activeFilter] : 0;
+
+        layer.bindTooltip(`<strong>${name}</strong>: ${val}%`, { sticky: true, className: 'leaflet-tooltip-custom' });
+
+        layer.on({
+          mouseover: e => e.target.setStyle({ weight: 2.5, color: '#FFF', fillOpacity: 0.95 }),
+          mouseout: e => geojsonLayer.resetStyle(e.target),
+          click: function () {
+            const info = dataset[name] || { violencia: 0, conflictos: 0, gobernabilidad: 0, exposicion: 0, narrativa: 0 };
+            
+            // Calcular ITSE Promedio Dinámico para el medidor circular
+            const itsePromedio = Math.round((info.violencia + info.conflictos + info.gobernabilidad + info.exposicion + info.narrativa) / 5);
+
+            document.getElementById('selectedStatePanel').innerHTML = `
+              <h2 style="font-family:'Syne'; font-size:1.4rem; margin-bottom:1rem; text-align:center; color: var(--accent);">${name}</h2>
+              
+              ${renderGauge(itsePromedio)}
+
+              <div class="data-box">
+                <h3>1. Índices de Violencia</h3>
+                <span style="font-weight:bold; color:${getColor(info.violencia)}">${info.violencia}%</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:${info.violencia}%; background:${getColor(info.violencia)}"></div></div>
+              </div>
+
+              <div class="data-box">
+                <h3>2. Conflictos Sectoriales Organizados</h3>
+                <span style="font-weight:bold; color:${getColor(info.conflictos)}">${info.conflictos}%</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:${info.conflictos}%; background:${getColor(info.conflictos)}"></div></div>
+              </div>
+
+              <div class="data-box">
+                <h3>3. Gobernabilidad y Escándalos</h3>
+                <span style="font-weight:bold; color:${getColor(info.gobernabilidad)}">${info.gobernabilidad}%</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:${info.gobernabilidad}%; background:${getColor(info.gobernabilidad)}"></div></div>
+              </div>
+
+              <div class="data-box">
+                <h3>4. Exposición Electoral 2027</h3>
+                <span style="font-weight:bold; color:${getColor(info.exposicion)}">${info.exposicion}%</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:${info.exposicion}%; background:${getColor(info.exposicion)}"></div></div>
+              </div>
+
+              <div class="data-box">
+                <h3>5. Capacidad Narrativa Opositora</h3>
+                <span style="font-weight:bold; color:${getColor(info.narrativa)}">${info.narrativa}%</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:${info.narrativa}%; background:${getColor(info.narrativa)}"></div></div>
+              </div>
+            `;
+          }
+        });
+      }
+    }).addTo(map);
+
+    // Carga inicial de datos de los paneles secundarios
+    calculateGlobalOutputs();
+  }
+</script>
+</body>
+</html>
