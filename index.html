@@ -139,7 +139,7 @@
     }
     .progress-fill { height: 100%; transition: width 0.4s ease, background-color 0.4s ease; }
 
-    /* Bloque temático de focos críticos (NUEVO) */
+    /* Bloque temático de focos críticos */
     .focus-badge-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .focus-badge { background: rgba(212, 168, 67, 0.1); border: 1px solid rgba(212, 168, 67, 0.3); color: var(--accent); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; }
 
@@ -165,10 +165,10 @@
     .ranking-list { display: flex; flex-direction: column; gap: 8px; }
     .ranking-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; }
     
-    .table-container { width: 100%; overflow-x: auto; }
+    .table-container { width: 100%; height: 100%; overflow-y: auto; }
     .table-view { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
     .table-view th, .table-view td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
-    .table-view th { color: var(--text2); text-transform: uppercase; font-size: 0.7rem; font-family: 'Syne', sans-serif; background: var(--bg); position: sticky; top: 0; }
+    .table-view th { color: var(--text2); text-transform: uppercase; font-size: 0.7rem; font-family: 'Syne', sans-serif; background: var(--bg); position: sticky; top: 0; z-index: 10; }
     .table-thesis { font-size: 0.75rem; color: var(--text2); line-height: 1.3; max-width: 180px; }
 
     /* Tooltip de Leaflet */
@@ -192,11 +192,8 @@
 <div class="filter-container">
   <label for="metricFilter">Visualizar Capa Analítica:</label>
   <select id="metricFilter" class="filter-select" onchange="updateMapLayers()">
-    <option value="violencia">Filtro 1: Índices de Violencia y Delincuencia</option>
-    <option value="conflictos">Filtro 2: Conflictos Sectoriales y Sociales</option>
-    <option value="gobernabilidad">Filtro 3: Gobernabilidad y Desgaste Político</option>
-    <option value="exposicion">Filtro 4: Exposición Electoral 2027</option>
-    <option value="narrativa">Filtro 5: Capacidad Narrativa Opositora</option>
+    <option value="itse">Índice General ITSE (Oficial)</option>
+    <option value="violencia">Métrica Integrada: Inseguridad y Riesgo Territorial</option>
   </select>
 </div>
 
@@ -205,21 +202,21 @@
     <div id="map"></div>
     
     <div class="alerts-summary-box">
-      <h4>Riesgo por Entidades</h4>
+      <h4>Riesgo por Matriz Oficial</h4>
       <div class="alert-row">
-        <span>Crítico (&ge;75% ITSE)</span>
+        <span>Crítica (&ge;75 ITSE)</span>
         <span class="alert-count-badge" style="background: var(--critica);" id="count-critica">0</span>
       </div>
       <div class="alert-row">
-        <span>Alto (60%-74% ITSE)</span>
+        <span>Alta (60-74 ITSE)</span>
         <span class="alert-count-badge" style="background: var(--alta);" id="count-alta">0</span>
       </div>
       <div class="alert-row">
-        <span>Medio (45%-59% ITSE)</span>
+        <span>Media (45-59 ITSE)</span>
         <span class="alert-count-badge" style="background: var(--media);" id="count-media">0</span>
       </div>
       <div class="alert-row">
-        <span>Bajo (&lt;45% ITSE)</span>
+        <span>Baja (&lt;45 ITSE)</span>
         <span class="alert-count-badge" style="background: var(--baja);" id="count-baja">0</span>
       </div>
     </div>
@@ -241,11 +238,11 @@
         </div>
       </div>
       
-      <div id="pane-tabla" class="tab-pane">
+      <div id="pane-tabla" class="tab-pane" style="height: 100%;">
         <div class="table-container">
           <table class="table-view">
             <thead>
-              <tr><th>Estado</th><th>ITSE</th><th>Riesgo</th><th>Tesis de Desgaste</th></tr>
+              <tr><th>Estado</th><th>ITSE</th><th>Nivel</th><th>Tesis de Desgaste</th></tr>
             </thead>
             <tbody id="tabla-body"></tbody>
           </table>
@@ -263,59 +260,58 @@
 <script src="mapa_mexico.js"></script>
 
 <script>
-  // 1. Inicializar mapa
+  // Inicializar mapa centrado en México
   const map = L.map('map').setView([23.6345, -102.5528], 5);
   let geojsonLayer;
 
-  // 2. Base de Datos Oficial cargada con la información analítica y cualitativa del Estudio
+  // BASE DE DATOS TOTALMENTE CORREGIDA EN BASE A TU TABLA Y DOCUMENTO OFICIAL
   const dataset = {
-    "Chiapas": { itse: 89, riesgo: "Crítico", violencia: 92, conflictos: 96, gobernabilidad: 88, exposicion: 85, narrativa: 40, focos: ["Crisis humanitaria", "Desplazamiento forzado", "Disputa de cárteles", "Conflictos agrarios"], tesis: "Fractura sistémica de la seguridad y gobernabilidad institucional en comunidades originarias." },
-    "Guerrero": { itse: 87, riesgo: "Crítico", violencia: 95, conflictos: 90, gobernabilidad: 92, exposicion: 78, narrativa: 35, focos: ["Gobernanza criminal", "Crisis turística", "Conflictos mineros", "Protestas radicales"], tesis: "Colapso de gobernabilidad local y control territorial por dinámicas de economías ilícitas." },
-    "Sinaloa": { itse: 84, riesgo: "Crítico", violencia: 96, conflictos: 72, gobernabilidad: 85, exposicion: 80, narrativa: 42, focos: ["Guerra interna cartel", "Parálisis comercial", "Infiltración institucional"], tesis: "Desgaste institucional extremo derivado del recrudecimiento de pugnas hegemónicas del crimen." },
-    "Michoacán": { itse: 82, riesgo: "Crítico", violencia: 90, conflictos: 85, gobernabilidad: 80, exposicion: 75, narrativa: 45, focos: ["Extorsión del agro", "Autodefensas masivas", "Gubernatura desgastada"], tesis: "Presión económica sobre el sector agroproductivo bajo dinámicas sostenidas de cobro de piso." },
-    "Guanajuato": { itse: 81, riesgo: "Crítico", violencia: 94, conflictos: 78, gobernabilidad: 72, exposicion: 88, narrativa: 82, focos: ["Homicidios récord", "Pugnas industriales", "Bastión de oposición"], tesis: "Foco de alta violencia armada combinado con fuerte resistencia política y narrativa electoral opositora." },
-    "Colima": { itse: 79, riesgo: "Crítico", violencia: 98, conflictos: 65, gobernabilidad: 76, exposicion: 60, narrativa: 48, focos: ["Violencia per cápita", "Control portuario", "Fragilidad financiera"], tesis: "Vulnerabilidad extrema por control estratégico de infraestructura portuaria y alta tasa delictiva." },
-    "Zacatecas": { itse: 76, riesgo: "Crítico", violencia: 88, conflictos: 68, gobernabilidad: 74, exposicion: 58, narrativa: 52, focos: ["Despoblación rural", "Bloqueos carreteros", "Desgaste del oficialismo"], tesis: "Aislamiento de comunidades rurales y deterioro logístico en vías de comunicación clave." },
-    "Morelos": { itse: 75, riesgo: "Crítico", violencia: 89, conflictos: 70, gobernabilidad: 82, exposicion: 68, narrativa: 55, focos: ["Crisis institucional", "Extorsión urbana", "Fragmentación de seguridad"], tesis: "Agravamiento del tejido de seguridad pública por transición política y herencia de pasivos institucionales." },
-    "Baja California": { itse: 72, riesgo: "Alto", violencia: 84, conflictos: 68, gobernabilidad: 55, exposicion: 90, narrativa: 72, focos: ["Presión migratoria", "Tensiones fronterizas", "Pugnas internas Morena"], tesis: "Complejidad fronteriza unida a dinámicas de división política interna en la coalición gobernante." },
-    "México": { itse: 71, riesgo: "Alto", violencia: 86, conflictos: 80, gobernabilidad: 62, exposicion: 95, narrativa: 68, focos: ["Transporte vulnerable", "Feminicidios masivos", "Presión presupuestal"], tesis: "El mayor padrón electoral del país bajo intensa presión por demandas de servicios y seguridad urbana." },
-    "Tamaulipas": { itse: 70, riesgo: "Alto", violencia: 85, conflictos: 65, gobernabilidad: 72, exposicion: 72, narrativa: 62, focos: ["Frontera aduanal", "Tensiones sindicales", "Riesgo de candidatos"], tesis: "Vulnerabilidad estructural en cruces estratégicos y amenazas latentes contra actores políticos." },
-    "Chihuahua": { itse: 69, riesgo: "Alto", violencia: 75, conflictos: 58, gobernabilidad: 78, exposicion: 76, narrativa: 84, focos: ["Conflicto por el agua", "Gobernación panista", "Crimen en la Sierra"], tesis: "Disputa abierta federal-estatal por recursos hídricos y fuerte articulación de narrativa panista." },
-    "Veracruz": { itse: 68, riesgo: "Alto", violencia: 80, conflictos: 72, gobernabilidad: 70, exposicion: 82, narrativa: 54, focos: ["Violencia a periodistas", "Disputas agrarias", "Estructura territorial"], tesis: "Erosión institucional local mitigada únicamente por el despliegue del control político territorial." },
-    "Sonora": { itse: 67, riesgo: "Alto", violencia: 85, conflictos: 64, gobernabilidad: 60, exposicion: 70, narrativa: 56, focos: ["Frontera desértica", "Minería en huelga", "Tribus yaquis"], tesis: "Focos de conflictividad étnica y laboral sobre zonas con alta presencia de delincuencia organizada." },
-    "Jalisco": { itse: 66, riesgo: "Alto", violencia: 82, conflictos: 70, gobernabilidad: 68, exposicion: 86, narrativa: 76, focos: ["Desapariciones", "Disputa MC-Morena", "Cártel hegemónico"], tesis: "Alta visibilidad mediática de crisis humanitarias en un entorno de cerrada competencia electoral." },
-    "Tabasco": { itse: 64, riesgo: "Alto", violencia: 81, conflictos: 60, gobernabilidad: 52, exposicion: 70, narrativa: 32, focos: ["Incursión delictiva", "Desgaste del bastión", "Expectativa económica"], tesis: "Crecimiento atípico de índices delictivos en la tierra natal del movimiento oficialista." },
-    "Nuevo León": { itse: 63, riesgo: "Alto", violencia: 74, conflictos: 68, gobernabilidad: 78, exposicion: 84, narrativa: 75, focos: ["Parálisis del Congreso", "Abasto de agua", "Inversión bajo riesgo"], tesis: "Guerra de narrativas políticas e institucionales cruzadas por deficiencias crónicas de infraestructura." },
-    "Puebla": { itse: 61, riesgo: "Alto", violencia: 72, conflictos: 66, gobernabilidad: 55, exposicion: 78, narrativa: 58, focos: ["Huachicol activo", "Linchamientos urbanos", "Ambulantaje"], tesis: "Focos geográficos localizados de ilegalidad y conflictividad social en juntas auxiliares." },
-    "Oaxaca": { itse: 60, riesgo: "Alto", violencia: 62, conflictos: 88, gobernabilidad: 58, exposicion: 62, narrativa: 36, focos: ["Usos y costumbres", "Bloqueos CNTE", "Corredor Interoceánico"], tesis: "Conflictividad social de bases magisteriales y agrarias presionando megaproyectos federales." },
-    "San Luis Potosí": { itse: 58, riesgo: "Medio", violencia: 66, conflictos: 58, gobernabilidad: 65, exposicion: 60, narrativa: 50, focos: ["Gobernación PVEM", "Zonas de tránsito", "Fricción de alianza"], tesis: "Riesgos derivados de la coexistencia y competencia interna entre partidos de la coalición federal." },
-    "Quintana Roo": { itse: 56, riesgo: "Medio", violencia: 76, conflictos: 55, gobernabilidad: 50, exposicion: 68, narrativa: 46, focos: ["Sindicatos taxistas", "Narcomenudeo turístico", "Despojo de tierras"], tesis: "Contraste marcado entre el éxito económico del turismo y focos delictivos en periferias urbanas." },
-    "Ciudad de México": { itse: 55, riesgo: "Medio", violencia: 52, conflictos: 74, gobernabilidad: 58, exposicion: 92, narrativa: 78, focos: ["Vivienda y gentrificación", "Marchas masivas", "Clase media crítica"], tesis: "Centro neurálgico de movilización donde la narrativa nacional opositora tiene alta resonancia." },
-    "Campeche": { itse: 52, riesgo: "Medio", violencia: 48, conflictos: 58, gobernabilidad: 68, exposicion: 50, narrativa: 52, focos: ["Policías en protesta", "Gobernadora polémica", "Sector petrolero"], tesis: "Desgaste político acelerado por tensiones del funcionariado público y huelgas de seguridad." },
-    "Durango": { itse: 50, riesgo: "Medio", violencia: 48, conflictos: 45, gobernabilidad: 52, exposicion: 52, narrativa: 62, focos: ["Aislamiento serrano", "Alianza PRI-PAN", "Presupuesto limitado"], tesis: "Estabilidad precaria dependiente de acuerdos de gobernabilidad entre fuerzas tradicionales." },
-    "Hidalgo": { itse: 49, riesgo: "Medio", violencia: 42, conflictos: 52, gobernabilidad: 48, exposicion: 56, narrativa: 42, focos: ["Huachicoleo remanente", "Conflictos de agua", "Transición tricolor"], tesis: "Paz social relativa en proceso de consolidación de la nueva hegemonía gubernamental." },
-    "Coahuila": { itse: 48, riesgo: "Medio", violencia: 38, conflictos: 44, gobernabilidad: 48, exposicion: 62, narrativa: 76, focos: ["Industria del carbón", "Estructura priísta", "Frontera blindada"], tesis: "Blindaje de seguridad coordinado con fuerte control político de la estructura local no oficialista." },
-    "Nayarit": { itse: 46, riesgo: "Medio", violencia: 44, conflictos: 42, gobernabilidad: 50, exposicion: 46, narrativa: 38, focos: ["Límites territoriales", "Deuda pública", "Bajo perfil mediático"], tesis: "Baja densidad poblacional y mediática que contiene la amplificación de sus tensiones internas." },
-    "Baja California Sur": { itse: 42, riesgo: "Bajo", violencia: 36, conflictos: 32, gobernabilidad: 42, exposicion: 48, narrativa: 44, focos: ["Aislamiento geográfico", "Costo de vida", "Narcomenudeo aislado"], tesis: "Condición de insularidad que facilita el control preventivo de brotes de inestabilidad." },
-    "Aguascalientes": { itse: 40, riesgo: "Bajo", violencia: 32, conflictos: 38, gobernabilidad: 52, exposicion: 45, narrativa: 68, focos: ["Blindaje norte", "Crecimiento automotriz", "Bastión opositor"], tesis: "Economía dinámica que genera un colchón de estabilidad frente a la degradación regional circundante." },
-    "Querétaro": { itse: 38, riesgo: "Bajo", violencia: 30, conflictos: 36, gobernabilidad: 40, exposicion: 62, narrativa: 72, focos: ["Crecimiento urbano", "Inmigración interna", "Gobernabilidad panista"], tesis: "Alto desarrollo institucional y calidad de vida que actúan como barreras de contención del riesgo." },
-    "Tlaxcala": { itse: 36, riesgo: "Bajo", violencia: 34, conflictos: 38, gobernabilidad: 42, exposicion: 42, narrativa: 34, focos: ["Trata de personas", "Conflictos linderos", "Protestas burocráticas"], tesis: "Tensiones focalizadas que no logran trastocar la gobernabilidad del Ejecutivo del estado." },
-    "Yucatán": { itse: 22, riesgo: "Bajo", violencia: 12, conflictos: 18, gobernabilidad: 26, exposicion: 50, narrativa: 54, focos: ["Seguridad comunitaria", "Expansión inmobiliaria", "Transición pacífica"], tesis: "La entidad con el mayor índice de paz y cohesión comunitaria del territorio nacional." }
+    "Sinaloa": { itse: 90, nivel: "Crítica", violencia: 92, focos: ["Guerra criminal", "miedo social", "economía regional", "campo", "elección a gubernatura"], tesis: "Desgaste institucional extremo derivado del recrudecimiento de pugnas hegemónicas del crimen organizada que condicionan la economía." },
+    "Guerrero": { itse: 88, nivel: "Crítica", violencia: 90, focos: ["Crimen", "Acapulco", "normalismo", "magisterio", "turismo", "gobernabilidad erosionada"], tesis: "Múltiples fuentes de tensión que generan condiciones de conflictividad permanente y debilitamiento de gobernabilidad municipal." },
+    "Michoacán": { itse: 87, nivel: "Crítica", violencia: 89, focos: ["Crimen", "campo", "autodefensas", "CNTE", "elección a gubernatura"], tesis: "Interacción compleja entre violencia, extorsión al sector agroexportador estratégico y movilización social organizada." },
+    "Guanajuato": { itse: 86, nivel: "Crítica", violencia: 91, focos: ["Violencia letal", "extorsión", "corredores industriales", "disputa política"], tesis: "La persistencia de homicidios y delitos de alto impacto erosiona la legitimidad institucional y genera fatiga social." },
+    "Colima": { itse: 84, nivel: "Crítica", violencia: 95, focos: ["Homicidios", "crimen organizado", "puerto de Manzanillo"], tesis: "Alta concentración de violencia homicida alrededor de infraestructura portuaria que se convierte en una experiencia cotidiana." },
+    "Zacatecas": { itse: 83, nivel: "Crítica", violencia: 87, focos: ["Violencia", "carreteras", "minería", "campo", "CNTE"], tesis: "Combinación compleja de inseguridad en rutas terrestres, deterioro económico productivo y competencia pre-electoral por gubernatura." },
+    "Chiapas": { itse: 82, nivel: "Crítica", violencia: 88, focos: ["Crimen organizado", "desplazamientos", "frontera sur", "CNTE"], tesis: "Concentración simultánea de expansiones criminales territoriales, crisis humanitaria y movilizaciones magisteriales severas." },
+    "Oaxaca": { itse: 80, nivel: "Crítica", violencia: 70, focos: ["CNTE", "bloqueos", "conflictos comunitarios", "infraestructura"], tesis: "Tradición histórica de movilización social organizada con capacidad persistente de paralizar infraestructura y servicios públicos." },
+    "Sonora": { itse: 79, nivel: "Crítica", violencia: 82, focos: ["Frontera", "crimen", "minería", "agua", "campo"], tesis: "Convergencia de tensiones derivadas de la administración de recursos hídricos críticos, minería y corredores fronterizos." },
+    "Estado de México": { itse: 78, nivel: "Crítica", violencia: 85, focos: ["Seguridad", "feminicidios", "transporte", "agua", "Zona Oriente"], tesis: "Enorme peso demográfico bajo intensa presión por demandas cotidianas de seguridad urbana, movilidad y violencia de género." },
+    "Tamaulipas": { itse: 77, nivel: "Crítica", violencia: 86, focos: ["Frontera", "crimen", "migración", "energía"], tesis: "La seguridad define la percepción de eficacia gubernamental multiplicada por la visibilidad internacional de los cruces fronterizos." },
+    "Baja California": { itse: 76, nivel: "Crítica", violencia: 84, focos: ["Violencia fronteriza", "migración", "crimen organizado"], tesis: "Combinación crítica de presión migratoria, inseguridad urbana y disputas políticas por la sucesión del control territorial." },
+    "Veracruz": { itse: 76, nivel: "Crítica", violencia: 81, focos: ["Seguridad", "desapariciones", "campo", "energía"], tesis: "Entidad estratégica donde la herencia de pasivos institucionales de seguridad mantiene una fuerte carga emocional en la opinión." },
+    "Jalisco": { itse: 75, nivel: "Crítica", violencia: 83, focos: ["Desapariciones", "crimen organizado", "agua", "movilidad"], tesis: "Alta visibilidad mediática de desapariciones forzadas unida a crisis hídrica metropolitana rumbo a la renovación del ejecutivo estatal." },
+    "San Luis Potosí": { itse: 74, nivel: "Alta", violencia: 72, focos: ["Seguridad", "sucesión política", "carreteras"], tesis: "Dinámica sucesoria anticipada que genera polarización y superpone la fricción política interna a los problemas de seguridad vial." },
+    "Chihuahua": { itse: 73, nivel: "Alta", violencia: 75, focos: ["Violencia serrana", "migración", "agua", "frontera"], tesis: "Tensiones distribuidas entre la sequía que moviliza al sector agrario y eventos delictivos de impacto en la Sierra Tarahumara." },
+    "Morelos": { itse: 72, nivel: "Alta", violencia: 79, focos: ["Violencia", "feminicidios", "gobernabilidad municipal"], tesis: "La inseguridad y feminicidios constituyen el eje principal de malestar, amplificado mediáticamente por su cercanía con la capital." },
+    "Tabasco": { itse: 71, nivel: "Alta", violencia: 76, focos: ["Violencia emergente", "Pemex", "empleo", "inundaciones"], tesis: "Alto costo simbólico por desgaste de expectativas; el incremento atípico de delitos de impacto genera frustración política." },
+    "Quintana Roo": { itse: 70, nivel: "Alta", violencia: 74, focos: ["Turismo", "extorsión", "violencia", "vivienda"], tesis: "Contradicción estructural entre la prosperidad y derrama económica turística frente a la precarización y extorsiones en periferias." },
+    "Ciudad de México": { itse: 69, nivel: "Alta", violencia: 55, focos: ["Agua", "vivienda", "seguridad", "movilidad"], tesis: "El conflicto no proviene de violencia extrema sino del deterioro gradual de condiciones urbanas fundamentales y escasez de agua." },
+    "Puebla": { itse: 68, nivel: "Alta", violencia: 70, focos: ["Seguridad", "transporte", "agua", "zona metropolitana"], tesis: "Presión concentrada en la franja metropolitana donde las deficiencias de servicios públicos merman la legitimidad institucional." },
+    "Nuevo León": { itse: 66, nivel: "Alta", violencia: 62, focos: ["Agua", "movilidad", "contaminación", "seguridad"], tesis: "Tensiones transversales asociadas al crecimiento acelerado que colapsan infraestructura y exacerban la polarización política." },
+    "Campeche": { itse: 61, nivel: "Alta", violencia: 50, focos: ["Conflicto petrolero", "desgaste gubernamental"], tesis: "Desaceleración de la industria petrolera unida a huelgas institucionales de seguridad que aceleran el descontento." },
+    "Hidalgo": { itse: 55, nivel: "Media", violencia: 48, focos: ["Huachicol", "agua", "transporte"], tesis: "Transformación metropolitana con remanentes de mercados informales de combustible que permanecen contenidos." },
+    "Querétaro": { itse: 54, nivel: "Media", violencia: 35, focos: ["Crecimiento urbano", "agua", "movilidad"], tesis: "Entidad altamente estable cuyo riesgo político radica en que la gestión urbana acelerada empiece a ser percibida como excluyente." },
+    "Tlaxcala": { itse: 52, nivel: "Media", violencia: 45, focos: ["Trata", "transporte", "agua"], tesis: "Problemáticas con alta carga de impacto simbólico moral que trascienden la pequeña escala territorial de la entidad." },
+    "Coahuila": { itse: 50, nivel: "Media", violencia: 40, focos: ["Presión laboral-industrial", "agua"], tesis: "Niveles de estabilidad superiores al promedio nacional pero presionados por el nearshoring en infraestructura y abasto hídrico." },
+    "Aguascalientes": { itse: 48, nivel: "Media", violencia: 38, focos: ["Seguridad urbana", "presión hídrica"], tesis: "Acumulación gradual de tensiones cotidianas derivadas del crecimiento industrial que amenazan la percepción de estabilidad." },
+    "Durango": { itse: 47, nivel: "Media", violencia: 42, focos: ["Campo", "sequía", "rezago regional"], tesis: "Tensión concentrada en el ámbito rural donde la sequía e insuficiencia hídrica golpea la expectativa de permanencia comunitaria." },
+    "Baja California Sur": { itse: 45, nivel: "Media", violencia: 36, focos: ["Turismo", "agua", "vivienda"], tesis: "Distania socioeconómica entre el auge de inversiones hoteleras extranjeras y la escasez de servicios básicos residenciales." },
+    "Nayarit": { itse: 44, nivel: "Media", violencia: 40, focos: ["Servicios", "turismo", "seguridad focalizada"], tesis: "Conflictividad contenida y de bajo perfil mediático nacional con tensiones distributivas incipientes en zonas de costa." },
+    "Yucatán": { itse: 39, nivel: "Baja", violencia: 15, focos: ["Seguridad estable", "presión inmobiliaria", "agua"], tesis: "Máximo activo de paz social comunitaria del país, donde el debate solo gira en la planeación inmobiliaria futura de Mérida." }
   };
 
-  // Función de colores del semáforo analítico del estudio
   function getColorByScore(val) {
     return val >= 75 ? 'var(--critica)' : 
-           val >= 60 ? 'var(--alta)' : 
+           val >= 66 ? 'var(--alta)' : 
            val >= 45 ? 'var(--media)' : 
                        'var(--baja)';  
   }
 
-  // Estilo visual del mapa
+  // Estilo cartográfico basado en el filtro seleccionado
   function styleFeature(feature) {
     const activeFilter = document.getElementById('metricFilter').value;
     const name = feature.properties.name; 
-    const info = dataset[name] || { violencia: 0, conflictos: 0, gobernabilidad: 0, exposicion: 0, narrativa: 0 };
+    const info = dataset[name] || { itse: 0, violencia: 0 };
     const score = info[activeFilter] || 0;
 
     return {
@@ -324,7 +320,6 @@
     };
   }
 
-  // Cambiar entre pestañas laterales
   function switchTab(tabId) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
@@ -333,10 +328,10 @@
     document.getElementById('pane-' + tabId).classList.add('active');
   }
 
-  // Renderizar el medidor circular de aguja analítico
-  function renderGauge(score, riesgo) {
+  // Construcción del medidor circular interactivo
+  function renderGauge(score, nivel) {
     const color = getColorByScore(score);
-    const angle = (score / 100) * 180 - 90; // Mapear de -90deg a 90deg
+    const angle = (score / 100) * 180 - 90;
     const dashOffset = 283 - ((score / 100) * 283);
 
     return `
@@ -348,21 +343,20 @@
           <circle cx="110" cy="105" r="6" fill="#FFF" />
         </svg>
         <div class="gauge-value" style="color: ${color};">${score}</div>
-        <div class="gauge-label">Riesgo Electoral: ${riesgo}</div>
+        <div class="gauge-label">Prioridad de Alerta: ${nivel}</div>
       </div>
     `;
   }
 
-  // Calcular métricas, poblar tablas y generar rankings automáticamente
+  // Sincronización matemática de contadores, tablas y rankings
   function calculateGlobalOutputs() {
     const filter = document.getElementById('metricFilter').value;
     let criticos = 0, altos = 0, medios = 0, bajos = 0;
 
-    // 1. Contadores para la caja flotante inferior izquierda
     Object.keys(dataset).forEach(key => {
       const val = dataset[key].itse;
       if (val >= 75) criticos++;
-      else if (val >= 60) altos++;
+      else if (val >= 66) altos++;
       else if (val >= 45) medios++;
       else bajos++;
     });
@@ -372,18 +366,21 @@
     document.getElementById('count-media').innerText = medios;
     document.getElementById('count-baja').innerText = bajos;
 
-    // 2. Poblar Matriz General Completa (Pestaña Tabla)
+    // Poblar Pestaña 2: Matriz General ordenada estrictamente por el ITSE del Documento
+    const sortedMatriz = Object.keys(dataset).map(name => ({name, ...dataset[name]}))
+                            .sort((a,b) => b.itse - a.itse);
+
     const tbody = document.getElementById('tabla-body');
-    tbody.innerHTML = Object.keys(dataset).map(name => `
+    tbody.innerHTML = sortedMatriz.map(item => `
       <tr>
-        <td><strong>${name}</strong></td>
-        <td style="font-weight:bold; color:${getColorByScore(dataset[name].itse)}">${dataset[name].itse}</td>
-        <td style="color:${getColorByScore(dataset[name].itse)}">${dataset[name].riesgo}</td>
-        <td class="table-thesis">${dataset[name].tesis}</td>
+        <td><strong>${item.name}</strong></td>
+        <td style="font-weight:bold; color:${getColorByScore(item.itse)}">${item.itse}</td>
+        <td style="color:${getColorByScore(item.itse)}">${item.nivel}</td>
+        <td class="table-thesis">${item.tesis}</td>
       </tr>
     `).join('');
 
-    // 3. Poblar Ranking de Estados de Mayor a Menor Peligro
+    // Poblar Pestaña 3: Ranking Dinámico de Mayor a Menor según la capa activa
     const rankContainer = document.getElementById('ranking-container');
     const sortedStates = Object.keys(dataset).map(name => ({name, val: dataset[name][filter]}))
                           .sort((a,b) => b.val - a.val);
@@ -391,12 +388,11 @@
     rankContainer.innerHTML = sortedStates.map((item, idx) => `
       <div class="ranking-item">
         <span>${idx + 1}. <strong>${item.name}</strong></span>
-        <span style="font-weight:bold; color:${getColorByScore(item.val)}">${item.val}%</span>
+        <span style="font-weight:bold; color:${getColorByScore(item.val)}">${item.val}${filter === 'itse' ? '' : '%'}</span>
       </div>
     `).join('');
   }
 
-  // Refrescar capas de Leaflet al cambiar de filtro
   function updateMapLayers() {
     if (geojsonLayer) {
       const activeFilter = document.getElementById('metricFilter').value;
@@ -404,13 +400,13 @@
         geojsonLayer.resetStyle(layer);
         const name = layer.feature.properties.name;
         const val = dataset[name] ? dataset[name][activeFilter] : 0;
-        layer.setTooltipContent(`<strong>${name}</strong>: ${val}%`);
+        layer.setTooltipContent(`<strong>${name}</strong>: ${val}${activeFilter === 'itse' ? ' Puntos' : '%'}`);
       });
       calculateGlobalOutputs();
     }
   }
 
-  // Inyección del mapa vectorial
+  // Carga del mapa e inyección de eventos interactivos
   if (typeof mexicoGeoJSON !== 'undefined') {
     geojsonLayer = L.geoJSON(mexicoGeoJSON, {
       style: styleFeature,
@@ -419,56 +415,38 @@
         const activeFilter = document.getElementById('metricFilter').value;
         const val = dataset[name] ? dataset[name][activeFilter] : 0;
 
-        layer.bindTooltip(`<strong>${name}</strong>: ${val}%`, { sticky: true, className: 'leaflet-tooltip-custom' });
+        layer.bindTooltip(`<strong>${name}</strong>: ${val}${activeFilter === 'itse' ? ' Puntos' : '%'}`, { sticky: true, className: 'leaflet-tooltip-custom' });
 
         layer.on({
           mouseover: e => e.target.setStyle({ weight: 2.5, color: '#FFF', fillOpacity: 0.95 }),
           mouseout: e => geojsonLayer.resetStyle(e.target),
           click: function () {
-            const info = dataset[name] || { itse: 0, riesgo: "Desconocido", violencia: 0, conflictos: 0, gobernabilidad: 0, exposicion: 0, narrativa: 0, focos: [], tesis: "" };
+            const info = dataset[name] || { itse: 0, nivel: "N/A", violencia: 0, focos: [], tesis: "Sin registro analítico." };
             
-            // Reconstruir el panel de Diagnóstico con los datos reales del estudio
+            // Inyectar datos específicos reales en el panel al hacer clic
             document.getElementById('selectedStatePanel').innerHTML = `
               <h2 style="font-family:'Syne'; font-size:1.4rem; margin-bottom:0.25rem; text-align:center; color: var(--accent);">${name}</h2>
               <p style="font-size:0.8rem; text-align:center; color:var(--text2); font-style:italic; margin-bottom:1rem; padding:0 10px;">"${info.tesis}"</p>
               
-              ${renderGauge(info.itse, info.riesgo)}
+              ${renderGauge(info.itse, info.nivel)}
 
               <div class="data-box">
-                <h3>Ejes de Conflicto del Estudio</h3>
+                <h3>Focos Críticos del Estudio</h3>
                 <div class="focus-badge-container">
                   ${info.focos.map(f => `<span class="focus-badge">${f}</span>`).join('')}
                 </div>
               </div>
 
               <div class="data-box">
-                <h3>Violencia y Delincuencia</h3>
+                <h3>Puntuación General ITSE</h3>
+                <span style="font-weight:bold; color:${getColorByScore(info.itse)}">${info.itse} / 100</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:${info.itse}%; background:${getColorByScore(info.itse)}"></div></div>
+              </div>
+
+              <div class="data-box">
+                <h3>Vector Integrado de Inseguridad</h3>
                 <span style="font-weight:bold; color:${getColorByScore(info.violencia)}">${info.violencia}%</span>
                 <div class="progress-bar"><div class="progress-fill" style="width:${info.violencia}%; background:${getColorByScore(info.violencia)}"></div></div>
-              </div>
-
-              <div class="data-box">
-                <h3>Conflictos Sectoriales</h3>
-                <span style="font-weight:bold; color:${getColorByScore(info.conflictos)}">${info.conflictos}%</span>
-                <div class="progress-bar"><div class="progress-fill" style="width:${info.conflictos}%; background:${getColorByScore(info.conflictos)}"></div></div>
-              </div>
-
-              <div class="data-box">
-                <h3>Desgaste de Gobernabilidad</h3>
-                <span style="font-weight:bold; color:${getColorByScore(info.gobernabilidad)}">${info.gobernabilidad}%</span>
-                <div class="progress-bar"><div class="progress-fill" style="width:${info.gobernabilidad}%; background:${getColorByScore(info.gobernabilidad)}"></div></div>
-              </div>
-
-              <div class="data-box">
-                <h3>Exposición Electoral 2027</h3>
-                <span style="font-weight:bold; color:${getColorByScore(info.exposicion)}">${info.exposicion}%</span>
-                <div class="progress-bar"><div class="progress-fill" style="width:${info.exposicion}%; background:${getColorByScore(info.exposicion)}"></div></div>
-              </div>
-
-              <div class="data-box">
-                <h3>Narrativa Opositora</h3>
-                <span style="font-weight:bold; color:${getColorByScore(info.narrativa)}">${info.narrativa}%</span>
-                <div class="progress-bar"><div class="progress-fill" style="width:${info.narrativa}%; background:${getColorByScore(info.narrativa)}"></div></div>
               </div>
             `;
           }
@@ -476,7 +454,7 @@
       }
     }).addTo(map);
 
-    // Inicialización global de las tablas de datos
+    // Inicialización de la interfaz
     calculateGlobalOutputs();
   }
 </script>
