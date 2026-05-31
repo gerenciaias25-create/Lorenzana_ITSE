@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tensiones Sociales México 2027 | Dashboard de Inteligencia</title>
   
-  <!-- CSS de Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   
   <style>
@@ -67,8 +67,14 @@
       min-width: 350px;
     }
 
-    /* Layout Estructurado */
-    .layout { display: grid; grid-template-columns: 1fr 480px; flex: 1; overflow: hidden; position: relative; }
+    /* Layout Estructurado Base (Escritorio por defecto) */
+    .layout { 
+      display: grid; 
+      grid-template-columns: 1fr 480px; 
+      flex: 1; 
+      overflow: hidden; 
+      position: relative; 
+    }
     
     .map-wrapper { position: relative; height: 100%; width: 100%; }
     #map { background: #090909; height: 100%; width: 100%; }
@@ -144,7 +150,7 @@
     .focus-badge-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .focus-badge { background: rgba(212, 168, 67, 0.1); border: 1px solid rgba(212, 168, 67, 0.3); color: var(--accent); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; }
 
-    /* Cuadro Desglose Alertas Flotante (Esquina inferior izquierda) */
+    /* Cuadro Desglose Alertas Flotante (Esquina inferior izquierda en PC) */
     .alerts-summary-box {
       position: absolute;
       bottom: 25px;
@@ -182,6 +188,94 @@
       border-radius: 4px !important;
       padding: 6px 10px !important;
     }
+
+    /* ==========================================================================
+       NUEVAS REGLAS MEDIA QUERIES PARA ADAPTACIÓN RESPONSIVA (TELÉFONOS MÓVILES)
+       ========================================================================== */
+    @media (max-width: 992px) {
+      body {
+        overflow-y: auto; /* Permite el scroll global si es necesario */
+        height: auto;
+      }
+
+      .header {
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.75rem 1rem;
+        gap: 0.5rem;
+      }
+
+      .filter-select {
+        min-width: 100%;
+        font-size: 0.9rem;
+      }
+
+      /* Cambia de 2 columnas horizontales a un bloque vertical */
+      .layout {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 120px); /* Ajusta el tamaño dinámico para celulares */
+        grid-template-columns: none;
+      }
+
+      /* El mapa ocupa la parte superior */
+      .map-wrapper {
+        height: 45vh; 
+        min-height: 320px;
+        width: 100%;
+      }
+
+      /* Las alertas se mueven abajo a la derecha del mapa en móviles de forma compacta */
+      .alerts-summary-box {
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        min-width: 0;
+        background: rgba(20, 20, 20, 0.9);
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 8px 12px;
+      }
+      
+      .alerts-summary-box h4 { display: none; } /* Oculta título en móvil para ahorrar espacio */
+      .alert-row { 
+        margin-bottom: 0; 
+        flex-direction: column; 
+        gap: 2px;
+        font-size: 0.7rem;
+        text-align: center;
+      }
+
+      /* El panel lateral pasa a la parte inferior ocupando el espacio restante */
+      .side-panel {
+        flex: 1;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        height: 55vh;
+        min-height: 400px;
+      }
+
+      .tabs-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .tab-btn {
+        padding: 0.8rem 0.5rem;
+        font-size: 0.75rem;
+      }
+
+      .tabs-content {
+        padding: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -190,7 +284,6 @@
   <h1>RADAR DE TENSIONES SOCIALES · MÉXICO 2027</h1>
 </div>
 
-<!-- RESTAURACIÓN DE LOS 5 FILTROS TEMÁTICOS DEL ESTUDIO -->
 <div class="filter-container">
   <label for="metricFilter">Visualizar Capa Analítica:</label>
   <select id="metricFilter" class="filter-select" onchange="updateMapLayers()">
@@ -204,32 +297,29 @@
 
 <div class="layout">
   <div class="map-wrapper">
-    <!-- Mapa Real -->
     <div id="map"></div>
     
-    <!-- DESGLOSE DE ALERTAS GLOBALES SEGÚN MATRIZ NACIONAL ITSE -->
     <div class="alerts-summary-box">
       <h4>Riesgo por Matriz Oficial</h4>
       <div class="alert-row">
-        <span>Crítica (&ge;75 ITSE)</span>
+        <span>Crítica (&ge;75)</span>
         <span class="alert-count-badge" style="background: var(--critica);" id="count-critica">0</span>
       </div>
       <div class="alert-row">
-        <span>Alta (66-74 ITSE)</span>
+        <span>Alta (66-74)</span>
         <span class="alert-count-badge" style="background: var(--alta);" id="count-alta">0</span>
       </div>
       <div class="alert-row">
-        <span>Media (44-65 ITSE)</span>
+        <span>Media (44-65)</span>
         <span class="alert-count-badge" style="background: var(--media);" id="count-media">0</span>
       </div>
       <div class="alert-row">
-        <span>Baja (&lt;44 ITSE)</span>
+        <span>Baja (&lt;44)</span>
         <span class="alert-count-badge" style="background: var(--baja);" id="count-baja">0</span>
       </div>
     </div>
   </div>
   
-  <!-- PANEL LATERAL CON LAS CORRECCIONES SOLICITADAS -->
   <div class="side-panel">
     <div class="tabs-header">
       <button class="tab-btn active" onclick="switchTab('mapa')">Diagnóstico</button>
@@ -238,16 +328,14 @@
     </div>
     
     <div class="tabs-content">
-      <!-- PESTAÑA 1: DIAGNÓSTICO INDIVIDUAL POR ESTADO -->
       <div id="pane-mapa" class="tab-pane active">
         <div id="selectedStatePanel">
-          <div style="color: var(--text2); text-align: center; margin-top: 3rem;">
+          <div style="color: var(--text2); text-align: center; margin-top: 2rem;">
             <p>Selecciona cualquier estado en el mapa para auditar su vector de tensiones del estudio 2027 y activar el medidor analítico.</p>
           </div>
         </div>
       </div>
       
-      <!-- PESTAÑA 2: MATRIZ GENERAL COMPLETA (ESTRUCTURA EXACTA DEL DOCUMENTO) -->
       <div id="pane-tabla" class="tab-pane">
         <div class="table-container">
           <table class="table-view">
@@ -265,7 +353,6 @@
         </div>
       </div>
       
-      <!-- PESTAÑA 3: RANKING DE MAYOR A MENOR AUTOMÁTICO -->
       <div id="pane-ranking" class="tab-pane">
         <div class="ranking-list" id="ranking-container"></div>
       </div>
@@ -273,22 +360,19 @@
   </div>
 </div>
 
-<!-- Librerías Leaflet -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="mapa_mexico.js"></script>
 
 <script>
-  // Inicialización del mapa
   const map = L.map('map').setView([23.6345, -102.5528], 5);
   let geojsonLayer;
 
-  // BASE DE DATOS MATRIZ COMPLETA Y EXTRAÍDA EXACTAMENTE DEL DOCUMENTO REFERENCIADO
   const dataset = {
     "Sinaloa": { itse: 90, nivel: "Crítica", impacto: "Alto", focos: ["Guerra criminal", "miedo social", "economía regional", "campo", "elección a gubernatura"], violencia: 95, conflictos: 85, gobernabilidad: 88, exposicion: 92, tesis: "La violencia dejó de percibirse como un fenómeno aislado para convertirse en un factor que condicionan la vida económica y cotidiana." },
     "Guerrero": { itse: 88, nivel: "Crítica", impacto: "Alto", focos: ["Crimen", "Acapulco", "normalismo", "magisterio", "turismo", "gobernabilidad erosionada"], violencia: 94, conflictos: 92, gobernabilidad: 90, exposicion: 76, tesis: "Inseguridad, deterioro económico y la capacidad de movilización social organizada generan condiciones de conflictividad permanente." },
     "Michoacán": { itse: 87, nivel: "Crítica", impacto: "Alto", focos: ["Crimen", "campo", "autodefensas", "CNTE", "elección a gubernatura"], violencia: 92, conflictos: 88, gobernabilidad: 84, exposicion: 88, tesis: "Representa uno de los casos más complejos de interacción entre violencia, economía y organización social como la extorsión agroexportadora." },
     "Guanajuato": { itse: 86, nivel: "Crítica", impacto: "Alto", focos: ["Violencia letal", "extorsión", "corredores industriales", "disputa política"], violencia: 96, conflictos: 78, gobernabilidad: 80, exposicion: 90, tesis: "La persistencia de homicidios y delitos de alto impacto erosiona la legitimidad de las autoridades y genera fatiga social." },
-    "Colima": { itse: 84, nivel: "Crítica", impacto: "Alto", focos: ["Homicidios", "crimen organized", "puerto de Manzanillo"], violencia: 98, conflictos: 68, gobernabilidad: 82, exposicion: 70, tesis: "Presenta una de las mayores concentraciones de violencia del país. La inseguridad se ha convertido en una experiencia cotidiana." },
+    "Colima": { itse: 84, nivel: "Crítica", impacto: "Alto", focos: ["Homicidios", "crimen organizado", "puerto de Manzanillo"], violencia: 98, conflictos: 68, gobernabilidad: 82, exposicion: 70, tesis: "Presenta una de las mayores concentraciones de violencia del país. La inseguridad se ha convertido en una experiencia cotidiana." },
     "Zacatecas": { itse: 83, nivel: "Crítica", impacto: "Alto", focos: ["Violencia", "carreteras", "minería", "campo", "CNTE"], violencia: 90, conflictos: 84, gobernabilidad: 80, exposicion: 82, tesis: "Concentra una combinación compleja de inseguridad, deterioro económico y movilización social de cara a la elección de gubernatura." },
     "Chiapas": { itse: 82, nivel: "Crítica", impacto: "Alto", focos: ["Crimen organizado", "desplazamientos", "frontera sur", "CNTE"], violencia: 91, conflictos: 93, gobernabilidad: 85, exposicion: 72, tesis: "Concentra simultáneamente conflictos de seguridad, gobernabilidad y movilización social organizada como los desplazamientos." },
     "Oaxaca": { itse: 80, nivel: "Crítica", impacto: "Alto", focos: ["CNTE", "bloqueos", "conflictos comunitarios", "infraestructura"], violencia: 65, conflictos: 96, gobernabilidad: 82, exposicion: 80, tesis: "Mantiene una tradición histórica de movilización social organizada. La CNTE conserva capacidad de afectar servicios y economía." },
@@ -318,13 +402,11 @@
     "Yucatán": { itse: 39, nivel: "Baja", impacto: "Bajo-Medio", focos: ["Seguridad estable", "presión inmobiliaria", "agua"], violencia: 25, conflictos: 38, gobernabilidad: 45, exposicion: 42, tesis: "Continúa siendo una de las entidades con menor conflictividad social. La seguridad sigue funcionando como un activo político." }
   };
 
-  // NUEVA FUNCIÓN DE NORMALIZACIÓN: Resuelve el conflicto "México" vs "Estado de México" del mapa GeoJSON
   function normalizeStateName(name) {
     if (name === "México") return "Estado de México";
     return name;
   }
 
-  // Mapeo cromático de semáforos analíticos
   function getColorByScore(val) {
     return val >= 75 ? 'var(--critica)' : 
            val >= 66 ? 'var(--alta)' : 
@@ -332,11 +414,10 @@
                        'var(--baja)';  
   }
 
-  // Estilo cartográfico dinámico dependiente del filtro seleccionado
   function styleFeature(feature) {
     const activeFilter = document.getElementById('metricFilter').value;
     const rawName = feature.properties.name; 
-    const normalizedName = normalizeStateName(rawName); // Normalización aplicada
+    const normalizedName = normalizeStateName(rawName);
     const info = dataset[normalizedName] || { itse: 0, violencia: 0, conflictos: 0, gobernabilidad: 0, exposicion: 0 };
     const score = info[activeFilter] || 0;
 
@@ -346,7 +427,6 @@
     };
   }
 
-  // Controlador de Pestañas Laterales
   function switchTab(tabId) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
@@ -355,7 +435,6 @@
     document.getElementById('pane-' + tabId).classList.add('active');
   }
 
-  // Renderizador del Medidor Analítico (Gauge)
   function renderGauge(score, nivel) {
     const color = getColorByScore(score);
     const angle = (score / 100) * 180 - 90;
@@ -375,12 +454,10 @@
     `;
   }
 
-  // Sincronización de cálculos, inyección de tabla completa y generación de Rankings
   function calculateGlobalOutputs() {
     const filter = document.getElementById('metricFilter').value;
     let criticos = 0, altos = 0, medios = 0, bajos = 0;
 
-    // Contadores oficiales basados en la base de datos mapeada de forma correcta
     Object.keys(dataset).forEach(key => {
       const val = dataset[key].itse;
       if (val >= 75) criticos++;
@@ -394,7 +471,6 @@
     document.getElementById('count-media').innerText = medios;
     document.getElementById('count-baja').innerText = bajos;
 
-    // POBLAR PESTAÑA MATRIZ GENERAL: TABLA COMPLETA CON ESTRUCTURA DEL DOCUMENTO
     const sortedMatriz = Object.keys(dataset).map(name => ({name, ...dataset[name]}))
                             .sort((a,b) => b.itse - a.itse);
 
@@ -409,7 +485,6 @@
       </tr>
     `).join('');
 
-    // POBLAR PESTAÑA RANKING: REORDENAMIENTO AUTOMÁTICO SEGÚN CAPA SELECCIONADA
     const rankContainer = document.getElementById('ranking-container');
     const sortedStates = Object.keys(dataset).map(name => ({name, val: dataset[name][filter]}))
                           .sort((a,b) => b.val - a.val);
@@ -422,14 +497,13 @@
     `).join('');
   }
 
-  // Actualización Dinámica del Mapa Vectorial
   function updateMapLayers() {
     if (geojsonLayer) {
       const activeFilter = document.getElementById('metricFilter').value;
       geojsonLayer.eachLayer(layer => {
         geojsonLayer.resetStyle(layer);
         const rawName = layer.feature.properties.name;
-        const normalizedName = normalizeStateName(rawName); // Normalización aplicada
+        const normalizedName = normalizeStateName(rawName);
         const val = dataset[normalizedName] ? dataset[normalizedName][activeFilter] : 0;
         layer.setTooltipContent(`<strong>${normalizedName}</strong>: ${val}${activeFilter === 'itse' ? ' Puntos' : '%'}`);
       });
@@ -437,13 +511,12 @@
     }
   }
 
-  // Carga e interactividad de Leaflet
   if (typeof mexicoGeoJSON !== 'undefined') {
     geojsonLayer = L.geoJSON(mexicoGeoJSON, {
       style: styleFeature,
       onEachFeature: function (feature, layer) {
         const rawName = feature.properties.name;
-        const normalizedName = normalizeStateName(rawName); // Normalización aplicada
+        const normalizedName = normalizeStateName(rawName);
         const activeFilter = document.getElementById('metricFilter').value;
         const val = dataset[normalizedName] ? dataset[normalizedName][activeFilter] : 0;
 
@@ -455,15 +528,12 @@
           click: function () {
             const info = dataset[normalizedName] || { itse: 0, nivel: "N/A", impacto: "N/A", violencia: 0, conflictos: 0, gobernabilidad: 0, exposicion: 0, focos: [], tesis: "" };
             
-            // Inyección del panel analítico contextualizado por entidad
             document.getElementById('selectedStatePanel').innerHTML = `
               <h2 style="font-family:'Syne'; font-size:1.4rem; margin-bottom:0.25rem; text-align:center; color: var(--accent);">${normalizedName}</h2>
               <p style="font-size:0.8rem; text-align:center; color:var(--text2); font-style:italic; margin-bottom:1rem; padding:0 10px;">"${info.tesis}"</p>
               
-              <!-- Medidor Reloj ITSE -->
               ${renderGauge(info.itse, info.nivel)}
 
-              <!-- Focos de Tensión Específicos del Documento -->
               <div class="data-box">
                 <h3>Focos de Tensión (Oficial)</h3>
                 <div class="focus-badge-container">
@@ -471,7 +541,6 @@
                 </div>
               </div>
 
-              <!-- Indicadores y Desglose de los 5 Ejes -->
               <div class="data-box">
                 <h3>Índice General ITSE</h3>
                 <span style="font-weight:bold; color:${getColorByScore(info.itse)}">${info.itse} / 100 (Impacto: ${info.impacto})</span>
@@ -502,12 +571,16 @@
                 <div class="progress-bar"><div class="progress-fill" style="width:${info.exposicion}%; background:${getColorByScore(info.exposicion)}"></div></div>
               </div>
             `;
+            
+            // Comportamiento móvil: Al hacer clic en un estado, desplaza la pantalla automáticamente hacia abajo para ver el diagnóstico sin perder el mapa
+            if(window.innerWidth <= 992) {
+              document.querySelector('.side-panel').scrollIntoView({ behavior: 'smooth' });
+            }
           }
         });
       }
     }).addTo(map);
 
-    // Inicializar cálculos globales y matrices al arranque
     calculateGlobalOutputs();
   }
 </script>
