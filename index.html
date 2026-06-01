@@ -5,19 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tensiones Sociales México 2027 | Dashboard de Inteligencia</title>
   
-  <!-- CSS de Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Syne:wght=600;700;800&family=DM+Sans:wght=400;500;700&display=swap');
-
+    
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+    
     :root {
-      --critica: #C0392B;
-      --alta: #E67E22;
-      --media: #2980B9;
-      --baja: #27AE60;
+      --critica: #d9534f;
+      --alta: #f0ad4e;
+      --media: #4e59f0;
+      --baja: #5cb85c;
       --bg: #0D0D0D;
       --bg2: #141414;
       --bg3: #1C1C1C;
@@ -27,26 +26,27 @@
       --accent: #D4A843;
     }
 
-    body { 
-      margin: 0; 
-      background-color: var(--bg); 
-      color: var(--text); 
-      font-family: 'DM Sans', sans-serif; 
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
       height: 100vh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
-    
-    /* Header */
+
+    /* Encabezado */
     .header {
       background: var(--bg2);
       border-bottom: 1px solid var(--border);
       padding: 1rem 2rem;
+      flex-shrink: 0;
     }
     .header h1 { font-family: 'Syne', sans-serif; font-size: 1.2rem; letter-spacing: -0.02em; }
-
-    /* Barra de Capas / Filtros */
+    
+    /* Barra de Filtros */
     .filter-container {
       background: var(--bg2);
       padding: 0.75rem 2rem;
@@ -54,9 +54,9 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+      flex-shrink: 0;
     }
     .filter-container label { font-size: 0.8rem; text-transform: uppercase; color: var(--text2); font-weight: bold; }
-    
     .filter-select {
       background: var(--bg3);
       color: var(--text);
@@ -65,30 +65,56 @@
       border-radius: 4px;
       font-family: 'DM Sans', sans-serif;
       cursor: pointer;
-      min-width: 350px;
+      min-width: 300px;
+    }
+    
+    /* Layout de Pantalla Dividida (Mapa + Panel) */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 460px; /* El mapa toma todo el espacio restante izquierdo */
+      flex: 1;
+      overflow: hidden;
+      position: relative;
     }
 
-    /* Layout Estructurado Base (Escritorio por defecto) */
-    .layout { 
-      display: grid; 
-      grid-template-columns: 1fr 480px; 
-      flex: 1; 
-      overflow: hidden; 
+    /* Contenedor del Mapa (Obligatorio) */
+    .map-wrapper { 
       position: relative; 
+      height: 100%; 
+      width: 100%; 
     }
-    
-    .map-wrapper { position: relative; height: 100%; width: 100%; }
-    #map { background: #090909; height: 100%; width: 100%; }
-    
-    /* Panel Lateral con Pestañas */
-    .side-panel { 
-      background: var(--bg2); 
-      border-left: 1px solid var(--border); 
+    #map { 
+      background: #090909; 
+      height: 100%; 
+      width: 100%; 
+    }
+
+    /* Resumen Flotante sobre el mapa */
+    .alerts-summary-box {
+      position: absolute;
+      bottom: 25px;
+      left: 25px;
+      z-index: 1000;
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid var(--border);
+      padding: 15px;
+      border-radius: 6px;
+      min-width: 260px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+    }
+    .alerts-summary-box h4 { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: var(--text2); margin-bottom: 10px; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+    .alert-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 6px; gap: 10px; }
+    .alert-count-badge { padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.75rem; color: #000; min-width: 24px; text-align: center; }
+
+    /* Panel Lateral Derecho */
+    .side-panel {
+      background: var(--bg2);
+      border-left: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
-
     .tabs-header {
       display: flex;
       border-bottom: 1px solid var(--border);
@@ -103,87 +129,50 @@
       font-family: 'Syne', sans-serif;
       font-size: 0.85rem;
       cursor: pointer;
-      transition: all 0.2s ease;
       text-align: center;
+      transition: all 0.2s ease;
     }
     .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.02); }
     .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); background: var(--bg2); }
-
+    
     .tabs-content { flex: 1; overflow-y: auto; padding: 1.5rem; }
     .tab-pane { display: none; height: 100%; }
     .tab-pane.active { display: block; }
-
-    /* Medidor de Aguja / Gauge */
-    .gauge-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
+    
+    /* Indicador Gauge / Medidor Semicircular */
+    .gauge-wrapper { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.5rem; position: relative; }
     .gauge-svg { width: 220px; height: 115px; }
     .gauge-bg { fill: none; stroke: var(--bg3); stroke-width: 14; stroke-linecap: round; }
-    .gauge-fill { fill: none; stroke-width: 14; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283; transition: stroke-dashoffset 0.8s ease, stroke 0.5s ease; }
-    .gauge-needle { fill: #FFF; transition: transform 0.8s cubic-bezier(0.1, 0.8, 0.25, 1); transform-origin: 110px 105px; }
+    .gauge-fill { fill: none; stroke-width: 14; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283; transition: stroke-dashoffset 0.8s ease; }
+    .gauge-needle { fill: #FFF; transform-origin: 110px 105px; transition: transform 0.8s ease; }
     .gauge-value { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; margin-top: -15px; }
-    .gauge-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text2); letter-spacing: 0.05em; }
-
-    /* Cajas de Datos */
-    .data-box {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
+    .gauge-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text2); }
+    
+    /* Cajas Informativas */
+    .data-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
     .data-box h3 { font-size: 0.75rem; text-transform: uppercase; color: var(--text2); margin-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; }
     .data-box p { font-size: 0.85rem; line-height: 1.5; color: var(--text); text-align: justify; }
-    
     .bullet-list { margin-left: 1.2rem; margin-top: 0.5rem; font-size: 0.85rem; color: #FFF; }
     .bullet-list li { margin-bottom: 0.4rem; }
-
-    .progress-bar {
-      background: rgba(255,255,255,0.05);
-      height: 6px;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 6px;
-    }
-    .progress-fill { height: 100%; transition: width 0.4s ease, background-color 0.4s ease; }
-
-    /* Bloque temático de focos críticos */
+    
+    .progress-bar { background: rgba(255,255,255,0.05); height: 6px; border-radius: 4px; overflow: hidden; margin-top: 6px; }
+    .progress-fill { height: 100%; transition: width 0.4s ease; }
+    
     .focus-badge-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .focus-badge { background: rgba(212, 168, 67, 0.1); border: 1px solid rgba(212, 168, 67, 0.3); color: var(--accent); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; }
-
-    /* Cuadro Desglose Alertas Flotante */
-    .alerts-summary-box {
-      position: absolute;
-      bottom: 25px;
-      left: 25px;
-      z-index: 1000;
-      background: rgba(20, 20, 20, 0.95);
-      border: 1px solid var(--border);
-      padding: 15px;
-      border-radius: 6px;
-      min-width: 220px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
-    }
-    .alerts-summary-box h4 { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: var(--text2); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
-    .alert-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 6px; }
-    .alert-count-badge { padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.75rem; color: #FFF; }
-
-    /* Estilos de Tablas y Ranks */
+    
+    /* Lista de Ranking e Historial */
     .ranking-list { display: flex; flex-direction: column; gap: 8px; }
     .ranking-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; }
-    
-    .table-container { width: 100%; height: 100%; overflow: auto; }
-    .table-view { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 600px; }
-    .table-view th, .table-view td { padding: 12px 10px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
-    .table-view th { color: var(--text2); text-transform: uppercase; font-size: 0.7 skill; font-family: 'Syne', sans-serif; background: var(--bg); position: sticky; top: 0; z-index: 10; }
-    .table-focos { font-size: 0.75rem; color: var(--text2); line-height: 1.4; max-width: 220px; }
 
-    /* Tooltip de Leaflet */
+    /* Tablas */
+    .table-container { width: 100%; height: 100%; overflow: auto; }
+    .table-view { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 550px; }
+    .table-view th, .table-view td { padding: 12px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+    .table-view th { color: var(--text2); text-transform: uppercase; font-size: 0.75rem; font-family: 'Syne', sans-serif; background: var(--bg); position: sticky; top: 0; z-index: 10; }
+    .table-focos { font-size: 0.75rem; color: var(--text2); max-width: 200px; }
+    
+    /* Tooltip Flotante Leaflet */
     .leaflet-tooltip-custom {
       background: #1C1C1C !important;
       border: 1px solid rgba(255,255,255,0.15) !important;
@@ -193,477 +182,104 @@
       border-radius: 4px !important;
       padding: 6px 10px !important;
     }
-
-    /* Reglas Adaptativas para Celulares */
+    
+    /* Responsividad */
     @media (max-width: 992px) {
       body { overflow-y: auto; height: auto; }
-      .header { padding: 1rem; text-align: center; }
-      .filter-container { flex-direction: column; align-items: stretch; padding: 0.75rem 1rem; gap: 0.5rem; }
-      .filter-select { min-width: 100%; font-size: 0.9rem; }
-      .layout { display: flex; flex-direction: column; height: calc(100vh - 120px); grid-template-columns: none; }
-      .map-wrapper { height: 45vh; min-height: 320px; width: 100%; }
-      
-      .alerts-summary-box {
-        bottom: 10px; left: 10px; right: 10px; min-width: 0;
-        background: rgba(20, 20, 20, 0.9); display: flex; justify-content: space-between; gap: 8px; padding: 8px 12px;
-      }
+      .layout { display: flex; flex-direction: column; height: calc(100vh - 120px); }
+      .map-wrapper { height: 45vh; min-height: 350px; }
+      .side-panel { height: 55vh; min-height: 450px; }
+      .alerts-summary-box { bottom: 10px; left: 10px; right: 10px; min-width: 0; display: flex; justify-content: space-between; padding: 8px; }
       .alerts-summary-box h4 { display: none; }
-      .alert-row { margin-bottom: 0; flex-direction: column; gap: 2px; font-size: 0.7rem; text-align: center; }
-
-      .side-panel { flex: 1; border-left: none; border-top: 1px solid var(--border); height: 55vh; min-height: 400px; }
-      .tabs-header { position: sticky; top: 0; z-index: 100; }
-      .tab-btn { padding: 0.8rem 0.5rem; font-size: 0.75rem; }
-      .tabs-content { padding: 1rem; }
+      .alert-row { flex-direction: column; font-size: 0.7rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>RADAR DE TENSIONES SOCIALES · MÉXICO 2027</h1>
-</div>
-
-<div class="filter-container">
-  <label for="metricFilter">Visualizar Capa Analítica:</label>
-  <select id="metricFilter" class="filter-select" onchange="updateMapLayers()">
-    <option value="itse">Filtro: Índice General ITSE </option>
-  </select>
-</div>
-
-<div class="layout">
-  <div class="map-wrapper">
-    <div id="map"></div>
+  <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>RADAR DE TENSIONES SOCIALES · MÉXICO 2027</h1>
     
-    <div class="alerts-summary-box">
-      <h4>Riesgo por Matriz Oficial</h4>
-      <div class="alert-row">
-        <span>Crítica (&ge;75)</span>
-        <span class="alert-count-badge" style="background: var(--critica);" id="count-critica">0</span>
-      </div>
-      <div class="alert-row">
-        <span>Alta (66-74)</span>
-        <span class="alert-count-badge" style="background: var(--alta);" id="count-alta">0</span>
-      </div>
-      <div class="alert-row">
-        <span>Media (44-65)</span>
-        <span class="alert-count-badge" style="background: var(--media);" id="count-media">0</span>
-      </div>
-      <div class="alert-row">
-        <span>Baja (&lt;44)</span>
-        <span class="alert-count-badge" style="background: var(--baja);" id="count-baja">0</span>
-      </div>
+    <div class="map-controls" style="display: flex; gap: 10px; align-items: center;">
+      <label for="metric-selector" style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text2);">Visualizar por:</label>
+      <select id="metric-selector" class="filter-select" style="min-width: 240px; padding: 6px 12px;">
+        <option value="itse" selected>ITSE (Índice de Tensión Social)</option>
+        <option value="ivs">IVS (Índice de Volatilidad Social)</option>
+      </select>
     </div>
   </div>
-  
-  <div class="side-panel">
-    <div class="tabs-header">
-      <button class="tab-btn active" onclick="switchTab('mapa')">Diagnóstico</button>
-      <button class="tab-btn" onclick="switchTab('tabla')">Matriz General</button>
-      <button class="tab-btn" onclick="switchTab('ranking')">Ranking ITSE</button>
-    </div>
+
+  <div class="layout">
     
-    <div class="tabs-content">
-      <div id="pane-mapa" class="tab-pane active">
-        <div id="selectedStatePanel">
-          <div style="color: var(--text2); text-align: center; margin-top: 2rem;">
-            <p>Selecciona cualquier estado en el mapa para auditar su vector de tensiones del estudio 2027 y activar el medidor analítico.</p>
+    <div class="map-wrapper">
+      <div id="map"></div>
+
+      <!-- Cuadro de alertas dinámico adaptado a las dos escalas (image_d59867.png & image_e00987.png) -->
+      <div class="alerts-summary-box">
+        <h4>Distribución Nacional</h4>
+        <div class="alert-row">
+          <span id="label-critica">Crítica (70 - 100)</span>
+          <span class="alert-count-badge" style="background: var(--critica);" id="count-critica">0</span>
+        </div>
+        <div class="alert-row">
+          <span id="label-alta">Alta (55 - 69)</span>
+          <span class="alert-count-badge" style="background: var(--alta); color: #000;" id="count-alta">0</span>
+        </div>
+        <div class="alert-row">
+          <span id="label-media">Media (35 - 54)</span>
+          <span class="alert-count-badge" style="background: var(--media); color: #000;" id="count-media">0</span>
+        </div>
+        <div class="alert-row">
+          <span id="label-baja">Baja (0 - 34)</span>
+          <span class="alert-count-badge" style="background: var(--baja);" id="count-baja">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-panel">
+      <div class="tabs-header">
+        <button class="tab-btn active" onclick="switchTab('mapa', event)">Diagnóstico</button>
+        <button class="tab-btn" onclick="switchTab('tabla', event)">Matriz General</button>
+        <button class="tab-btn" onclick="switchTab('ranking', event)" id="tab-ranking-label">Ranking ITSE</button>
+      </div>
+
+      <div class="tabs-content">
+        <div id="pane-mapa" class="tab-pane active">
+          <div id="selectedStatePanel">
+            <div style="color: var(--text2); text-align: center; margin-top: 3rem;">
+              <p>Haz clic sobre cualquier estado en el mapa del lado izquierdo para cargar su auditoría analítica y activar los medidores.</p>
+            </div>
           </div>
         </div>
-      </div>
-      
-      <div id="pane-tabla" class="tab-pane">
-        <div class="table-container">
-          <table class="table-view">
-            <thead>
-              <tr>
-                <th>Estado</th>
-                <th>ITSE</th>
-                <th>Nivel</th>
-                <th>Impacto 2027</th>
-                <th>Focos de tensión</th>
-              </tr>
-            </thead>
-            <tbody id="tabla-body"></tbody>
-          </table>
+
+        <div id="pane-tabla" class="tab-pane">
+          <div class="table-container">
+            <table class="table-view">
+              <thead>
+                <tr>
+                  <th>Estado</th>
+                  <th>ITSE (Tensión)</th>
+                  <th>IVS (Volatilidad)</th>
+                  <th>Nivel</th>
+                  <th>Impacto </th>
+                  <th>Focos de Tensión (Detonadores)</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="pane-ranking" class="tab-pane">
+          <div class="ranking-list" id="ranking-container"></div>
         </div>
       </div>
-      
-      <div id="pane-ranking" class="tab-pane">
-        <div class="ranking-list" id="ranking-container"></div>
-      </div>
     </div>
+
   </div>
-</div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="mapa_mexico.js"></script>
-
-<script>
-  const map = L.map('map').setView([23.6345, -102.5528], 5);
-  let geojsonLayer;
-
-  const dataset = {
-    "Sinaloa": { 
-      itse: 90, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Guerra criminal", "miedo social", "economia regional", "campo", "eleccion a gubernatura"],
-      detalles: ["Confrontación entre grupos del crimen organizado", "Deterioro de la percepción de seguridad", "Afectaciones económicas derivadas de la violencia", "Crisis de confianza institucional", "Disputa política por la gubernatura"],
-      tesis: "Sinaloa representa actualmente uno de los mayores focos de tensión social del país. La violencia dejó de percibirse como un fenómeno aislado para convertirse en un factor que condiciona la vida económica y cotidiana. La sensación de vulnerabilidad social erosiona la confianza en las instituciones y aumenta la disposición ciudadana a respaldar alternativas políticas que prometan restablecer el orden. Electoralmente, cualquier fuerza política será evaluada principalmente por su capacidad para ofrecer una ruta creíble de pacificación."
-    },
-    "Guerrero": { 
-      itse: 88, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Crimen", "Acapulco", "normalismo", "magisterio", "turismo", "gobernabilidad erosionada"],
-      detalles: ["Violencia criminal y control territorial", "Reconstrucción incompleta de Acapulco", "Movilización magisterial", "Conflictos normalistas y estudiantiles", "Debilidad institucional municipal"],
-      tesis: "Guerrero concentra múltiples fuentes de tensión que interactúan entre sí. La inseguridad, el deterioro económico y la capacidad de movilización social organizada generan condiciones de conflictividad permanente. Electoralmente, cualquier crisis puede adquirir rápidamente dimensión nacional. Para Morena, el desafío será evitar que la percepción de abandono institucional se convierta en una narrativa dominante."
-    },
-    "Michoacán": { 
-      itse: 87, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Crimen", "campo", "autodefensas", "CNTE", "elección a gubernatura"],
-      detalles: ["Crimen organizado y control territorial", "Extorsión al sector agroexportador", "Movilización magisterial", "Presencia de grupos de autodefensa", "Debilidad institucional municipal"],
-      tesis: "Michoacán representa uno de los casos más complejos de interacción entre violencia, economía y organización social. La extorsión afecta actividades productivas estratégicas mientras que los conflictos magisteriales mantienen capacidad de movilización. Electoralmente, la oposición puede utilizar el estado como evidencia de incapacidad para restablecer el monopolio legítimo de la fuerza."
-    },
-    "Guanajuato": { 
-      itse: 86, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Violencia letal", "extorsión", "corredores industriales", "disputa política"],
-      detalles: ["Violencia asociada al crimen organizado", "Extorsión y cobro de piso", "Inseguridad en corredores industriales", "Desconfianza en las instituciones de seguridad", "Polarización política creciente"],
-      tesis: "La violencia se ha convertido en el principal problema structural del estado. La persistencia de homicidios y delitos de alto impacto erosiona la legitimidad de las autoridades y genera fatiga social. Electoralmente, Guanajuato será uno de los principales escenarios de confrontación nacional. Morena buscará convertir la inseguridad en evidencia del agotamiento del modelo panista, mientras la oposición intentará trasladar la responsabilidad al gobierno federal."
-    },
-    "Colima": { 
-      itse: 84, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Homicidios", "crimen organizado", "puerto de Manzanillo"],
-      detalles: ["Violencia homicida y crimen organizado", "Disputa criminal alrededor del puerto de Manzanillo", "Extorsión y afectaciones al comercio", "Deterioro de la percepción de seguridad"],
-      tesis: "Colima presenta una de las mayores concentraciones de violencia del país. La inseguridad se ha convertido en una experiencia cotidiana y no solamente en una preocupación mediática. Electoralmente, el conflicto tiene alta capacidad de convertirse en voto de castigo. La oposición puede construir una narrativa centrada en la incapacidad gubernamental para recuperar el control territorial, mientras Morena enfrentará el reto de demostrar resultados tangibles en materia de seguridad."
-    },
-    "Zacatecas": { 
-      itse: 83, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Violencia", "carreteras", "minería", "campo", "CNTE"],
-      detalles: ["Violencia y control territorial del crimen organizado", "Inseguridad en carreteras y comunidades rurales", "Crisis del sector minero y productivo", "Conflictividad magisterial", "Competencia política por la gubernatura"],
-      tesis: "Zacatecas concentra una combinación particularmente compleja de inseguridad, deterioro económico y movilización social organizada. La violencia ha afectado la percepción de normalidad en amplias regiones del estado, mientras que los problemas productivos generan incertidumbre económica. La elección de gubernatura elevará la intensidad de la confrontación política. Electoralmente, Zacatecas posee una elevada probabilidad de convertirse en un caso emblemático dentro del debate nacional sobre seguridad y gobernabilidad."
-    },
-    "Chiapas": { 
-      itse: 82, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Crimen organizado", "desplazamientos", "frontera sur", "CNTE"],
-      detalles: ["Expansión territorial del crimen organizado", "Desplazamientos forzados de población", "Conflictividad magisterial (CNTE)", "Presión migratoria en la frontera sur", "Debilidad de la gobernabilidad local"],
-      tesis: "Chiapas concentra simultáneamente conflictos de seguridad, gobernabilidad y movilización social organizada. La presencia del crimen organizado ha alterado dinámicas comunitarias completas, mientras que la CNTE mantiene capacidad de paralizar actividades económicas y administrativas. La coexistencia de estos factores genera una percepción de fragilidad institucional que puede convertirse en uno de los principales argumentos de la oposición durante 2027. El riesgo electoral es alto porque el conflicto ya no es percibido como coyuntural, sino como estructural."
-    },
-    "Oaxaca": { 
-      itse: 80, nivel: "Crítica", impacto: "Alto", 
-      focos: ["CNTE", "bloqueos", "conflictos comunitarios", "infraestructura"],
-      detalles: ["Conflictividad magisterial (CNTE)", "Bloqueos carreteros y protestas sociales", "Conflictos agrarios y comunitarios", "Rezago de infraestructura", "Disputa por la sucesión gubernamental"],
-      tesis: "Oaxaca mantiene una tradición histórica de movilización social organizada. La CNTE conserva capacidad de afectar servicios públicos, economía y gobernabilidad. La elección de gubernatura incrementará la capacidad de politización de cualquier conflicto. Electoralmente, el riesgo radica en que la percepción de falta de control institucional se transforme en demanda de alternancia."
-    },
-    "Sonora": { 
-      itse: 79, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Frontera", "crimen", "minería", "agua", "campo"],
-      detalles: ["Inseguridad en corredores fronterizos", "Crisis hídrica y disponibilidad de agua", "Conflictos asociados a minería y actividades extractivas", "Problemas del sector agropecuario", "Competencia política por la gubernatura"],
-      tesis: "Sonora concentra tensiones derivadas de recursos estratégicos, seguridad fronteriza y crecimiento económico desigual. El agua se ha convertido en un factor estructural de conflicto que afecta simultáneamente a productores, industrias y zonas urbanas. La elección de gubernatura amplificará la capacidad de politización de estos problemas. El riesgo electoral es elevado porque varias tensiones convergen alrededor de la percepción de capacidad gubernamental para administrar recursos críticos."
-    },
-    "Estado de México": { 
-      itse: 78, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Seguridad", "feminicidios", "transporte", "agua", "Zona Oriente"],
-      detalles: ["Inseguridad y violencia urbana", "Feminicidios y violencia contra las mujeres", "Crisis de movilidad y transporte", "Presión sobre servicios públicos y agua"],
-      tesis: "El Estado de México posee el mayor potencial de impacto electoral del país debido a su peso demográfico. Las tensiones sociales afectan directamente la vida cotidiana de millones de personas. La inseguridad, el transporte y la violencia de género tienen capacidad para convertirse en símbolos de evaluación gubernamental. Lo que ocurra en el Edomex influirá significativamente en la narrativa nacional de 2027."
-    },
-    "Tamaulipas": { 
-      itse: 77, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Frontera", "crimen", "migración", "energía"],
-      detalles: ["Violencia asociada al crimen organizado", "Inseguridad en la frontera norte", "Presión migratoria", "Conflictos vinculados a comercio exterior y aduanas", "Competencia política por la gubernatura"],
-      tesis: "Tamaulipas continúa siendo uno de los estados donde la seguridad define gran parte de la percepción ciudadana sobre la eficacia gubernamental. La frontera multiplica la visibilidad de cualquier crisis y conecta problemas locales con debates nacionales sobre migración y crimen organizado. Electoralmente, la gubernatura convertirá cada conflicto relevante en un recurso de disputa política. El potencial de impacto sobre el escenario nacional es alto."
-    },
-    "Baja California": { 
-      itse: 76, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Violencia fronteriza", "migración", "crimen organizado"],
-      detalles: ["Violencia vinculada al crimen organizado", "Presión migratoria en la frontera norte", "Deterioro de la seguridad en Tijuana y Mexicali", "Saturación de servicios urbanos", "Disputa política por la sucesión gubernamental"],
-      tesis: "La combinación de inseguridad, migración y presión sobre los servicios públicos convierte a Baja California en uno de los estados con mayor exposición al conflicto político-electoral. La violencia afecta la percepción de control gubernamental, mientras que la frontera amplifica cualquier crisis local hasta convertirla en tema nacional. La elección de gubernatura en 2027 aumentará la capacidad de la oposición para convertir problemas de seguridad en símbolos de desgaste político. El riesgo electoral es alto para Morena debido a que gobierna el estado y será evaluado principalmente por su capacidad para garantizar orden territorial."
-    },
-    "Veracruz": { 
-      itse: 76, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Seguridad", "desapariciones", "campo", "energía"],
-      detalles: ["Inseguridad y violencia criminal", "Desapariciones de personas", "Crisis del sector agropecuario en diversas regiones", "Problemas de infraestructura y servicios públicos", "Competencia política por la gubernatura"],
-      tesis: "Veracruz es uno de los estados estratégicos más importantes del país tanto por población como por peso electoral. La inseguridad y las desapariciones mantienen una fuerte carga emocional en la opinión pública. La renovación de la gubernatura incrementará la capacidad de transformar conflictos sociales en conflictos electorales. El estado posee potencial para convertirse en uno de los principales campos de disputa política rumbo a 2027."
-    },
-    "Jalisco": { 
-      itse: 75, nivel: "Crítica", impacto: "Alto", 
-      focos: ["Desapariciones", "crimen organizado", "agua", "movilidad"],
-      detalles: ["Desapariciones de personas", "Violencia del crimen organizado", "Crisis hídrica y abastecimiento de agua", "Saturación de movilidad metropolitana", "Disputa por la sucesión gubernamental"],
-      tesis: "Jalisco se perfila como uno de los estados estratégicos rumbo a 2027. Las desapariciones poseen una enorme carga simbólica y emocional, mientras que la inseguridad sigue siendo una preocupación permanente. La renovación de la gubernatura amplificará cualquier conflicto social. Electoralmente, la capacidad de convertir estas tensiones en símbolos de agotamiento político será determinante."
-    },
-    "San Luis Potosí": { 
-      itse: 74, nivel: "Alta", impacto: "Alto", 
-      focos: ["Seguridad", "sucesión política", "carreteras"],
-      detalles: ["Violencia e inseguridad en zonas urbanas y carreteras", "Polarización política por la sucesión gubernamental", "Cuestionamientos a libertades políticas y de expresión", "Conflictos por agua y servicios urbanos", "Desigualdad regional entre zona metropolitana y Altiplano"],
-      tesis: "San Luis Potosí se encuentra entrando anticipadamente en dinámica sucesoria. La competencia política comienza a superponerse con problemas de seguridad y gobernabilidad, elevando la capacidad de convertir conflictos locales en confrontaciones electorales. La tensión principal no proviene únicamente de la violencia, sino de la creciente percepción de disputa permanente entre grupos políticos. Esto incrementa significativamente el potencial de volatilidad electoral hacia 2027."
-    },
-    "Chihuahua": { 
-      itse: 73, nivel: "Alta", impacto: "Alto", 
-      focos: ["Violencia serrana", "migración", "agua", "frontera"],
-      detalles: ["Violencia en la Sierra Tarahumara", "Conflictos por agua y sequía", "Presión migratoria fronteriza", "Inseguridad en corredores carreteros", "Competencia política por la gubernatura"],
-      tesis: "La tensión social en Chihuahua se encuentra distribuida entre problemas de seguridad, recursos naturales y gobernabilidad fronteriza. La disputa por el agua tiene capacidad de movilizar productores agrícolas, mientras que la violencia en regiones serranas mantiene vigente la percepción de inseguridad. La elección de gubernatura incrementará la politización de estos conflictos. Su efecto electoral dependerá de cuál fuerza política logre apropiarse de la narrativa sobre seguridad y defensa de los intereses regionales."
-    },
-    "Morelos": { 
-      itse: 72, nivel: "Alta", impacto: "Alto", 
-      focos: ["Violencia", "feminicidios", "gobernabilidad municipal"],
-      detalles: ["Violencia y homicidios", "Feminicidios y violencia de género", "Crisis de gobernabilidad municipal", "Escasez de agua", "Deterioro del turismo local"],
-      tesis: "La inseguridad constituye el principal eje de malestar social. La cercanía con la Ciudad de México amplifica la visibilidad mediática de los conflictos. Electoralmente, Morelos tiene capacidad para convertirse en símbolo regional de deterioro institucional. El voto de castigo podría crecer si la percepción de inseguridad continúa aumentando."
-    },
-    "Tabasco": { 
-      itse: 71, nivel: "Alta", impacto: "Alto", 
-      focos: ["Violencia emergente", "Pemex", "empleo", "inundaciones"],
-      detalles: ["Incremento de la violencia y delitos de alto impacto", "Dependencia económica del sector petrolero", "Insuficiente generación de empleo", "Inundaciones y vulnerabilidad ambiental", "Desgaste de expectativas asociadas a proyectos federales"],
-      tesis: "Tabasco posee un valor simbólico especial dentro del mapa político nacional. Las expectativas generadas durante los últimos años fueron particularmente elevadas, por lo que cualquier percepción de incumplimiento tiene mayor capacidad de producir frustración. La combinación de inseguridad, empleo e inundaciones puede generar una narrativa de desgaste especialmente sensible para Morena. Electoralmente, el impacto potencial es superior al que tendría un conflicto similar en otros estados."
-    },
-    "Quintana Roo": { 
-      itse: 70, nivel: "Alta", impacto: "Alto", 
-      focos: ["Turismo", "extorsión", "violencia", "vivienda"],
-      detalles: ["Extorsión y presencia del crimen organizado en zonas turísticas", "Crisis de vivienda para población local", "Saturación de servicios públicos por crecimiento demográfico", "Incremento del costo de vida", "Desigualdad entre economía turística y bienestar social"],
-      tesis: "Quintana Roo enfrenta una contradicción creciente entre prosperidad económica y deterioro de las condiciones de vida para amplios sectores de la población. La inseguridad vinculada a actividades turísticas posee alta capacidad de impacto mediático nacional e internacional. Al mismo tiempo, la vivienda y el costo de vida generan malestar entre trabajadores locales. Electoralmente, la oposición puede construir una narrativa de crecimiento económico excluyente. El impacto para 2027 es alto debido a la combinación de inseguridad, desigualdad y exposición mediática."
-    },
-    "Ciudad de México": { 
-      itse: 69, nivel: "Alta", impacto: "Alto", 
-      focos: ["Agua", "vivienda", "seguridad", "movilidad"],
-      detalles: ["Crisis de abastecimiento de agua", "Acceso a vivienda y encarecimiento urbano", "Inseguridad y percepción de riesgo", "Saturación de movilidad y transporte", "Gentrificación y desplazamiento residencial"],
-      tesis: "La Ciudad de México concentra tensiones asociadas a la vida cotidiana de millones de habitantes. A diferencia de otros estados, el conflicto no proviene principalmente de la violencia extrema sino del deterioro gradual de condiciones urbanas fundamentales. Debido a su relevancia mediática y simbólica, cualquier crisis adquiere rápidamente dimensión nacional. Para Morena, el principal riesgo consiste en que problemas de servicios públicos sean interpretados como evidencia de agotamiento administrativo después de varios años de gobierno."
-    },
-    "Puebla": { 
-      itse: 68, nivel: "Alta", impacto: "Alto", 
-      focos: ["Seguridad", "transporte", "agua", "zona metropolitana"],
-      detalles: ["Inseguridad urbana", "Transporte público y movilidad", "Conflictos por agua", "Desigualdad metropolitana", "Competencia por la gubernatura"],
-      tesis: "La tensión poblana se concentra en la zona metropolitana. Los problemas de seguridad y servicios públicos afectan de manera directa la percepción ciudadana sobre la eficacia gubernamental. La renovación de la gubernatura elevará la intensidad de la disputa política. El impacto electoral es alto debido al peso demográfico y estratégico del estado."
-    },
-    "Nuevo León": { 
-      itse: 66, nivel: "Alta", impacto: "Alto", 
-      focos: ["Agua", "movilidad", "contaminación", "seguridad"],
-      detalles: ["Crisis hídrica", "Saturación vial y movilidad", "Contaminación ambiental", "Inseguridad metropolitana", "Polarización política estatal"],
-      tesis: "Nuevo León enfrenta tensiones asociadas al crecimiento económico acelerado. El agua y la movilidad son problemas que afectan transversalmente a distintos sectores sociales. Electoralmente, estos temas poseen alto potencial de movilización porque impactan directamente la calidad de vida. La oposición buscará convertirlos en evidencia de incapacidad administrativa, mientras los gobiernos intentarán presentar soluciones de largo plazo."
-    },
-    "Campeche": { 
-      itse: 61, nivel: "Alta", impacto: "Alto", 
-      focos: ["Conflicto petrolero", "desgaste gubernamental"],
-      detalles: ["Crisis y desaceleración del sector petrolero", "Desgaste político-institucional del gobierno estatal", "Inseguridad emergente en zonas urbanas", "Insatisfacción por expectativas incumplidas de desarrollo"],
-      tesis: "La tensión social en Campeche se encuentra estrechamente ligada a la expectativa económica generada por la actividad petrolera. La percepción de que los beneficios prometidos no se han traducido en mejoras sustanciales para la población alimenta el desgaste institucional. Electoralmente, la oposición puede convertir la narrativa del incumplimiento en un cuestionamiento directo a la eficacia gubernamental. Esto coloca al estado dentro de una zona de riesgo medio-alto para Morena rumbo a 2027."
-    },
-    "Hidalgo": { 
-      itse: 55, nivel: "Media", impacto: "Medio", 
-      focos: ["Huachicol", "agua", "transporte"],
-      detalles: ["Robo de combustible y economías asociadas", "Conflictos por agua", "Saturación urbana en la zona metropolitana", "Transporte y movilidad"],
-      tesis: "Hidalgo enfrenta tensiones derivadas de la transformación metropolitana y de problemas históricos asociados al huachicol. Aunque el conflicto social permanece contenido, existe potencial para que temas de seguridad y servicios públicos adquieran relevancia electoral. El impacto para 2027 dependerá de la capacidad de los actores políticos para conectar problemas locales con narrativas estatales de cambio o continuidad."
-    },
-    "Querétaro": { 
-      itse: 54, nivel: "Media", impacto: "Medio", 
-      focos: ["Crecimiento urbano", "agua", "movilidad"],
-      detalles: ["Crecimiento urbano acelerado", "Disponibilidad de agua", "Movilidad metropolitana", "Incremento del costo de vivienda"],
-      tesis: "Querétaro continúa siendo una entidad relativamente estable, pero enfrenta tensiones asociadas al crecimiento económico y demográfico. El principal riesgo político es que el modelo de desarrollo empiece a ser percibido como excluyente. La disputa electoral girará más alrededor de gestión urbana que de seguridad pública."
-    },
-    "Tlaxcala": { 
-      itse: 52, nivel: "Media", impacto: "Medio", 
-      focos: ["Trata", "transporte", "agua"],
-      detalles: ["Trata de personas y violencia contra mujeres", "Problemas de movilidad y transporte", "Presión sobre servicios públicos", "Limitadas oportunidades económicas para jóvenes"],
-      tesis: "Aunque Tlaxcala posee una escala demográfica menor que otros estados, algunas de sus problemáticas tienen una enorme capacidad simbólica. La trata de personas y la violencia contra mujeres generan una tensión social que trasciende el tamaño territorial de la entidad. Electoralmente, estos temas pueden convertirse en referentes nacionales sobre capacidad institucional para proteger derechos y garantizar seguridad."
-    },
-    "Coahuila": { 
-      itse: 50, nivel: "Media", impacto: "Medio", 
-      focos: ["Presión laboral-industrial", "agua"],
-      detalles: ["Presión laboral e industrial derivada del nearshoring", "Crecimiento desigual entre regiones del estado", "Seguridad fronteriza y crimen focalizado", "Escasez de agua en zonas urbanas e industriales"],
-      tesis: "Coahuila mantiene niveles de estabilidad superiores al promedio nacional, pero enfrenta tensiones asociadas al crecimiento económico acelerado. La presión sobre infraestructura, vivienda y agua comienza a generar malestar en sectores urbanos. Electoralmente, la disputa no se concentrará en seguridad, sino en quién puede administrar mejor el crecimiento. La oposición buscará presentar al gobierno como parte de una estructura política agotada, mientras Morena intentará capitalizar las expectativas de transformación económica."
-    },
-    "Aguascalientes": { 
-      itse: 48, nivel: "Media", impacto: "Medio", 
-      focos: ["Seguridad urbana", "presión hídrica"],
-      detalles: ["Estrés hídrico y disponibilidad de agua", "Incremento de percepción de inseguridad urbana", "Saturación de infraestructura derivada del crecimiento industrial", "Incremento del costo de vivienda y servicios"],
-      tesis: "La tensión social en Aguascalientes no proviene de conflictos explosivos, sino de una acumulación gradual de problemas asociados al crecimiento urbano. El agua concentra la principal vulnerabilidad estructural, mientras que la percepción de inseguridad amenaza uno de los principales activos simbólicos de la entidad: la estabilidad. Electoralmente, estos factores pueden favorecer discursos de cambio administrativo más que narrativas antisistema. El impacto potencial para 2027 es moderado, pero suficiente para erosionar la legitimidad de los grupos gobernantes si las problemáticas cotidianas continúan deteriorándose."
-    },
-    "Durango": { 
-      itse: 47, nivel: "Media", impacto: "Medio", 
-      focos: ["Campo", "sequía", "rezago regional"],
-      detalles: ["Sequía y crisis hídrica rural", "Deterioro de actividades agropecuarias", "Rezago de infraestructura regional", "Migración económica"],
-      tesis: "La tensión principal en Durango se concentra en el ámbito rural. La sequía afecta producción, ingresos y expectativas de permanencia en las comunidades. Aunque el estado no presenta niveles extremos de conflictividad, el deterioro sostenido del campo puede convertirse en una plataforma de movilización electoral. Su impacto será moderado, pero con potencial de crecimiento si coinciden factores climáticos adversos y conflictos productivos."
-    },
-    "Baja California Sur": { 
-      itse: 45, nivel: "Media", impacto: "Medio", 
-      focos: ["Turismo", "agua", "vivienda"],
-      detalles: ["Escasez de agua", "Incremento del costo de vivienda", "Desigualdad asociada al crecimiento turístico", "Deficiencias en servicios públicos urbanos"],
-      tesis: "La principal tensión surge de la creciente distancia entre el dinamismo económico del sector turístico y las condiciones de vida de amplios sectores de la población local. El acceso a vivienda y agua se ha convertido en un factor de malestar persistente. Aunque la conflictividad organizada sigue siendo limitada, la oposición puede capitalizar la percepción de que el crecimiento beneficia a inversionistas y visitantes más que a residentes. Su impacto electoral es medio, pero con potencial de crecimiento conforme avance la sucesión gubernamental."
-    },
-    "Nayarit": { 
-      itse: 44, nivel: "Media", impacto: "Bajo-Medio", 
-      focos: ["Servicios", "turismo", "seguridad focalizada"],
-      detalles: ["Presión sobre servicios urbanos", "Incremento del costo de vivienda", "Seguridad focalizada en zonas turísticas", "Desigualdad territorial"],
-      tesis: "La conflictividad permanece relativamente contenida, pero el crecimiento turístico ha comenzado a generar tensiones distributivas. El principal riesgo electoral radica en la percepción de que los beneficios económicos no se distribuyen de manera equilibrada. Su capacidad de alterar el escenario nacional sigue siendo limitada."
-    },
-    "Yucatán": { 
-      itse: 39, nivel: "Baja", impacto: "Bajo-Medio", 
-      focos: ["Seguridad estable", "presión inmobiliaria", "agua"],
-      detalles: ["Incremento del costo de vivienda", "Presión inmobiliaria derivada del crecimiento urbano", "Disponibilidad futura de agua", "Desigualdad territorial entre Mérida y el interior del estado"],
-      tesis: "Yucatán continúa siendo una de las entidades con menor conflictividad social del país. Sin embargo, el crecimiento acelerado de Mérida comienza a generar tensiones relacionadas con vivienda, servicios y acceso a recursos. La seguridad sigue funcionando como un activo político central, por lo que el debate electoral probablemente girará más alrededor de administración del crecimiento que de crisis de gobernabilidad. El impacto electoral esperado es bajo en comparación con otras entidades."
-    }
-  };
-
-  function normalizeStateName(name) {
-    if (name === "México") return "Estado de México";
-    return name;
-  }
-
-  function getColorByScore(val) {
-    return val >= 75 ? 'var(--critica)' : 
-           val >= 66 ? 'var(--alta)' : 
-           val >= 44 ? 'var(--media)' : 
-                       'var(--baja)';  
-  }
-
-  function styleFeature(feature) {
-    const rawName = feature.properties.name; 
-    const normalizedName = normalizeStateName(rawName);
-    const info = dataset[normalizedName] || { itse: 0 };
-    const score = info.itse || 0;
-
-    return {
-      fillColor: getColorByScore(score),
-      weight: 1.2, opacity: 1, color: '#0D0D0D', fillOpacity: 0.8
-    };
-  }
-
-  function switchTab(tabId) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
-    
-    if(event) {
-      event.currentTarget.classList.add('active');
-    }
-    document.getElementById('pane-' + tabId).classList.add('active');
-  }
-
-  function renderGauge(score, nivel) {
-    const color = getColorByScore(score);
-    const angle = (score / 100) * 180 - 90;
-    const dashOffset = 283 - ((score / 100) * 283);
-
-    return `
-      <div class="gauge-wrapper">
-        <svg class="gauge-svg">
-          <path class="gauge-bg" d="M 20 105 A 90 90 0 0 1 200 105" />
-          <path class="gauge-fill" style="stroke: ${color}; stroke-dashoffset: ${dashOffset};" d="M 20 105 A 90 90 0 0 1 200 105" />
-          <polygon class="gauge-needle" style="transform: rotate(${angle}deg);" points="107,105 113,105 110,15" />
-          <circle cx="110" cy="105" r="6" fill="#FFF" />
-        </svg>
-        <div class="gauge-value" style="color: ${color};">${score}</div>
-        <div class="gauge-label">Nivel de Tensión: ${nivel}</div>
-      </div>
-    `;
-  }
-
-  function calculateGlobalOutputs() {
-    let criticos = 0, altos = 0, medios = 0, bajos = 0;
-
-    Object.keys(dataset).forEach(key => {
-      const val = dataset[key].itse;
-      if (val >= 75) criticos++;
-      else if (val >= 66) altos++;
-      else if (val >= 44) medios++;
-      else bajos++;
-    });
-
-    document.getElementById('count-critica').innerText = criticos;
-    document.getElementById('count-alta').innerText = altos;
-    document.getElementById('count-media').innerText = medios;
-    document.getElementById('count-baja').innerText = bajos;
-
-    const sortedMatriz = Object.keys(dataset).map(name => ({name, ...dataset[name]}))
-                            .sort((a,b) => b.itse - a.itse);
-
-    const tbody = document.getElementById('tabla-body');
-    tbody.innerHTML = sortedMatriz.map(item => `
-      <tr>
-        <td><strong>${item.name}</strong></td>
-        <td style="font-weight:bold; color:${getColorByScore(item.itse)}">${item.itse}</td>
-        <td style="color:${getColorByScore(item.itse)}">${item.nivel}</td>
-        <td><span style="font-weight:500;">${item.impacto}</span></td>
-        <td class="table-focos">${item.focos.join(', ')}</td>
-      </tr>
-    `).join('');
-
-    const rankContainer = document.getElementById('ranking-container');
-    rankContainer.innerHTML = sortedMatriz.map((item, idx) => `
-      <div class="ranking-item">
-        <span>${idx + 1}. <strong>${item.name}</strong></span>
-        <span style="font-weight:bold; color:${getColorByScore(item.itse)}">${item.itse} pts</span>
-      </div>
-    `).join('');
-  }
-
-  function updateMapLayers() {
-    if (geojsonLayer) {
-      geojsonLayer.eachLayer(layer => {
-        geojsonLayer.resetStyle(layer);
-        const rawName = layer.feature.properties.name;
-        const normalizedName = normalizeStateName(rawName);
-        const val = dataset[normalizedName] ? dataset[normalizedName].itse : 0;
-        layer.setTooltipContent(`<strong>${normalizedName}</strong>: ${val} Puntos`);
-      });
-      calculateGlobalOutputs();
-    }
-  }
-
-  if (typeof mexicoGeoJSON !== 'undefined') {
-    geojsonLayer = L.geoJSON(mexicoGeoJSON, {
-      style: styleFeature,
-      onEachFeature: function (feature, layer) {
-        const rawName = feature.properties.name;
-        const normalizedName = normalizeStateName(rawName);
-        const val = dataset[normalizedName] ? dataset[normalizedName].itse : 0;
-
-        layer.bindTooltip(`<strong>${normalizedName}</strong>: ${val} Puntos`, { sticky: true, className: 'leaflet-tooltip-custom' });
-
-        layer.on({
-          mouseover: e => e.target.setStyle({ weight: 2.5, color: '#FFF', fillOpacity: 0.95 }),
-          mouseout: e => geojsonLayer.resetStyle(e.target),
-          click: function () {
-            const info = dataset[normalizedName] || { itse: 0, nivel: "N/A", impacto: "N/A", focos: [], detalles: [], tesis: "Sin datos registrados." };
-            
-            // Inyectar con absoluta precisión la información del documento en Diagnóstico
-            document.getElementById('selectedStatePanel').innerHTML = `
-              <h2 style="font-family:'Syne'; font-size:1.4rem; margin-bottom:0.25rem; text-align:center; color: var(--accent); text-transform: uppercase;">${normalizedName}</h2>
-              
-              ${renderGauge(info.itse, info.nivel)}
-
-              <div class="data-box">
-                <h3>Matriz General de Riesgo</h3>
-                <div style="font-size: 0.85rem; margin-bottom: 5px;"><strong>Índice General ITSE:</strong> <span style="font-weight:bold; color:${getColorByScore(info.itse)}">${info.itse} / 100</span></div>
-                <div style="font-size: 0.85rem; margin-bottom: 5px;"><strong>Nivel de Tensión:</strong> <span style="font-weight:bold; color:${getColorByScore(info.itse)}">${info.nivel}</span></div>
-                <div style="font-size: 0.85rem; margin-bottom: 8px;"><strong>Impacto Potencial 2027:</strong> <span style="font-weight:bold;">${info.impacto}</span></div>
-                <div class="progress-bar"><div class="progress-fill" style="width:${info.itse}%; background:${getColorByScore(info.itse)}"></div></div>
-              </div>
-
-              <div class="data-box">
-                <h3>Vectores de Conflicto Coincidentes</h3>
-                <ul class="bullet-list">
-                  ${info.detalles.map(detail => `<li>${detail}</li>`).join('')}
-                </ul>
-              </div>
-
-              <div class="data-box">
-                <h3>Tesis Político-Electoral Oficial</h3>
-                <p>${info.tesis}</p>
-              </div>
-
-              <div class="data-box">
-                <h3>Focos de Tensión (Palabras Clave)</h3>
-                <div class="focus-badge-container">
-                  ${info.focos.map(f => `<span class="focus-badge">${f}</span>`).join('')}
-                </div>
-              </div>
-            `;
-            
-            switchTab('mapa'); // Asegurar visualización de la pestaña de Diagnóstico
-            
-            if(window.innerWidth <= 992) {
-              document.querySelector('.side-panel').scrollIntoView({ behavior: 'smooth' });
-            }
-          }
-        });
-      }
-    }).addTo(map);
-
-    calculateGlobalOutputs();
-  }
-</script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="mexicoGeoJSON.js"></script> 
+  <script src="mapa_mexico.js"></script>
 </body>
 </html>
