@@ -122,12 +122,12 @@
     }
     .tab-btn {
       flex: 1;
-      padding: 1rem;
+      padding: 1rem 0.5rem;
       background: transparent;
       border: none;
       color: var(--text2);
       font-family: 'Syne', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       cursor: pointer;
       text-align: center;
       transition: all 0.2s ease;
@@ -172,6 +172,19 @@
     .table-view th { color: var(--text2); text-transform: uppercase; font-size: 0.75rem; font-family: 'Syne', sans-serif; background: var(--bg); position: sticky; top: 0; z-index: 10; }
     .table-focos { font-size: 0.75rem; color: var(--text2); max-width: 200px; }
     
+    /* Estilos del Semáforo Prospectivo */
+    .semaforo-container { display: flex; flex-direction: column; gap: 12px; margin-top: 5px; }
+    .semaforo-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; border-left: 4px solid #ccc; }
+    .semaforo-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .semaforo-header h4 { margin: 0; font-size: 0.85rem; font-family: 'Syne', sans-serif; letter-spacing: 0.02em; }
+    .indicador-luz { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .estados-lista { font-size: 0.85rem; color: var(--text); line-height: 1.5; text-align: justify; }
+    
+    .semaforo-card.critico { border-left-color: var(--critica); }
+    .semaforo-card.alto { border-left-color: var(--alta); }
+    .semaforo-card.acumulativo { border-left-color: var(--media); }
+    .semaforo-card.estabilidad { border-left-color: var(--baja); }
+
     /* Tooltip Flotante Leaflet */
     .leaflet-tooltip-custom {
       background: #1C1C1C !important;
@@ -214,7 +227,7 @@
     <div class="map-wrapper">
       <div id="map"></div>
 
-      <!-- Cuadro de alertas dinámico adaptado a las dos escalas (image_d59867.png & image_e00987.png) -->
+      <!-- Cuadro de alertas dinámico adaptado a las dos escalas  -->
       <div class="alerts-summary-box">
         <h4>Distribución Nacional</h4>
         <div class="alert-row">
@@ -241,6 +254,7 @@
         <button class="tab-btn active" onclick="switchTab('mapa', event)">Diagnóstico</button>
         <button class="tab-btn" onclick="switchTab('tabla', event)">Matriz General</button>
         <button class="tab-btn" onclick="switchTab('ranking', event)" id="tab-ranking-label">Ranking ITSE</button>
+        <button class="tab-btn" onclick="switchTab('semaforo', event)">Semáforo</button>
       </div>
 
       <div class="tabs-content">
@@ -272,6 +286,43 @@
 
         <div id="pane-ranking" class="tab-pane">
           <div class="ranking-list" id="ranking-container"></div>
+        </div>
+
+        <!-- Nueva pestaña: Semáforo Prospectivo Nacional Automatizado -->
+        <div id="pane-semaforo" class="tab-pane">
+          <div class="semaforo-container">
+            <div class="semaforo-card critico">
+              <div class="semaforo-header">
+                <span class="indicador-luz" style="background: var(--critica);"></span>
+                <h4 style="color: var(--critica)">🔴 Riesgo crítico de crisis social</h4>
+              </div>
+              <p id="lista-critico" class="estados-lista">Calculando algoritmos...</p>
+            </div>
+
+            <div class="semaforo-card alto">
+              <div class="semaforo-header">
+                <span class="indicador-luz" style="background: var(--alta);"></span>
+                <h4 style="color: var(--alta)">🟠 Riesgo alto de estallido sectorial</h4>
+              </div>
+              <p id="lista-alto" class="estados-lista">Calculando algoritmos...</p>
+            </div>
+
+            <div class="semaforo-card acumulativo">
+              <div class="semaforo-header">
+                <span class="indicador-luz" style="background: var(--media);"></span>
+                <h4 style="color: var(--media)">🟡 Conflicto controlado acumulativo</h4>
+              </div>
+              <p id="lista-acumulativo" class="estados-lista">Calculando algoritmos...</p>
+            </div>
+
+            <div class="semaforo-card estabilidad">
+              <div class="semaforo-header">
+                <span class="indicador-luz" style="background: var(--baja);"></span>
+                <h4 style="color: var(--baja)">🟢 Estabilidad relativa</h4>
+              </div>
+              <p id="lista-estabilidad" class="estados-lista">Calculando algoritmos...</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
