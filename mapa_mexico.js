@@ -24,224 +24,288 @@ const dataset = {
     focos: ["Violencia criminal", "Desplazamiento forzado", "Desapariciones", "Tensión institucional"], 
     detalles: ["Violencia/Miedo: 92/100", "Conflictos sectoriales: 70/100", "Gobernabilidad: 82/100"], 
     tesis: "Híbrido de conflictividad múltiple con severo impacto por fragmentación criminal.",
-    ivs_protestas: 86, ivs_organizacion: 88, ivs_irritacion: 86, ivs_criminal: 98, ivs_institucional: 95, ivs_detonantes: 95
+    ivs_protestas: 86, ivs_organizacion: 88, ivs_irritacion: 86, ivs_criminal: 98, ivs_institucional: 95, ivs_detonantes: 95,
+    evidencia_principal: "IPM 2026 reporta deterioros por fragmentación criminal; monitoreo de desplazamiento 2025 ubica a Sinaloa como entidad con mayor proporción de incidentes; cobertura nacional documenta persistencia de violencia tras fracturas del Cártel de Sinaloa.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Chiapas": { 
     itse: 82, ivs: 89, nivel: "Crítica", impacto: "Crítico", 
     focos: ["Crimen fronterizo", "Tráfico/Migración masiva", "Desplazamiento", "Conflictos comunitarios"], 
     detalles: ["Violencia/Miedo: 84/100", "Conflictos sectoriales: 82/100", "Gobernabilidad: 78/100"], 
     tesis: "Convergencia crítica de vulnerabilidad fronteriza internacional y choques agrarios.",
-    ivs_protestas: 95, ivs_organizacion: 86, ivs_irritacion: 84, ivs_criminal: 98, ivs_institucional: 95, ivs_detonantes: 94
+    ivs_protestas: 95, ivs_organizacion: 86, ivs_irritacion: 84, ivs_criminal: 98, ivs_institucional: 95, ivs_detonantes: 94,
+    evidencia_principal: "Evidencia pública reciente documenta crimen y tráfico en la frontera sur; la entidad combina migración, disputa territorial, conflictividad comunitaria y movilización magisterial histórica.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Guerrero": { 
     itse: 82, ivs: 88, nivel: "Crítica", impacto: "Crítico", 
     focos: ["Violencia criminal", "Ataques al transporte", "Crisis turística", "Debilidad municipal"], 
     detalles: ["Violencia/Miedo: 88/100", "Conflictos sectoriales: 80/100", "Gobernabilidad: 76/100"], 
     tesis: "Combinación de alta criminalidad sectorial con parálisis político-administrativa.",
-    ivs_protestas: 95, ivs_organizacion: 95, ivs_irritacion: 83, ivs_criminal: 98, ivs_institucional: 95, ivs_detonantes: 93
+    ivs_protestas: 95, ivs_organizacion: 95, ivs_irritacion: 83, ivs_criminal: 98, ivs_institucional: 95, ivs_detonantes: 93,
+    evidencia_principal: "Estado con alta exposición a violencia criminal y conflictos municipales; los reportes de desplazamiento y violencia territorial lo ubican como foco estructural de crisis social.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Michoacán": { 
     itse: 80, ivs: 85, nivel: "Crítica", impacto: "Crítico", 
     focos: ["Extorsión agrícola", "Aguacate y limón", "Movilización CNTE", "Bloqueos viales"], 
     detalles: ["Violencia/Miedo: 84/100", "Conflictos sectoriales: 82/100", "Gobernabilidad: 72/100"], 
     tesis: "Presión constante sobre cadenas agroexportadoras estratégicas y activismo gremial.",
-    ivs_protestas: 93, ivs_organizacion: 95, ivs_irritacion: 93, ivs_criminal: 95, ivs_institucional: 92, ivs_detonantes: 90
+    ivs_protestas: 93, ivs_organizacion: 95, ivs_irritacion: 93, ivs_criminal: 95, ivs_institucional: 92, ivs_detonantes: 90,
+    evidencia_principal: "Combina violencia rural, presión sobre economías agroexportadoras, movilización magisterial y eventos de desplazamiento documentados en monitoreos nacionales.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Guanajuato": { 
     itse: 75, ivs: 84, nivel: "Crítica", impacto: "Crítico", 
     focos: ["Homicidio doloso", "Extorsión comercial", "Corredores industriales", "Disputa delictiva"], 
     detalles: ["Violencia/Miedo: 90/100", "Conflictos sectoriales: 60/100", "Gobernabilidad: 70/100"], 
     tesis: "Persistente conflicto letal que afecta de manera colateral perímetros industriales.",
-    ivs_protestas: 79, ivs_organizacion: 81, ivs_irritacion: 79, ivs_criminal: 94, ivs_institucional: 91, ivs_detonantes: 82
+    ivs_protestas: 79, ivs_organizacion: 81, ivs_irritacion: 79, ivs_criminal: 94, ivs_institucional: 91, ivs_detonantes: 82,
+    evidencia_principal: "IPM 2026 e indicadores de incidencia delictiva mantienen a Guanajuato entre entidades de alta violencia letal y disputa criminal.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Estado de México": { 
     itse: 75, ivs: 77, nivel: "Crítica", impacto: "Alto", 
     focos: ["Robo al transporte", "Estrés hídrico", "Feminicidios", "Extorsión urbana"], 
     detalles: ["Violencia/Miedo: 76/100", "Conflictos sectoriales: 78/100", "Gobernabilidad: 70/100"], 
     tesis: "Irritación social acumulada por deficiencias crónicas en servicios y alta victimización.",
-    ivs_protestas: 85, ivs_organizacion: 87, ivs_irritacion: 85, ivs_criminal: 87, ivs_institucional: 84, ivs_detonantes: 82
+    ivs_protestas: 85, ivs_organizacion: 87, ivs_irritacion: 85, ivs_criminal: 87, ivs_institucional: 84, ivs_detonantes: 82,
+    evidencia_principal: "ENVIPE y SESNSP señalan alta exposición a victimización/percepción; el conflicto por agua y transporte en la zona metropolitana eleva la tensión social.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Morelos": { 
     itse: 74, ivs: 81, nivel: "Crítica", impacto: "Crítico", 
     focos: ["Violencia letal", "Feminicidios", "Desconfianza institucional", "Crisis de seguridad"], 
     detalles: ["Violencia/Miedo: 82/100", "Conflictos sectoriales: 62/100", "Gobernabilidad: 78/100"], 
     tesis: "Agotamiento institutional agudo combinado con impunidad penal percibida.",
-    ivs_protestas: 76, ivs_organizacion: 78, ivs_irritacion: 76, ivs_criminal: 91, ivs_institucional: 88, ivs_detonantes: 79
+    ivs_protestas: 76, ivs_organizacion: 78, ivs_irritacion: 76, ivs_criminal: 91, ivs_institucional: 88, ivs_detonantes: 79,
+    evidencia_principal: "IPM 2026 y ENVIPE 2025 muestran presión de violencia/percepción; se suma fragilidad institucional y desconfianza local.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Zacatecas": { 
     itse: 73, ivs: 77, nivel: "Crítica", impacto: "Alto", 
     focos: ["Inseguridad carretera", "Parálisis minera", "Crisis del campo", "Desplazamiento rural"], 
     detalles: ["Violencia/Miedo: 80/100", "Conflictos sectoriales: 68/100", "Gobernabilidad: 68/100"], 
     tesis: "Vulnerabilidad en ejes logísticos de carga y estancamiento productivo regional.",
-    ivs_protestas: 72, ivs_organizacion: 74, ivs_irritacion: 72, ivs_criminal: 87, ivs_institucional: 73, ivs_detonantes: 82
+    ivs_protestas: 72, ivs_organizacion: 74, ivs_irritacion: 72, ivs_criminal: 87, ivs_institucional: 73, ivs_detonantes: 82,
+    evidencia_principal: "Mantiene indicadores de violencia de alto impacto y corredores carreteros vulnerables; participa en movilizaciones sectoriales nacionales.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Veracruz": { 
     itse: 72, ivs: 76, nivel: "Crítica", impacto: "Alto", 
     focos: ["Incidentes energéticos", "Demandas de agua", "Disputas municipales", "Movilizaciones"], 
     detalles: ["Violencia/Miedo: 74/100", "Conflictos sectoriales: 72/100", "Gobernabilidad: 70/100"], 
     tesis: "Fricciones recurrentes en zonas de extracción de hidrocarburos y sindicatos locales.",
-    ivs_protestas: 71, ivs_organizacion: 86, ivs_irritacion: 84, ivs_criminal: 66, ivs_institucional: 83, ivs_detonantes: 81
+    ivs_protestas: 71, ivs_organizacion: 86, ivs_irritacion: 84, ivs_criminal: 66, ivs_institucional: 83, ivs_detonantes: 81,
+    evidencia_principal: "Reportes recientes sobre incidentes de Pemex concentran afectación en Veracruz, Tabasco y Tamaulipas; se suma violencia regional y conflictos municipales.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Tabasco": { 
     itse: 72, ivs: 75, nivel: "Crítica", impacto: "Alto", 
     focos: ["Riesgos climatológicos", "Inundaciones", "Conflictos petroleros", "Delincuencia urbana"], 
     detalles: ["Violencia/Miedo: 72/100", "Conflictos sectoriales: 76/100", "Gobernabilidad: 68/100"], 
     tesis: "Vulnerabilidad ambiental combinada con reajustes contractuales del sector energético.",
-    ivs_protestas: 83, ivs_organizacion: 72, ivs_irritacion: 83, ivs_criminal: 65, ivs_institucional: 71, ivs_detonantes: 80
+    ivs_protestas: 83, ivs_organizacion: 72, ivs_irritacion: 83, ivs_criminal: 65, ivs_institucional: 71, ivs_detonantes: 80,
+    evidencia_principal: "Reportes sobre derrames/fugas de Pemex colocan a Tabasco dentro del corredor energético con mayor exposición ambiental; además hay vulnerabilidad hídrica e institucional.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Oaxaca": { 
     itse: 72, ivs: 82, nivel: "Crítica", impacto: "Alto", 
     focos: ["Paros magisteriales", "Conflictos agrarios", "Megaproyectos", "Tenencia de tierra"], 
     detalles: ["Violencia/Miedo: 62/100", "Conflictos sectoriales: 86/100", "Gobernabilidad: 66/100"], 
     tesis: "Histórica organización sectorial en fricción con obras federales de infraestructura.",
-    ivs_protestas: 90, ivs_organizacion: 92, ivs_irritacion: 77, ivs_criminal: 72, ivs_institucional: 78, ivs_detonantes: 87
+    ivs_protestas: 90, ivs_organizacion: 92, ivs_irritacion: 77, ivs_criminal: 72, ivs_institucional: 78, ivs_detonantes: 87,
+    evidencia_principal: "Alta capacidad organizativa magisterial y comunitaria; reportes de CNTE 2026 ubican a Oaxaca como actor central en bloqueos y paros.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Baja California": { 
     itse: 71, ivs: 79, nivel: "Crítica", impacto: "Alto", 
     focos: ["Contención migratoria", "Aduanas saturadas", "Violencia metropolitana"], 
     detalles: ["Violencia/Miedo: 78/100", "Conflictos sectoriales: 65/100", "Gobernabilidad: 68/100"], 
     tesis: "Estrés de servicios urbanos e infraestructura derivado de flujos internacionales masivos.",
-    ivs_protestas: 74, ivs_organizacion: 76, ivs_irritacion: 87, ivs_criminal: 89, ivs_institucional: 75, ivs_detonantes: 84
+    ivs_protestas: 74, ivs_organizacion: 76, ivs_irritacion: 87, ivs_criminal: 89, ivs_institucional: 75, ivs_detonantes: 84,
+    evidencia_principal: "Entidad fronteriza con delitos de alto impacto, presión migratoria y tensiones urbanas; mantiene alto riesgo de escalamiento por frontera y crimen.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Tamaulipas": { 
     itse: 71, ivs: 76, nivel: "Crítica", impacto: "Alto", 
     focos: ["Cruces fronterizos", "Ejes carreteros", "Instalaciones de Pemex", "Flujo migratorio"], 
     detalles: ["Violencia/Miedo: 78/100", "Conflictos sectoriales: 65/100", "Gobernabilidad: 68/100"], 
     tesis: "Disputas delictivas por aduanas y presión humanitaria persistente en municipios del norte.",
-    ivs_protestas: 71, ivs_organizacion: 73, ivs_irritacion: 71, ivs_criminal: 86, ivs_institucional: 72, ivs_detonantes: 81
+    ivs_protestas: 71, ivs_organizacion: 73, ivs_irritacion: 71, ivs_criminal: 86, ivs_institucional: 72, ivs_detonantes: 81,
+    evidencia_principal: "Entidad fronteriza con presión criminal, energética y migratoria; la evidencia sobre incidentes Pemex incluye a Tamaulipas entre entidades más expuestas.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Colima": { 
     itse: 70, ivs: 78, nivel: "Crítica", impacto: "Crítico", 
     focos: ["Homicidios", "Puerto de Manzanillo", "Rutas marítimas", "Inseguridad pública"], 
     detalles: ["Violencia/Miedo: 90/100", "Conflictos sectoriales: 50/100", "Gobernabilidad: 66/100"], 
     tesis: "Fuerte disputa territorial focalizada en accesos logísticos de comercio exterior.",
-    ivs_protestas: 73, ivs_organizacion: 75, ivs_irritacion: 73, ivs_criminal: 88, ivs_institucional: 74, ivs_detonantes: 76
+    ivs_protestas: 73, ivs_organizacion: 75, ivs_irritacion: 73, ivs_criminal: 88, ivs_institucional: 74, ivs_detonantes: 76,
+    evidencia_principal: "IPM 2026 ubica a Colima como entidad de muy alta violencia, con presión territorial asociada a rutas logísticas.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Ciudad de México": { 
     itse: 68, ivs: 77, nivel: "Alta", impacto: "Alto", 
     focos: ["Protestas nacionales", "Escasez hídrica", "Saturación transporte", "Gentrificación"], 
     detalles: ["Violencia/Miedo: 58/100", "Conflictos sectoriales: 82/100", "Gobernabilidad: 64/100"], 
     tesis: "Epicentro de movilización que resiente presiones de costo de vida y servicios básicos.",
-    ivs_protestas: 85, ivs_organizacion: 87, ivs_irritacion: 85, ivs_criminal: 67, ivs_institucional: 73, ivs_detonantes: 82
+    ivs_protestas: 85, ivs_organizacion: 87, ivs_irritacion: 85, ivs_criminal: 67, ivs_institucional: 73, ivs_detonantes: 82,
+    evidencia_principal: "La capital concentra movilizaciones nacionales, plantones y crisis hídrica desigual documentada por UNAM; su IVS es alto por efecto de concentración política.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Sonora": { 
     itse: 67, ivs: 72, nivel: "Alta", impacto: "Alto", 
     focos: ["Sequía severa", "Demandas étnicas", "Yaquis", "Actividad transfronteriza"], 
     detalles: ["Violencia/Miedo: 70/100", "Conflictos sectoriales: 66/100", "Gobernabilidad: 62/100"], 
     tesis: "Fricciones por derechos de agua en el campo que intersectan con problemáticas agrarias.",
-    ivs_protestas: 67, ivs_organizacion: 69, ivs_irritacion: 67, ivs_criminal: 62, ivs_institucional: 68, ivs_detonantes: 77
+    ivs_protestas: 67, ivs_organizacion: 69, ivs_irritacion: 67, ivs_criminal: 62, ivs_institucional: 68, ivs_detonantes: 77,
+    evidencia_principal: "CONAGUA reportó incremento de sequía en el noroeste; la frontera y economías extractivas agregan volatilidad.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Nuevo León": { 
     itse: 66, ivs: 73, nivel: "Alta", impacto: "Alto", 
     focos: ["Disponibilidad hídrica", "Movilidad urbana", "Calidad del aire", "Nearshoring"], 
     detalles: ["Violencia/Miedo: 62/100", "Conflictos sectoriales: 72/100", "Gobernabilidad: 64/100"], 
     tesis: "Desafíos estructurales derivados de una expansión industrial superior a los servicios.",
-    ivs_protestas: 68, ivs_organizacion: 83, ivs_irritacion: 81, ivs_criminal: 63, ivs_institucional: 69, ivs_detonantes: 78
+    ivs_protestas: 68, ivs_organizacion: 83, ivs_irritacion: 81, ivs_criminal: 63, ivs_institucional: 69, ivs_detonantes: 78,
+    evidencia_principal: "Tensión asociada a estrés hídrico, movilidad metropolitana e industrialización; Monitor de Sequía y debate público sobre agua sostienen el riesgo.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Chihuahua": { 
     itse: 66, ivs: 72, nivel: "Alta", impacto: "Alto", 
     focos: ["Sequía agrícola", "Albergues migrantes", "Inseguridad serrana"], 
     detalles: ["Violencia/Miedo: 72/100", "Conflictos sectoriales: 62/100", "Gobernabilidad: 62/100"], 
     tesis: "Estrés climático en zonas de riego comercial que coincide con retos de vecindad fronteriza.",
-    ivs_protestas: 67, ivs_organizacion: 69, ivs_irritacion: 80, ivs_criminal: 62, ivs_institucional: 68, ivs_detonantes: 70
+    ivs_protestas: 67, ivs_organizacion: 69, ivs_irritacion: 80, ivs_criminal: 62, ivs_institucional: 68, ivs_detonantes: 70,
+    evidencia_principal: "El monitoreo de desplazamiento 2025 ubica a Chihuahua entre estados con alta proporción de incidentes; se suma frontera y estrés hídrico.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Jalisco": { 
     itse: 66, ivs: 71, nivel: "Alta", impacto: "Alto", 
     focos: ["Colectivos de búsqueda", "Desapariciones", "Seguridad metropolitana"], 
     detalles: ["Violencia/Miedo: 68/100", "Conflictos sectoriales: 66/100", "Gobernabilidad: 64/100"], 
     tesis: "Tensión social focalizada en demandas de justicia penal y derechos humanos urbanos.",
-    ivs_protestas: 66, ivs_organizacion: 68, ivs_irritacion: 79, ivs_criminal: 61, ivs_institucional: 67, ivs_detonantes: 76
+    ivs_protestas: 66, ivs_organizacion: 68, ivs_irritacion: 79, ivs_criminal: 61, ivs_institucional: 67, ivs_detonantes: 76,
+    evidencia_principal: "La entidad combina violencia, desapariciones, presión metropolitana y servicios; riesgo alto aunque diversificado territorialmente.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Puebla": { 
     itse: 65, ivs: 68, nivel: "Alta", impacto: "Alto", 
     focos: ["Extracción ilícita", "Huachicol", "Comités de agua", "Disputas políticas"], 
     detalles: ["Violencia/Miedo: 62/100", "Conflictos sectoriales: 70/100", "Gobernabilidad: 64/100"], 
     tesis: "Conflictos comunitarios por recursos locales y mercados informales de combustibles.",
-    ivs_protestas: 63, ivs_organizacion: 78, ivs_irritacion: 76, ivs_criminal: 58, ivs_institucional: 64, ivs_detonantes: 73
+    ivs_protestas: 63, ivs_organizacion: 78, ivs_irritacion: 76, ivs_criminal: 58, ivs_institucional: 64, ivs_detonantes: 73,
+    evidencia_principal: "Riesgo medio-alto por conflictos municipales, seguridad regional y servicios urbanos; su volatilidad depende de detonadores locales.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "San Luis Potosí": { 
     itse: 63, ivs: 66, nivel: "Alta", impacto: "Acumulativo", 
     focos: ["Vías comerciales", "Robo de carga", "Infraestructura hídrica"], 
     detalles: ["Violencia/Miedo: 64/100", "Conflictos sectoriales: 62/100", "Gobernabilidad: 62/100"], 
     tesis: "Riesgos de tránsito en carreteras federales y requerimientos de suelo industrial servido.",
-    ivs_protestas: 61, ivs_organizacion: 76, ivs_irritacion: 74, ivs_criminal: 56, ivs_institucional: 62, ivs_detonantes: 64
+    ivs_protestas: 61, ivs_organizacion: 76, ivs_irritacion: 74, ivs_criminal: 56, ivs_institucional: 62, ivs_detonantes: 64,
+    evidencia_principal: "Entidad con focos de inseguridad carretera y presión industrial; tensión acumulativa sin rasgo único dominante.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Quintana Roo": { 
     itse: 62, ivs: 66, nivel: "Alta", impacto: "Acumulativo", 
     focos: ["Desarrollo inmobiliario", "Residuos sólidos", "Zonas hoteleras"], 
     detalles: ["Violencia/Miedo: 66/100", "Conflictos sectoriales: 56/100", "Gobernabilidad: 62/100"], 
     tesis: "Brechas de servicios públicos entre los centers turísticos de lujo y las colonias obreras.",
-    ivs_protestas: 61, ivs_organizacion: 63, ivs_irritacion: 74, ivs_criminal: 56, ivs_institucional: 62, ivs_detonantes: 64
+    ivs_protestas: 61, ivs_organizacion: 63, ivs_irritacion: 74, ivs_criminal: 56, ivs_institucional: 62, ivs_detonantes: 64,
+    evidencia_principal: "El crecimiento acelerado y la exposición turística convierten violencia y servicios en riesgos reputacionales y sociales.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Durango": { 
     itse: 56, ivs: 59, nivel: "Alta", impacto: "Acumulativo", 
     focos: ["Pérdidas ganaderas", "Sequía de largo plazo", "Aislamiento serrano"], 
     detalles: ["Violencia/Miedo: 56/100", "Conflictos sectoriales: 58/100", "Gobernabilidad: 54/100"], 
-    tesis: "Urgencia económica en ejidos tradicionales por ausencia prolongada de precipitaciones.",
-    ivs_protestas: 54, ivs_organizacion: 56, ivs_irritacion: 67, ivs_criminal: 49, ivs_institucional: 55, ivs_detonantes: 57
+    tesis: "Urgencia económica en ejidos tradicionales por absence prolongada de precipitaciones.",
+    ivs_protestas: 54, ivs_organizacion: 56, ivs_irritacion: 67, ivs_criminal: 49, ivs_institucional: 55, ivs_detonantes: 57,
+    evidencia_principal: "Riesgo sectorial vinculado a campo, sequía y servicios; sin crisis generalizada observable.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Baja California Sur": { 
     itse: 55, ivs: 58, nivel: "Alta", impacto: "Acumulativo", 
     focos: ["Fuentes de agua dulce", "Costo de suelo", "Gentrificación"], 
     detalles: ["Violencia/Miedo: 54/100", "Conflictos sectoriales: 56/100", "Gobernabilidad: 54/100"], 
     tesis: "Fuerte encarecimiento habitacional y escasez de acuíferos potables disponibles.",
-    ivs_protestas: 53, ivs_organizacion: 55, ivs_irritacion: 66, ivs_criminal: 48, ivs_institucional: 54, ivs_detonantes: 56
+    ivs_protestas: 53, ivs_organizacion: 55, ivs_irritacion: 66, ivs_criminal: 48, ivs_institucional: 54, ivs_detonantes: 56,
+    evidencia_principal: "Tensión moderada por agua, vivienda y presión turística, con menor violencia comparativa.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Coahuila": { 
     itse: 55, ivs: 58, nivel: "Alta", impacto: "Acumulativo", 
     focos: ["Estabilidad automotriz", "Derechos de agua", "Pasivos del carbón"], 
     detalles: ["Violencia/Miedo: 52/100", "Conflictos sectoriales: 58/100", "Gobernabilidad: 54/100"], 
     tesis: "Demandas del sector obrero metalúrgico y retos de remediación ambiental minera.",
-    ivs_protestas: 53, ivs_organizacion: 68, ivs_irritacion: 66, ivs_criminal: 48, ivs_institucional: 54, ivs_detonantes: 56
+    ivs_protestas: 53, ivs_organizacion: 68, ivs_irritacion: 66, ivs_criminal: 48, ivs_institucional: 54, ivs_detonantes: 56,
+    evidencia_principal: "Tensión contenida, pero con estrés hídrico/industrial y vulnerabilidad en corredores fronterizos.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Nayarit": { 
     itse: 53, ivs: 56, nivel: "Media", impacto: "Acumulativo", 
     focos: ["Zonas costeras", "Litigios pesqueros", "Comunidades ejidales"], 
     detalles: ["Violencia/Miedo: 52/100", "Conflictos sectoriales: 54/100", "Gobernabilidad: 52/100"], 
     tesis: "Fricciones localizadas por uso de playas frente a proyectos inmobiliarios.",
-    ivs_protestas: 51, ivs_organizacion: 53, ivs_irritacion: 64, ivs_criminal: 46, ivs_institucional: 52, ivs_detonantes: 54
+    ivs_protestas: 51, ivs_organizacion: 53, ivs_irritacion: 64, ivs_criminal: 46, ivs_institucional: 52, ivs_detonantes: 54,
+    evidencia_principal: "Tensión baja-media; detonadores ligados a turismo, servicios y ambiente.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Hidalgo": { 
     itse: 53, ivs: 56, nivel: "Media", impacto: "Acumulativo", 
     focos: ["Conectividad AIFA", "Movilidad metropolitana", "Pozos vecinales"], 
     detalles: ["Violencia/Miedo: 50/100", "Conflictos sectoriales: 56/100", "Gobernabilidad: 54/100"], 
     tesis: "Tensiones vecinales por administración de redes locales de distribución de agua dulce.",
-    ivs_protestas: 51, ivs_organizacion: 66, ivs_irritacion: 64, ivs_criminal: 46, ivs_institucional: 52, ivs_detonantes: 54
+    ivs_protestas: 51, ivs_organizacion: 66, ivs_irritacion: 64, ivs_criminal: 46, ivs_institucional: 52, ivs_detonantes: 54,
+    evidencia_principal: "Tensión moderada por servicios, movilidad y focos de seguridad vinculados a robo de combustible.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Querétaro": { 
     itse: 52, ivs: 55, nivel: "Media", impacto: "Acumulativo", 
     focos: ["Saturación vehicular", "Redes de conducción", "Nearshoring"], 
     detalles: ["Violencia/Miedo: 48/100", "Conflictos sectoriales: 58/100", "Gobernabilidad: 50/100"], 
     tesis: "Demandas de infraestructura de transporte masivo ante acelerado crecimiento habitacional.",
-    ivs_protestas: 50, ivs_organizacion: 52, ivs_irritacion: 63, ivs_criminal: 45, ivs_institucional: 51, ivs_detonantes: 53
+    ivs_protestas: 50, ivs_organizacion: 52, ivs_irritacion: 63, ivs_criminal: 45, ivs_institucional: 51, ivs_detonantes: 53,
+    evidencia_principal: "Estado con estabilidad relativa, pero con presión por crecimiento, movilidad, vivienda y agua.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Campeche": { 
     itse: 46, ivs: 50, nivel: "Media", impacto: "Estabilidad relativa", 
     focos: ["Sindicatos marítimos", "Ciudad del Carmen", "Pesca artesanal"], 
     detalles: ["Violencia/Miedo: 42/100", "Conflictos sectoriales: 48/100", "Gobernabilidad: 48/100"], 
     tesis: "Inconformidades de índole gremial y laboral concentradas en el sector de proveeduría petrolera.",
-    ivs_protestas: 45, ivs_organizacion: 47, ivs_irritacion: 58, ivs_criminal: 40, ivs_institucional: 46, ivs_detonantes: 48
+    ivs_protestas: 45, ivs_organizacion: 47, ivs_irritacion: 58, ivs_criminal: 40, ivs_institucional: 46, ivs_detonantes: 48,
+    evidencia_principal: "Tensión baja-media con detonadores económicos y energéticos, menor conflictividad visible que Tabasco/Veracruz.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Aguascalientes": { 
     itse: 45, ivs: 48, nivel: "Media", impacto: "Estabilidad relativa", 
     focos: ["Suministro hídrico", "Blindaje perimetral", "Parques industriales"], 
     detalles: ["Violencia/Miedo: 44/100", "Conflictos sectoriales: 46/100", "Gobernabilidad: 46/100"], 
     tesis: "Entorno general pacífico enfocado en la prevención operativa del abasto urbano.",
-    ivs_protestas: 43, ivs_organizacion: 45, ivs_irritacion: 56, ivs_criminal: 38, ivs_institucional: 44, ivs_detonantes: 46
+    ivs_protestas: 43, ivs_organizacion: 45, ivs_irritacion: 56, ivs_criminal: 38, ivs_institucional: 44, ivs_detonantes: 46,
+    evidencia_principal: "Baja tensión comparada; monitorear agua y seguridad urbana.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Tlaxcala": { 
     itse: 45, ivs: 49, nivel: "Media", impacto: "Estabilidad relativa", 
     focos: ["Delitos de género", "Redes de trata", "Carreteras colindantes"], 
     detalles: ["Violencia/Miedo: 40/100", "Conflictos sectoriales: 50/100", "Gobernabilidad: 46/100"], 
     tesis: "Alertas concentradas en agendas específicas de colectivos civiles de derechos humanos.",
-    ivs_protestas: 44, ivs_organizacion: 59, ivs_irritacion: 57, ivs_criminal: 39, ivs_institucional: 45, ivs_detonantes: 47
+    ivs_protestas: 44, ivs_organizacion: 59, ivs_irritacion: 57, ivs_criminal: 39, ivs_institucional: 45, ivs_detonantes: 47,
+    evidencia_principal: "Tensión comparativamente baja, aunque persisten focos de seguridad y servicios.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   },
   "Yucatán": { 
     itse: 40, ivs: 44, nivel: "Media", impacto: "Estabilidad relativa", 
     focos: ["Expansión urbana", "Mérida periférica", "Servicios residenciales"], 
     detalles: ["Violencia/Miedo: 34/100", "Conflictos sectoriales: 46/100", "Gobernabilidad: 40/100"], 
     tesis: "Óptimas condiciones de gobernabilidad con presiones menores por ordenamiento territorial.",
-    ivs_protestas: 39, ivs_organizacion: 41, ivs_irritacion: 52, ivs_criminal: 34, ivs_institucional: 40, ivs_detonantes: 42
+    ivs_protestas: 39, ivs_organizacion: 41, ivs_irritacion: 52, ivs_criminal: 34, ivs_institucional: 40, ivs_detonantes: 42,
+    evidencia_principal: "IPM 2026 destaca a Yucatán como entidad pacífica; el riesgo principal es acumulativo por crecimiento urbano y servicios.",
+    conclusion_analitica: "Debe monitorearse con alertas mensuales, integrando incidencia delictiva, protestas, comunicados de organizaciones locales, reportes de agua/servicios y cobertura de medios estatales confiables."
   }
 };
 
@@ -500,6 +564,10 @@ if (typeof mexicoGeoJSON !== 'undefined') {
                           ${info.detalles.map(detail => `<li>${detail}</li>`).join('')}
                         </ul>
 
+                        <div class="data-box">
+                        <p><strong>Evidencia Principal:</strong> ${info.evidencia_principal}</p>
+                        </div>
+
                         <!-- BLOQUE DE DATOS IVS POR ESTADO -->
                          <p>Variables IVS </p>
                         <ul class="bullet-list" style="margin-bottom: 12px;">
@@ -524,10 +592,16 @@ if (typeof mexicoGeoJSON !== 'undefined') {
                           "${info.tesis}"
                         </p>
                       </div>
+
                        <!-- Actores movilizadores probables -->
                        <div class="data-box">
                        <h3>Actores movilizadores probables</h3>
                        <p>Colectivos locales, organizaciones gremiales, comunidades afectadas, transportistas, productores, sindicatos, colectivos de víctimas o autoridades municipales, según entidad.</p>
+                       </div>
+                        
+                       <!-- Conclusion Analitica -->
+                        <div class="data-box">
+                       <p><strong>Recomendaciones:</strong> ${info.conclusion_analitica}</p>
                        </div>
                        `;
                    
