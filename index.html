@@ -25,7 +25,6 @@
       --text2: #A0A0A0;
       --accent: #D4A843;
     }
-
     body {
       margin: 0;
       background-color: var(--bg);
@@ -36,7 +35,6 @@
       flex-direction: column;
       overflow: hidden;
     }
-
     /* Encabezado */
     .header {
       background: var(--bg2);
@@ -71,13 +69,12 @@
     /* Layout de Pantalla Dividida (Mapa + Panel) */
     .layout {
       display: grid;
-      grid-template-columns: 1fr 460px; /* El mapa toma todo el espacio restante izquierdo */
+      grid-template-columns: 1fr 460px;
       flex: 1;
       overflow: hidden;
       position: relative;
     }
-
-    /* Contenedor del Mapa (Obligatorio) */
+    /* Contenedor del Mapa */
     .map-wrapper { 
       position: relative; 
       height: 100%; 
@@ -88,7 +85,6 @@
       height: 100%; 
       width: 100%; 
     }
-
     /* Resumen Flotante sobre el mapa */
     .alerts-summary-box {
       position: absolute;
@@ -106,7 +102,7 @@
     .alerts-summary-box h4 { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: var(--text2); margin-bottom: 10px; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
     .alert-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 6px; gap: 10px; }
     .alert-count-badge { padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.75rem; color: #000; min-width: 24px; text-align: center; }
-
+    
     /* Panel Lateral Derecho */
     .side-panel {
       background: var(--bg2);
@@ -139,38 +135,106 @@
     .tab-pane { display: none; height: 100%; }
     .tab-pane.active { display: block; }
     
-    /* Indicador Gauge / Medidor Semicircular */
-    .gauge-wrapper { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.5rem; position: relative; }
-    .gauge-svg { width: 220px; height: 115px; }
-    .gauge-bg { fill: none; stroke: var(--bg3); stroke-width: 14; stroke-linecap: round; }
-    .gauge-fill { fill: none; stroke-width: 14; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283; transition: stroke-dashoffset 0.8s ease; }
-    .gauge-needle { fill: #FFF; transform-origin: 110px 105px; transition: transform 0.8s ease; }
-    .gauge-value { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; margin-top: -15px; }
-    .gauge-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text2); }
-    
-    /* Cajas Informativas */
+    /* ESTILOS DEL ACORDEÓN DE DIAGNÓSTICO */
+    .contenedor-acordeon {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .acordeon-item {
+      background-color: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .acordeon-header {
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      padding: 0.85rem 1rem;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.2s ease;
+    }
+    .acordeon-header:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+    .acordeon-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .acordeon-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease-out;
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+    .contenido-diagnostico {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+    .contenido-diagnostico strong {
+      color: var(--text2);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .bloque-data-diag {
+      background: var(--bg2);
+      padding: 0.75rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.02);
+    }
+    .acordeon-header .flecha {
+      font-size: 0.75rem;
+      color: var(--text2);
+      transition: transform 0.2s ease;
+    }
+    .acordeon-header.active .flecha {
+      transform: rotate(180deg);
+    }
+    .badge-nivel-diag {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-diag-critica { background: rgba(217, 83, 79, 0.15); color: #d9534f; border: 1px solid rgba(217, 83, 79, 0.3); }
+    .badge-diag-alta { background: rgba(240, 173, 78, 0.15); color: #f0ad4e; border: 1px solid rgba(240, 173, 78, 0.3); }
+    .badge-diag-media { background: rgba(78, 89, 240, 0.15); color: #7c85ff; border: 1px solid rgba(78, 89, 240, 0.3); }
+    .badge-diag-baja { background: rgba(92, 184, 92, 0.15); color: #5cb85c; border: 1px solid rgba(92, 184, 92, 0.3); }
+
+    /* Cajas Informativas e Historial */
     .data-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
     .data-box h3 { font-size: 0.75rem; text-transform: uppercase; color: var(--text2); margin-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; }
     .data-box p { font-size: 0.85rem; line-height: 1.5; color: var(--text); text-align: justify; }
-    .bullet-list { margin-left: 1.2rem; margin-top: 0.5rem; font-size: 0.85rem; color: #FFF; }
-    .bullet-list li { margin-bottom: 0.4rem; }
     
-    .progress-bar { background: rgba(255,255,255,0.05); height: 6px; border-radius: 4px; overflow: hidden; margin-top: 6px; }
-    .progress-fill { height: 100%; transition: width 0.4s ease; }
-    
-    .focus-badge-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-    .focus-badge { background: rgba(212, 168, 67, 0.1); border: 1px solid rgba(212, 168, 67, 0.3); color: var(--accent); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; }
-    
-    /* Lista de Ranking e Historial */
+    /* Ranking e Historial */
     .ranking-list { display: flex; flex-direction: column; gap: 8px; }
     .ranking-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; }
-
+    
     /* Tablas */
     .table-container { width: 100%; height: 100%; overflow: auto; }
     .table-view { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 550px; }
     .table-view th, .table-view td { padding: 12px 10px; text-align: left; border-bottom: 1px solid var(--border); }
     .table-view th { color: var(--text2); text-transform: uppercase; font-size: 0.75rem; font-family: 'Syne', sans-serif; background: var(--bg); position: sticky; top: 0; z-index: 10; }
-    .table-focos { font-size: 0.75rem; color: var(--text2); max-width: 200px; }
     
     /* Estilos del Semáforo Prospectivo */
     .semaforo-container { display: flex; flex-direction: column; gap: 12px; margin-top: 5px; }
@@ -184,8 +248,7 @@
     .semaforo-card.alto { border-left-color: var(--alta); }
     .semaforo-card.acumulativo { border-left-color: var(--media); }
     .semaforo-card.estabilidad { border-left-color: var(--baja); }
-
-    /* Tooltip Flotante Leaflet */
+    
     .leaflet-tooltip-custom {
       background: #1C1C1C !important;
       border: 1px solid rgba(255,255,255,0.15) !important;
@@ -196,129 +259,117 @@
       padding: 6px 10px !important;
     }
     
-    /* Responsividad */
     @media (max-width: 992px) {
       body { overflow-y: auto; height: auto; }
       .layout { display: flex; flex-direction: column; height: calc(100vh - 120px); }
       .map-wrapper { height: 45vh; min-height: 350px; }
       .side-panel { height: 55vh; min-height: 450px; }
-      .alerts-summary-box { bottom: 10px; left: 10px; right: 10px; min-width: 0; display: flex; justify-content: space-between; padding: 8px; }
-      .alerts-summary-box h4 { display: none; }
-      .alert-row { flex-direction: column; font-size: 0.7rem; }
     }
   </style>
 </head>
 <body>
-
   <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
-    <h1>RADAR DE TENSIONES SOCIALES · MÉXICO 2027</h1>
+    <h1>RADAR DE TENSIONES SOCIALES · MÉXICO 2026 (AUDITADO)</h1>
     
     <div class="map-controls" style="display: flex; gap: 10px; align-items: center;">
-      <label for="metric-selector" style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text2);">Visualizar por:</label>
-      <select id="metric-selector" class="filter-select" style="min-width: 240px; padding: 6px 12px;">
-        <option value="itse" selected>ITSE (Índice de Tensión Social)</option>
-        <option value="ivs">IVS (Índice de Volatilidad Social)</option>
+      <label for="metric-selector" style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text2);">Ponderación de Factores Activa:</label>
+      <select id="metric-selector" class="filter-select" style="min-width: 240px; padding: 6px 12px;" disabled>
+        <option value="itse" selected>Evaluación ITSE (0 - 100)</option>
       </select>
     </div>
   </div>
-
+  
   <div class="layout">
-    
     <div class="map-wrapper">
       <div id="map"></div>
-
-      <!-- Cuadro de alertas dinámico adaptado a las dos escalas  -->
       <div class="alerts-summary-box">
-        <h4>Distribución Nacional</h4>
+        <h4>Distribución de Tensiones</h4>
         <div class="alert-row">
-          <span id="label-critica">Crítica (70 - 100)</span>
+          <span id="label-critica">Crítica (75 - 100)</span>
           <span class="alert-count-badge" style="background: var(--critica);" id="count-critica">0</span>
         </div>
         <div class="alert-row">
-          <span id="label-alta">Alta (55 - 69)</span>
+          <span id="label-alta">Alta (60 - 74)</span>
           <span class="alert-count-badge" style="background: var(--alta); color: #000;" id="count-alta">0</span>
         </div>
         <div class="alert-row">
-          <span id="label-media">Media (35 - 54)</span>
+          <span id="label-media">Media (40 - 49)</span>
           <span class="alert-count-badge" style="background: var(--media); color: #000;" id="count-media">0</span>
         </div>
         <div class="alert-row">
-          <span id="label-baja">Baja (0 - 34)</span>
+          <span id="label-baja">Baja (0 - 39)</span>
           <span class="alert-count-badge" style="background: var(--baja);" id="count-baja">0</span>
         </div>
       </div>
     </div>
-
+    
     <div class="side-panel">
       <div class="tabs-header">
         <button class="tab-btn active" onclick="switchTab('mapa', event)">Diagnóstico</button>
-        <button class="tab-btn" onclick="switchTab('tabla', event)">Matriz General</button>
+
         <button class="tab-btn" onclick="switchTab('ranking', event)" id="tab-ranking-label">Ranking ITSE</button>
         <button class="tab-btn" onclick="switchTab('semaforo', event)">Semáforo</button>
       </div>
-
+      
       <div class="tabs-content">
+        <!-- PESTAÑA DIAGNÓSTICO: AHORA RENDERIZA EL ACORDEÓN DINÁMICO DE LOS 32 ESTADOS -->
         <div id="pane-mapa" class="tab-pane active">
-          <div id="selectedStatePanel">
-            <div style="color: var(--text2); text-align: center; margin-top: 3rem;">
-              <p>Haz clic sobre cualquier estado en el mapa del lado izquierdo para cargar su auditoría analítica y activar los medidores.</p>
-            </div>
+          <div style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+            <p style="font-size:0.75rem; color:var(--text2); text-transform:uppercase; font-weight:bold; letter-spacing:0.5px;">Metodología del Índice</p>
+            <p style="font-size:0.8rem; color:#FFF; margin-top:0.25rem; line-height:1.4;">
+              Violencia: 40% | Conflictos Sociales: 33.3% | Gobernabilidad: 26.7%
+            </p>
           </div>
+          <div id="lista-diagnostico-acordeon" class="contenedor-acordeon"></div>
         </div>
-
+        
         <div id="pane-tabla" class="tab-pane">
           <div class="table-container">
             <table class="table-view">
               <thead>
                 <tr>
                   <th>Estado</th>
-                  <th>ITSE (Tensión)</th>
-                  <th>IVS (Volatilidad)</th>
+                  <th>ITSE</th>
                   <th>Nivel</th>
-                  <th>Impacto </th>
-                  <th>Focos de Tensión (Detonadores)</th>
+                  <th>Focos de Tensión</th>
                 </tr>
               </thead>
               <tbody id="tabla-body"></tbody>
             </table>
           </div>
         </div>
-
+        
         <div id="pane-ranking" class="tab-pane">
           <div class="ranking-list" id="ranking-container"></div>
         </div>
-
-        <!-- Nueva pestaña: Semáforo Prospectivo Nacional Automatizado -->
+        
         <div id="pane-semaforo" class="tab-pane">
           <div class="semaforo-container">
             <div class="semaforo-card critico">
               <div class="semaforo-header">
                 <span class="indicador-luz" style="background: var(--critica);"></span>
-                <h4 style="color: var(--critica)">🔴 Riesgo crítico de crisis social</h4>
+                <h4 style="color: var(--critica)">🔴 Tensión Crítica</h4>
               </div>
               <p id="lista-critico" class="estados-lista">Calculando algoritmos...</p>
             </div>
-
             <div class="semaforo-card alto">
               <div class="semaforo-header">
                 <span class="indicador-luz" style="background: var(--alta);"></span>
-                <h4 style="color: var(--alta)">🟠 Riesgo alto de estallido sectorial</h4>
+                <h4 style="color: var(--alta)">🟠 Tensión Alta</h4>
               </div>
               <p id="lista-alto" class="estados-lista">Calculando algoritmos...</p>
             </div>
-
             <div class="semaforo-card acumulativo">
               <div class="semaforo-header">
                 <span class="indicador-luz" style="background: var(--media);"></span>
-                <h4 style="color: var(--media)">🟡 Conflicto controlado acumulativo</h4>
+                <h4 style="color: var(--media)">🟡 Tensión Media</h4>
               </div>
               <p id="lista-acumulativo" class="estados-lista">Calculando algoritmos...</p>
             </div>
-
             <div class="semaforo-card estabilidad">
               <div class="semaforo-header">
                 <span class="indicador-luz" style="background: var(--baja);"></span>
-                <h4 style="color: var(--baja)">🟢 Estabilidad relativa</h4>
+                <h4 style="color: var(--baja)">🟢 Tensión Baja</h4>
               </div>
               <p id="lista-estabilidad" class="estados-lista">Calculando algoritmos...</p>
             </div>
@@ -326,11 +377,19 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="mexicoGeoJSON.js"></script> 
   <script src="mapa_mexico.js"></script>
+  <script>
+    function switchTab(tabId, event) {
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById('pane-' + tabId).classList.add('active');
+      if (event) event.target.classList.add('active');
+    }
+  </script>
 </body>
 </html>
