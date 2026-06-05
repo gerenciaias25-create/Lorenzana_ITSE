@@ -225,24 +225,29 @@
       overflow-x: auto; 
       max-height: 100%;
     }
-    .ranking-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.78rem; }
-    .ranking-table th {
-      background: var(--bg3);
-      color: var(--text2);
-      font-family: 'Syne', sans-serif;
-      text-transform: uppercase;
-      font-size: 0.7rem;
-      padding: 0.65rem 0.5rem;
-      border-bottom: 2px solid var(--border);
-      font-weight: bold;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .ranking-table td { padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.ranking-section {
+  position: relative;
+  margin-top: 100px; /* Al menos 100px para que empiece abajo del buscador flotante */
+  padding: 1rem;
+  background: var(--bg2);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Asegúrate de que el contenedor de la barra de búsqueda tenga un z-index alto pero controlado */
+.search-container {
+  position: relative; /* O fixed / sticky según lo tengas configurado */
+  z-index: 10;        /* Mantiene el buscador arriba de los datos */
+  margin-bottom: 20px;
+}
+
+/* Evita que los textos largos de los estados desalineen las celdas */
+
+.ranking-table td { padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
     .ranking-table tr:hover { background: rgba(255,255,255,0.02); }
     .state-name { font-weight: bold; color: var(--text); }
     .score-cell { text-align: center; font-family: monospace; font-size: 0.85rem; }
+
 
     /* PIE DE PÁGINA */
     .dashboard-footer {
