@@ -25,6 +25,7 @@
       --text2: #A0A0A0;
       --accent: #D4A843;
     }
+
     body {
       margin: 0;
       background-color: var(--bg);
@@ -88,6 +89,7 @@
       width: 100%; 
     }
     
+    /* Cuadro de Alertas Flotante */
     .alerts-summary-box {
       position: absolute;
       bottom: 25px;
@@ -101,9 +103,32 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.6);
       backdrop-filter: blur(4px);
     }
-    .alerts-summary-box h4 { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: var(--text2); margin-bottom: 10px; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
-    .alert-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 6px; gap: 10px; }
-    .alert-count-badge { padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.75rem; color: #000; min-width: 24px; text-align: center; }
+    .alerts-summary-box h4 { 
+      font-family: 'Syne', sans-serif; 
+      font-size: 0.75rem; 
+      color: var(--text2); 
+      margin-bottom: 10px; 
+      text-transform: uppercase; 
+      border-bottom: 1px solid var(--border); 
+      padding-bottom: 5px; 
+    }
+    .alert-row { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      font-size: 0.8rem; 
+      margin-bottom: 6px; 
+      gap: 10px; 
+    }
+    .alert-count-badge { 
+      padding: 2px 6px; 
+      border-radius: 3px; 
+      font-weight: bold; 
+      font-size: 0.75rem; 
+      color: #000; 
+      min-width: 24px; 
+      text-align: center; 
+    }
     
     /* PANEL LATERAL Y PESTAÑAS */
     .side-panel {
@@ -133,7 +158,11 @@
     .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.02); }
     .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); background: var(--bg2); font-weight: bold; }
     
-    .tabs-content { flex: 1; overflow-y: auto; padding: 1.25rem; }
+    .tabs-content { 
+      flex: 1; 
+      overflow-y: auto; 
+      padding: 1.25rem; 
+    }
     .tab-pane { display: none; height: 100%; }
     .tab-pane.active { display: block; }
     
@@ -191,7 +220,11 @@
     .contenido-diagnostico { padding: 0 1rem 1rem 1rem; font-size: 0.825rem; line-height: 1.5; }
     
     /* TABLA ANALÍTICA DEL RANKING ITSE */
-    .table-responsive { width: 100%; overflow-x: auto; }
+    .table-responsive { 
+      width: 100%; 
+      overflow-x: auto; 
+      max-height: 100%;
+    }
     .ranking-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.78rem; }
     .ranking-table th {
       background: var(--bg3);
@@ -202,7 +235,6 @@
       padding: 0.65rem 0.5rem;
       border-bottom: 2px solid var(--border);
       font-weight: bold;
-      /* Fijar encabezados al hacer scroll */
       position: sticky;
       top: 0;
       z-index: 10;
@@ -238,13 +270,13 @@
         position: relative;
       }
       
+      /* Solución de encimado: Se inserta al flujo normal debajo del mapa en móviles */
       .alerts-summary-box {
         position: relative;
         bottom: auto;
         left: auto;
         margin: 15px auto;
         width: calc(100% - 30px);
-        box-sizing: border-box;
         box-shadow: none;
         background: var(--bg2); 
       }
@@ -252,7 +284,7 @@
       .side-panel {
         border-left: none;
         border-top: 1px solid var(--border);
-        height: 500px; /* Se asigna un alto fijo en móvil para permitir el scroll interno y que la cabecera quede fija */
+        height: 550px; /* Suficiente espacio para interactuar de forma independiente con scroll interno */
       }
 
       .tabs-content {
@@ -328,204 +360,169 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- CRÍTICA -->
                 <tr style="border-left: 3px solid var(--critica);">
                   <td><span class="state-name">Sinaloa</span><br><small style="color:var(--critica)">Crítica</small></td>
-                  <td class="score-cell">84.5</td>
-                  <td class="score-cell">90</td><td class="score-cell">78</td>
-                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">85</td>
+                  <td class="score-cell">90</td><td class="score-cell">78</td><td class="score-cell">85</td>
+                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">84.5</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--critica);">
                   <td><span class="state-name">Guerrero</span><br><small style="color:var(--critica)">Crítica</small></td>
-                  <td class="score-cell">81.0</td>
-                  <td class="score-cell">88</td><td class="score-cell">75</td>
-                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">78</td>
+                  <td class="score-cell">88</td><td class="score-cell">75</td><td class="score-cell">78</td>
+                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">81.0</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--critica);">
                   <td><span class="state-name">Michoacán</span><br><small style="color:var(--critica)">Crítica</small></td>
-                  <td class="score-cell">78.1</td>
-                  <td class="score-cell">82</td><td class="score-cell">78</td>
-                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">72</td>
+                  <td class="score-cell">82</td><td class="score-cell">78</td><td class="score-cell">72</td>
+                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">78.1</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--critica);">
                   <td><span class="state-name">Guanajuato</span><br><small style="color:var(--critica)">Crítica</small></td>
-                  <td class="score-cell">76.0</td>
-                  <td class="score-cell">85</td><td class="score-cell">70</td>
-                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">70</td>
+                  <td class="score-cell">85</td><td class="score-cell">70</td><td class="score-cell">70</td>
+                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">76.0</td>
                 </tr>
                 
-                <!-- ALTA -->
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Chihuahua</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">74.3</td>
-                  <td class="score-cell">82</td><td class="score-cell">65</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">75</td>
+                  <td class="score-cell">82</td><td class="score-cell">65</td><td class="score-cell">75</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">74.3</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Estado de México</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">71.3</td>
-                  <td class="score-cell">72</td><td class="score-cell">75</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">65</td>
+                  <td class="score-cell">72</td><td class="score-cell">75</td><td class="score-cell">65</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">71.3</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Jalisco</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">71.2</td>
-                  <td class="score-cell">78</td><td class="score-cell">68</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">65</td>
+                  <td class="score-cell">78</td><td class="score-cell">68</td><td class="score-cell">65</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">71.2</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Veracruz</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">70.8</td>
-                  <td class="score-cell">72</td><td class="score-cell">70</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">70</td>
+                  <td class="score-cell">72</td><td class="score-cell">70</td><td class="score-cell">70</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">70.8</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Zacatecas</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">69.0</td>
-                  <td class="score-cell">75</td><td class="score-cell">65</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">65</td>
+                  <td class="score-cell">75</td><td class="score-cell">65</td><td class="score-cell">65</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">69.0</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Oaxaca</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">68.2</td>
-                  <td class="score-cell">58</td><td class="score-cell">82</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">65</td>
+                  <td class="score-cell">58</td><td class="score-cell">82</td><td class="score-cell">65</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">68.2</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Morelos</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">67.8</td>
-                  <td class="score-cell">70</td><td class="score-cell">65</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">68</td>
+                  <td class="score-cell">70</td><td class="score-cell">65</td><td class="score-cell">68</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">67.8</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Sonora</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">67.3</td>
-                  <td class="score-cell">70</td><td class="score-cell">68</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62</td>
+                  <td class="score-cell">70</td><td class="score-cell">68</td><td class="score-cell">62</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">67.3</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Tamaulipas</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">66.0</td>
-                  <td class="score-cell">70</td><td class="score-cell">62</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">65</td>
+                  <td class="score-cell">70</td><td class="score-cell">62</td><td class="score-cell">65</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">66.0</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Baja California</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">65.5</td>
-                  <td class="score-cell">78</td><td class="score-cell">55</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">60</td>
+                  <td class="score-cell">78</td><td class="score-cell">55</td><td class="score-cell">60</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">65.5</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Ciudad de México</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">64.9</td>
-                  <td class="score-cell">58</td><td class="score-cell">80</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">55</td>
+                  <td class="score-cell">58</td><td class="score-cell">80</td><td class="score-cell">55</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">64.9</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Puebla</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">64.3</td>
-                  <td class="score-cell">62</td><td class="score-cell">70</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">60</td>
+                  <td class="score-cell">62</td><td class="score-cell">70</td><td class="score-cell">60</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">64.3</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Quintana Roo</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">63.0</td>
-                  <td class="score-cell">68</td><td class="score-cell">58</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62</td>
+                  <td class="score-cell">68</td><td class="score-cell">60</td><td class="score-cell">60</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">63.2</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Nuevo León</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">62.7</td>
-                  <td class="score-cell">65</td><td class="score-cell">62</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">60</td>
+                  <td class="score-cell">65</td><td class="score-cell">62</td><td class="score-cell">60</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62.7</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Chiapas</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">62.5</td>
-                  <td class="score-cell">62</td><td class="score-cell">65</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">60</td>
+                  <td class="score-cell">62</td><td class="score-cell">65</td><td class="score-cell">60</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62.5</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">San Luis Potosí</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">62.0</td>
-                  <td class="score-cell">60</td><td class="score-cell">55</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">75</td>
+                  <td class="score-cell">60</td><td class="score-cell">55</td><td class="score-cell">75</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62.0</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Tabasco</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">62.0</td>
-                  <td class="score-cell">62</td><td class="score-cell">60</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">65</td>
+                  <td class="score-cell">62</td><td class="score-cell">60</td><td class="score-cell">65</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62.0</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--alta);">
                   <td><span class="state-name">Colima</span><br><small style="color:var(--alta)">Alta</small></td>
-                  <td class="score-cell">61.5</td>
-                  <td class="score-cell">80</td><td class="score-cell">45</td>
-                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">55</td>
+                  <td class="score-cell">80</td><td class="score-cell">45</td><td class="score-cell">55</td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">61.5</td>
                 </tr>
                 
-                <!-- MEDIA -->
                 <tr style="border-left: 3px solid var(--media);">
                   <td><span class="state-name">Querétaro</span><br><small style="color:var(--media)">Media</small></td>
-                  <td class="score-cell">52.0</td>
-                  <td class="score-cell">45</td><td class="score-cell">65</td>
-                  <td class="score-cell" style="color:var(--media); font-weight:bold;">45</td>
+                  <td class="score-cell">45</td><td class="score-cell">65</td><td class="score-cell">45</td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">52.0</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--media);">
                   <td><span class="state-name">Hidalgo</span><br><small style="color:var(--media)">Media</small></td>
-                  <td class="score-cell">51.5</td>
-                  <td class="score-cell">48</td><td class="score-cell">60</td>
-                  <td class="score-cell" style="color:var(--media); font-weight:bold;">45</td>
+                  <td class="score-cell">48</td><td class="score-cell">60</td><td class="score-cell">45</td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">51.5</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--media);">
                   <td><span class="state-name">Durango</span><br><small style="color:var(--media)">Media</small></td>
-                  <td class="score-cell">45.5</td>
-                  <td class="score-cell">45</td><td class="score-cell">50</td>
-                  <td class="score-cell" style="color:var(--media); font-weight:bold;">40</td>
+                  <td class="score-cell">45</td><td class="score-cell">50</td><td class="score-cell">40</td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">45.5</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--media);">
                   <td><span class="state-name">Tlaxcala</span><br><small style="color:var(--media)">Media</small></td>
-                  <td class="score-cell">42.3</td>
-                  <td class="score-cell">40</td><td class="score-cell">48</td>
-                  <td class="score-cell" style="color:var(--media); font-weight:bold;">38</td>
+                  <td class="score-cell">40</td><td class="score-cell">48</td><td class="score-cell">38</td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">42.3</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--media);">
                   <td><span class="state-name">Campeche</span><br><small style="color:var(--media)">Media</small></td>
-                  <td class="score-cell">41.0</td>
-                  <td class="score-cell">35</td><td class="score-cell">45</td>
-                  <td class="score-cell" style="color:var(--media); font-weight:bold;">45</td>
+                  <td class="score-cell">35</td><td class="score-cell">45</td><td class="score-cell">45</td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">41.0</td>
                 </tr>
                 
-                <!-- BAJA -->
                 <tr style="border-left: 3px solid var(--baja);">
                   <td><span class="state-name">Coahuila</span><br><small style="color:var(--baja)">Baja</small></td>
-                  <td class="score-cell">39.7</td>
-                  <td class="score-cell">38</td><td class="score-cell">45</td>
-                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">35</td>
+                  <td class="score-cell">38</td><td class="score-cell">45</td><td class="score-cell">35</td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">39.7</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--baja);">
                   <td><span class="state-name">Nayarit</span><br><small style="color:var(--baja)">Baja</small></td>
-                  <td class="score-cell">39.5</td>
-                  <td class="score-cell">40</td><td class="score-cell">42</td>
-                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">35</td>
+                  <td class="score-cell">40</td><td class="score-cell">42</td><td class="score-cell">35</td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">39.5</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--baja);">
                   <td><span class="state-name">Aguascalientes</span><br><small style="color:var(--baja)">Baja</small></td>
-                  <td class="score-cell">39.0</td>
-                  <td class="score-cell">45</td><td class="score-cell">35</td>
-                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">35</td>
+                  <td class="score-cell">45</td><td class="score-cell">35</td><td class="score-cell">35</td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">39.0</td>
                 </tr>
                 <tr style="border-left: 3px solid var(--baja);">
                   <td><span class="state-name">Baja California Sur</span><br><small style="color:var(--baja)">Baja</small></td>
-                  <td class="score-cell">38.9</td>
-                  <td class="score-cell">42</td><td class="score-cell">38</td>
-                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">35</td>
+                  <td class="score-cell">42</td><td class="score-cell">38</td><td class="score-cell">35</td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">38.9</td>
                 </tr>
-                <tr style="border-left: 3px solid var(--baja);">
+                < <tr style="border-left: 3px solid var(--baja);">
                   <td><span class="state-name">Yucatán</span><br><small style="color:var(--baja)">Baja</small></td>
-                  <td class="score-cell">30.3</td>
-                  <td class="score-cell">25</td><td class="score-cell">38</td>
-                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">28</td>
+                  <td class="score-cell">25</td>
+                  <td class="score-cell">38</td><td class="score-cell">28</td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">30.3</td>
                 </tr>
               </tbody>
             </table>
