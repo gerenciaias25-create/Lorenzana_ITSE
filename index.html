@@ -224,12 +224,29 @@
     .footer-contact-info strong { color: var(--text); }
     
     @media (max-width: 992px) {
-      body { overflow-y: auto; height: auto; }
-      .layout { display: flex; flex-direction: column; height: auto; }
-      .header { flex-direction: column; gap: 0.5rem; text-align: center; }
-      .header-left-group { flex-direction: column; gap: 0.5rem; }
-      .dashboard-footer { flex-direction: column; height: auto; gap: 0.75rem; padding: 1rem; }
-    }
+  body { overflow-y: auto; height: auto; }
+  .layout { display: flex; flex-direction: column; height: auto; }
+  
+  /* 👇 AGREGA ESTA REGLA AQUÍ 👇 */
+  .map-wrapper {
+    height: 450px; /* Esto le da una altura fija excelente para pantallas de celular */
+    width: 100%;
+    position: relative;
+  }
+  /* 👇 Agrega esto también dentro del @media (max-width: 992px) 👇 */
+  .alerts-summary-box {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin: 15px auto;
+    width: calc(100% - 30px);
+    box-sizing: border-box;
+  }
+  .header { flex-direction: column; gap: 0.5rem; text-align: center; }
+  .header-left-group { flex-direction: column; gap: 0.5rem; }
+  .dashboard-footer { flex-direction: column; height: auto; gap: 0.75rem; padding: 1rem; }
+}
+
   </style>
 </head>
 <body>
@@ -288,10 +305,10 @@
               <thead>
                 <tr>
                   <th>Estado</th>
-                  <th style="text-align:center;">ITSE</th>
                   <th style="text-align:center;">Viol.</th>
                   <th style="text-align:center;">Conf.</th>
                   <th style="text-align:center;">Gob.</th>
+                   <th style="text-align:center;">ITSE</th>
                 </tr>
               </thead>
               <tbody>
