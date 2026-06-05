@@ -223,30 +223,38 @@
     .footer-contact-info span { font-size: 0.75rem; color: var(--text2); }
     .footer-contact-info strong { color: var(--text); }
     
+    /* MODIFICACIONES ADAPTATIVAS PARA TELÉFONOS */
     @media (max-width: 992px) {
-  body { overflow-y: auto; height: auto; }
-  .layout { display: flex; flex-direction: column; height: auto; }
-  
-  /* 👇 AGREGA ESTA REGLA AQUÍ 👇 */
-  .map-wrapper {
-    height: 450px; /* Esto le da una altura fija excelente para pantallas de celular */
-    width: 100%;
-    position: relative;
-  }
-  /* 👇 Agrega esto también dentro del @media (max-width: 992px) 👇 */
-  .alerts-summary-box {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    margin: 15px auto;
-    width: calc(100% - 30px);
-    box-sizing: border-box;
-  }
-  .header { flex-direction: column; gap: 0.5rem; text-align: center; }
-  .header-left-group { flex-direction: column; gap: 0.5rem; }
-  .dashboard-footer { flex-direction: column; height: auto; gap: 0.75rem; padding: 1rem; }
-}
-
+      body { overflow-y: auto; height: auto; }
+      .layout { display: flex; flex-direction: column; height: auto; }
+      
+      .map-wrapper {
+        height: 400px; /* Tamaño estable para visualizar correctamente el mapa */
+        width: 100%;
+        position: relative;
+      }
+      
+      /* REGLA CORREGIDA: Evita que el cuadro de simbología flote de forma absoluta y tape los datos */
+      .alerts-summary-box {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        margin: 15px auto;
+        width: calc(100% - 30px);
+        box-sizing: border-box;
+        box-shadow: none;
+        background: var(--bg2); /* Armoniza con el fondo inferior */
+      }
+      
+      .side-panel {
+        border-left: none;
+        border-top: 1px solid var(--border);
+      }
+      
+      .header { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1rem; }
+      .header-left-group { flex-direction: column; gap: 0.5rem; }
+      .dashboard-footer { flex-direction: column; height: auto; gap: 0.75rem; padding: 1rem; text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -450,7 +458,7 @@
                 <tr style="border-left: 3px solid var(--media);">
                   <td><span class="state-name">Campeche</span><br><small style="color:var(--media)">Media</small></td>
                   <td class="score-cell" style="color:var(--media); font-weight:bold;">41.0</td>
-                  <td class="score-cell">35</td><td class="score-cell">45</td><td class="score-cell">45</td>
+                  <span class="score-cell">35</span><td class="score-cell">45</td><td class="score-cell">45</td>
                 </tr>
                 
                 <!-- BAJA -->
