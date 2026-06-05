@@ -10,200 +10,200 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 }).addTo(map);
 
 // =========================================================================
-// 2. DATASET OFICIAL INTEGRAL DE LAS TENSIONES SOCIALES (MÉXICO 2026)
+// 2. DATASET OFICIAL INTEGRAL DE LAS TENSIONES SOCIALES (32 ESTADOS)
 // =========================================================================
 const dataset = {
-  "Guerrero": { 
-    itse: 96.8, 
-    nivel: "Crítica", 
-    focos: "Estado fallido de facto; control criminal total; crisis institucional extrema.", 
-    desarrollo: "Guerrero se posiciona en el nivel más alto de tensión debido a una gobernabilidad severamente fracturada y un control criminal total en amplias zonas del estado. La violencia extrema, el desplazamiento forzado y la persistencia de conflictos sociales históricos (normalistas, magisterio) generan una crisis institucional profunda. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
   "Sinaloa": { 
-    itse: 94.7, 
-    nivel: "Crítica", 
-    focos: "Guerra civil interna; parálisis económica; gobernador con licencia bajo investigación.", 
-    desarrollo: "Sinaloa ha escalated a una tensión crítica debido a una guerra civil interna entre facciones de cárteles que ha provocado una parálisis económica y un clima de terror. La reciente acusación de EE.UU. contra el gobernador con licencia, Rubén Rocha Moya, ha profundizado la crisis de gobernabilidad, generando una desconfianza generalizada. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 84.5, nivel: "Crítica", 
+    violencia: "Tensión crítica por guerra criminal, homicidio, desapariciones, miedo urbano y crisis de seguridad; IPM/SESNSP y reportes recientes lo ubican como foco central.", 
+    conflictos: "Conflicto sectorial muy alto: productores agrícolas de Sinaloa protagonizaron protestas por precios y advirtieron movilizaciones; carretera/aeropuerto como amenaza de presión.",
+    gobernabilidad: "Gobernabilidad crítica por seguridad y crisis institucional alrededor del gobierno estatal y crimen organizado."
   },
-  "Jalisco": { 
-    itse: 90.3, 
-    nivel: "Crítica", 
-    focos: "Caos por muerte de El Mencho; 65 bloqueos carreteros; CJNG en reconfiguración violenta.", 
-    desarrollo: "Jalisco experimenta una tensión crítica tras el caos generado por la muerte de \"El Mencho\" y la subsiguiente reconfiguración violenta del CJNG. Los 65 bloqueos carreteros simultáneos registrados en junio de 2026 paralizaron la logística y el transporte, evidenciando una capacidad de desestabilización sin precedentes. La crisis de personas desaparecidas y la tensión política por la sucesión estatal (2024-2027) entre Movimiento Ciudadano y Morena mantienen el clima polarizado. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Chiapas": { 
-    itse: 89.0, 
-    nivel: "Crítica", 
-    focos: "Guerra de cárteles; desplazamiento masivo; magisterio en paro indefinido.", 
-    desarrollo: "Chiapas enfrenta una tensión crítica por la guerra de cárteles que ha provocado un desplazamiento masivo de comunidades y una crisis humanitaria. El magisterio en paro indefinido y los conflictos agrarios históricos se suman a un escenario de ingobernabilidad. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+  "Guerrero": { 
+    itse: 81.0, nivel: "Crítica", 
+    violencia: "Violencia crítica: homicidios, extorsión, desplazamiento, crimen en Acapulco/Tierra Caliente y riesgo contra autoridades; IPM/SESNSP lo mantienen como entidad de alto riesgo.", 
+    conflictos: "Conflicto sectorial muy alto: magisterio, normalistas, transportistas, comunidades, servicios, reconstrucción y carreteras.",
+    gobernabilidad: "Gobernabilidad crítica por fragmentación territorial, presión municipal, violencia política/social y debilidad institucional en zonas de conflicto."
   },
   "Michoacán": { 
-    itse: 88.3, 
-    nivel: "Crítica", 
-    focos: "Extorsión total; Tierra Caliente ingobernable; parálisis agrícola.", 
-    desarrollo: "Michoacán se mantiene en tensión crítica debido a la extorsión total que paraliza la economía agrícola en Tierra Caliente, haciendo la región prácticamente ingobernable. La presión constante del magisterio (CNTE) y la violencia criminal desbordada generan un hartazgo social profundo. El desgaste para Morena es crítico; la incapacidad para frenar la extorsión afecta directamente la economía local, lo que se traducirá en una pérdida de confianza electoral y un fuerte voto de castigo en 2027. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 78.1, nivel: "Crítica", 
+    violencia: "Violencia alta por crimen organizado, extorsión, homicidio y disputas territoriales; también figura entre entidades con mayor desaparición acumulada.", 
+    conflictos: "Conflicto sectorial muy alto: campo, aguacate/limón, normalistas, magisterio, transportistas y bloqueos carreteros.",
+    gobernabilidad: "Gobernabilidad alta por control territorial criminal, conflictos productivos y presión a municipios."
   },
   "Guanajuato": { 
-    itse: 88.0, 
-    nivel: "Crítica", 
-    focos: "Homicidios récord; huachicol; conflicto permanente con la federación.", 
-    desarrollo: "Guanajuato presenta una tensión crítica por los homicidios récord a nivel nacional, impulsados por el huachicol y el narcotráfico. El conflicto permanente entre el gobierno estatal y la federación desgasta a ambas partes y polariza el ambiente político. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "México": { 
-    itse: 84.7, 
-    nivel: "Crítica", 
-    focos: "Extorsión masiva transporte; bloqueos viales permanentes; inseguridad urbana.", 
-    desarrollo: "El Estado de México se encuentra en tensión crítica debido a la extorsión masiva al sector transporte y los bloqueos viales permanentes que afectan la movilidad y la economía. La inseguridad urbana y la alta densidad de conflictos sociales en zonas metropolitanas mantienen al estado en un punto de ebullición. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 76.0, nivel: "Crítica", 
+    violencia: "Foco nacional de homicidio, crimen organizado, extorsión y violencia contra policías; aparece reiteradamente entre estados de mayor violencia, aunque con descensos recientes.", 
+    conflictos: "Conflicto sectorial alto: productores agrícolas, agua, transporte y corredores industriales; entidades del Bajío participaron en movilizaciones del campo.",
+    gobernabilidad: "Gobernabilidad alta por violencia persistente, presión municipal e industrial y crisis de seguridad."
   },
   "Chihuahua": { 
-    itse: 84.3, 
-    nivel: "Crítica", 
-    focos: "Conflicto extremo por el agua; bloqueos carreteros; violencia fronteriza.", 
-    desarrollo: "Chihuahua enfrenta una tensión crítica por el conflicto extremo por el agua y los bloqueos carreteros derivados de la Ley de Aguas y el Tratado de 1944 con EE.UU. La violencia fronteriza y en Ciudad Juárez, sumada a una fuerte pugna política, contribuyen a la inestabilidad. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 74.3, nivel: "Alta", 
+    violencia: "Uno de los focos de violencia: homicidio, crimen organizado, Sierra Tarahumara, trata/trabajo forzado y presencia de narcolaboratorios; IPM y reportes recientes lo colocan entre estados de violencia elevada.", 
+    conflictos: "Conflicto sectorial alto por campo, agua, carreteras y transporte; se reportaron bloqueos campesinos/transportistas en 2026.",
+    gobernabilidad: "Gobernabilidad alta por choque institucional, seguridad y controversias sobre operaciones de seguridad; tensión entre niveles de gobierno."
   },
-  "Baja California": { 
-    itse: 83.7, 
-    nivel: "Crítica", 
-    focos: "Crisis migratoria; conflicto hídrico; violencia cárteles en Tijuana.", 
-    desarrollo: "Baja California se encuentra en tensión crítica debido a la crisis migratoria en la frontera, el conflicto hídrico en Tijuana y la violencia de cárteles que afecta la seguridad pública. La presión de EE.UU. y las amenazas arancelarias impactan la economía local. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+  "México": { 
+    itse: 71.3, nivel: "Alta", 
+    violencia: "Alta violencia social por volumen poblacional: homicidio, feminicidio, extorsión, desapariciones y percepción de inseguridad urbana; figura entre entidades con más desapariciones acumuladas.", 
+    conflictos: "Conflicto sectorial muy alto: agua en Valle de México, transporte concesionado, bloqueos, servicios urbanos y participación en protestas campesinas.",
+    gobernabilidad: "Gobernabilidad alta por complejidad metropolitana, municipios grandes, corrupción local y presión de servicios."
   },
-  "Zacatecas": { 
-    itse: 82.7, 
-    nivel: "Crítica", 
-    focos: "Violencia extrema; desplazamiento; crisis económica profunda.", 
-    desarrollo: "Zacatecas presenta una tensión crítica por la violencia extrema y el desplazamiento de comunidades enteras, lo que ha provocado una crisis económica y social profunda. El desgaste para el gobierno estatal (Morena) es severo. La percepción de abandono institucional se traducirá en una alta probabilidad de alternancia o pérdida de escaños federales en 2027, ya que el electorado buscará un cambio ante la falta de resultados en seguridad. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+  "Jalisco": { 
+    itse: 71.2, nivel: "Alta", 
+    violencia: "Alta violencia por homicidios, desapariciones, armas y crimen organizado; CIDH y notas sobre desapariciones ubican a Jalisco entre los mayores focos acumulados.", 
+    conflictos: "Conflicto sectorial alto: campo, agua, transporte, incendios forestales y presión metropolitana; productores participaron en movilización nacional.",
+    gobernabilidad: "Gobernabilidad alta por desapariciones, presión metropolitana, seguridad y crisis de confianza institucional."
   },
   "Veracruz": { 
-    itse: 81.7, 
-    nivel: "Crítica", 
-    focos: "Inseguridad portuaria; crisis política; extorsión generalizada.", 
-    desarrollo: "Veracruz se encuentra en tensión crítica debido a la inseguridad portuaria, una crisis política persistente y la extorsión generalizada que afecta a diversos sectores. Los conflictos con el sector transporte y los escándalos institucionales desgastan a la administración estatal. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 70.8, nivel: "Alta", 
+    violencia: "Violencia alta por homicidio, desapariciones, extorsión y corredor Golfo; aparece entre entidades con desapariciones acumuladas relevantes.", 
+    conflictos: "Conflicto sectorial alto por transporte, campo, agua, desastres recientes, energía y Pemex.",
+    gobernabilidad: "Gobernabilidad alta por seguridad, impactos ambientales de Pemex y reconstrucción/servicios en regiones vulnerables."
   },
-  "Tamaulipas": { 
-    itse: 79.7, 
-    nivel: "Crítica", 
-    focos: "Frontera chica; violencia cárteles; inestabilidad política.", 
-    desarrollo: "Tamaulipas presenta una tensión crítica por la violencia de cárteles en la frontera chica y una inestabilidad política recurrente, exacerbada por escándalos de exgobernadores. La crisis hídrica también es un factor de conflicto. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Nuevo León": { 
-    itse: 79.3, 
-    nivel: "Crítica", 
-    focos: "Crisis hídrica extrema; parálisis legislativa; transporte colapsado.", 
-    desarrollo: "Nuevo León experimenta una tensión crítica debido a la crisis hídrica extrema en Monterrey, la parálisis legislativa por la pugna entre el Gobernador y el Congreso, y el colapso del transporte público. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Sonora": { 
-    itse: 78.9, 
-    nivel: "Crítica", 
-    focos: "Frontera fentanilo; conflicto Yaqui; violencia en el desierto.", 
-    desarrollo: "Sonora se encuentra en tensión crítica por la violencia en la frontera vinculada al tráfico de fentanilo y personas, el conflicto con la tribu Yaqui por el agua y la violencia en el desierto. La presión de Estados Unidos sobre la frontera impacta la percepción de seguridad. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Ciudad de México": { 
-    itse: 77.7, 
-    nivel: "Crítica", 
-    focos: "Bloqueos por agua y magisterio; crisis de servicios; inseguridad.", 
-    desarrollo: "La Ciudad de México presenta una tensión crítica debido a los bloqueos por la escasez de agua y las movilizaciones del magisterio, así como las crisis en los servicios públicos (transporte, infraestructura). La inseguridad, aunque con altibajos, sigue siendo una preocupación. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Morelos": { 
-    itse: 77.7, 
-    nivel: "Crítica", 
-    focos: "Violencia política; parálisis de poderes; inseguridad desbordada.", 
-    desarrollo: "Morelos se mantiene en tensión crítica por la violencia política, la parálisis de poderes y una inseguridad desbordada que ha generado un clima de ingobernabilidad. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Quintana Roo": { 
-    itse: 74.7, 
-    nivel: "Alta", 
-    focos: "Violencia turística; conflicto transporte; impacto ambiental.", 
-    desarrollo: "Quintana Roo se encuentra en tensión alta debido a la violencia vinculada al turismo (extorsión, balaceras en zonas turísticas), el conflicto entre taxistas y plataformas como Uber, y las tensiones ambientales por megaproyectos. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+  "Zacatecas": { 
+    itse: 69.0, nivel: "Alta", 
+    violencia: "Violencia alta por disputas criminales, homicidios y miedo; aunque hubo reducciones recientes, conserva memoria social de crisis de seguridad.", 
+    conflictos: "Conflicto sectorial alto por campo, agua, carreteras y presencia en agenda de movilizaciones campesinas/magisteriales.",
+    gobernabilidad: "Gobernabilidad alta por seguridad, dispersión territorial y presión rural."
   },
   "Oaxaca": { 
-    itse: 73.3, 
-    nivel: "Alta", 
-    focos: "Conflictos sociales crónicos; Sección 22 en paro; bloqueos agrarios.", 
-    desarrollo: "Oaxaca presenta una tensión alta por los conflictos sociales crónicos del magisterio (Sección 22 en paro) y los bloqueos agrarios que afectan la gobernabilidad. Aunque la violencia criminal es menor que en otros estados, la movilización social constante desgasta la autoridad. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 68.2, nivel: "Alta", 
+    violencia: "Violencia media-alta con conflictos comunitarios, homicidio localizado y presión territorial; no es sólo crimen, sino mezcla social-territorial.", 
+    conflictos: "Conflicto sectorial crítico: CNTE Sección 22, bloqueos, normalismo, comunidades, transporte y demandas sociales.",
+    gobernabilidad: "Gobernabilidad alta por presión magisterial, usos y costumbres, conflictos agrarios y capacidad de bloqueo."
+  },
+  "Morelos": { 
+    itse: 67.8, nivel: "Alta", 
+    violencia: "Violencia alta en homicidio, extorsión y percepción; casos de desaparición y Cuautla/Cuernavaca como zonas de presión.", 
+    conflictos: "Conflicto sectorial alto: productores BCR (Autopista Siglo XXI) bloquearon por precios, diésel y fertilizantes.",
+    gobernabilidad: "Gobernabilidad alta por crisis de seguridad, fiscalía/gobierno y conflictos municipales."
+  },
+  "Sonora": { 
+    itse: 67.3, nivel: "Alta", 
+    violencia: "Violencia alta en frontera, homicidio, crimen organizado, desapariciones y corredor migrante.", 
+    conflictos: "Conflicto sectorial alto: campo, agua, sequía en norte de Sonora, transporte y frontera.",
+    gobernabilidad: "Gobernabilidad media-alta por seguridad fronteriza, agua y comunidades originarias."
+  },
+  "Tamaulipas": { 
+    itse: 66.0, nivel: "Alta", 
+    violencia: "Violencia alta por frontera, crimen organizado, desapariciones y extorsión; figura entre estados con más desapariciones acumuladas.", 
+    conflictos: "Conflicto sectorial alto por aduanas, transporte, energía, agua y afectaciones de Pemex/Golfo.",
+    gobernabilidad: "Gobernabilidad alta por frontera, seguridad, energía y coordinación interinstitucional."
+  },
+  "Baja California": { 
+    itse: 65.5, nivel: "Alta", 
+    violencia: "Alta exposure a homicidio, armas, frontera, trata, extorsión y miedo urbano.", 
+    conflictos: "Conflictos de agua, movilidad, migración y transporte fronterizo; presión por servicios urbanos en Tijuana/Mexicali y riesgo de protesta por abasto/seguridad.",
+    gobernabilidad: "Gobernabilidad tensionada por seguridad, frontera, migración y capacidad policial municipal; no es crisis única, sino estrés institucional persistente."
+  },
+  "Ciudad de México": { 
+    itse: 64.9, nivel: "Alta", 
+    violencia: "Percepción de inseguridad urbana relevante, aunque con reducciones reportadas en delitos de alto impacto; concentra victimización urbana, movilización y agenda mediática.", 
+    conflictos: "Muy alta conflictividad organizada por ser sede de protestas nacionales: CNTE, campesinos, transportistas, colectivos y servicios urbanos.",
+    gobernabilidad: "Gobernabilidad media-alta por presión de movilidad, agua, seguridad, plantones y operación de grandes eventos."
   },
   "Puebla": { 
-    itse: 70.3, 
-    nivel: "Alta", 
-    focos: "Huachicol; linchamientos; movilizaciones sociales.", 
-    desarrollo: "Puebla se encuentra en tensión alta debido al huachicol, los linchamientos en zonas rurales y las movilizaciones sociales que generan inestabilidad. La inseguridad en la zona metropolitana también es un factor. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 64.3, nivel: "Alta", 
+    violencia: "Violencia media-alta por robo en carreteras, huachicol, extorsión, homicidios y percepción urbana.", 
+    conflictos: "Conflicto sectorial alto: transporte, campo, agua, carreteras y afectaciones por desastres recientes en sierra.",
+    gobernabilidad: "Gobernabilidad media-alta por huachicol, servicios, reconstrucción y corredor logístico."
   },
-  "Tabasco": { 
-    itse: 69.0, 
-    nivel: "Alta", 
-    focos: "Inseguridad creciente; protestas infraestructura.", 
-    desarrollo: "Tabasco presenta una tensión alta por la inseguridad creciente y las protestas vinculadas a proyectos de infraestructura que han elevado el descontento. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+  "Quintana Roo": { 
+    itse: 63.0, nivel: "Alta", 
+    violencia: "Violencia media-alta por turismo, extorsión, homicidio, trata y narcomenudeo; percepción urbana en Cancún/Playa del Carmen es sensible.", 
+    conflictos: "Conflicto sectorial medio-alto por transporte, taxi/plataformas, turismo, agua y servicios.",
+    gobernabilidad: "Gobernabilidad alta por presión turística, seguridad, movilidad y conflictos regulatorios."
   },
-  "Colima": { 
-    itse: 68.9, 
-    nivel: "Alta", 
-    focos: "Máxima violencia per cápita; baja conflictividad social organizada.", 
-    desarrollo: "Colima, a pesar de su tamaño, mantiene la máxima violencia per cápita del país debido a la disputa por el control del puerto de Manzanillo. Aunque la conflictividad social organizada es relativamente baja, la violencia extrema por sí misma genera una tensión alta. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+  "Nuevo León": { 
+    itse: 62.7, nivel: "Alta", 
+    violencia: "Violencia media-alta por homicidio, desapariciones y delitos urbanos; figura entre estados con más personas desaparecidas acumuladas.", 
+    conflictos: "Conflicto sectorial alto por agua, movilidad, transporte, vivienda, industria y presión metropolitana.",
+    gobernabilidad: "Gobernabilidad media-alta por tensiones institucionales, coordinación metropolitana y seguridad."
+  },
+  "Chiapas": { 
+    itse: 62.5, nivel: "Alta", 
+    violencia: "Violencia y miedo en aumento por frontera sur, tráfico de personas, disputas territoriales y crimen en regiones rurales; casos de redes criminales en Selva Lacandona muestran captura territorial local.", 
+    conflictos: "Conflicto sectorial alto: magisterio, comunidades, tierra, migración, carreteras y servicios; presencia histórica de movilización social organizada.",
+    gobernabilidad: "Gobernabilidad tensionada por frontera, control territorial, desplazamientos y conflictos comunitarios."
   },
   "San Luis Potosí": { 
-    itse: 58.3, 
-    nivel: "Media", 
-    focos: "Bloqueos carreteros; inseguridad regional.", 
-    desarrollo: "San Luis Potosí presenta una tensión media debido a los bloqueos carreteros y la inseguridad regional que afectan la movilidad y el comercio. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 62.0, nivel: "Alta", 
+    violencia: "Violencia media-alta por carretera, crimen, extorsión y riesgo contra periodistas/activistas.", 
+    conflictos: "Conflicto sectorial medio-alto por zona limítrofe con condiciones secas, transporte, industria y comunidades.",
+    gobernabilidad: "Gobernabilidad alta por denuncias de persecución a periodistas/activistas y debate sobre reformas penales locales."
   },
-  "Hidalgo": { 
-    itse: 49.7, 
-    nivel: "Media", 
-    focos: "Huachicol; tensiones ejidales.", 
-    desarrollo: "Hidalgo se encuentra en tensión media por el huachicol y las tensiones ejidales que generan conflictos localizados. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+  "Tabasco": { 
+    itse: 62.0, nivel: "Alta", 
+    violencia: "Violencia y extorsión crecientes en un estado antes menos expuesto; delitos de alto impacto y crisis de seguridad local elevan miedo.", 
+    conflictos: "Conflicto sectorial alto por energía, Pemex, ambiente, empleo, inundaciones y servicios.",
+    gobernabilidad: "Gobernabilidad alta por derrames/fugas petroleras en región Golfo, seguridad y dependencia energética."
   },
-  "Campeche": { 
-    itse: 47.0, 
-    nivel: "Media", 
-    focos: "Inseguridad en aumento; sector petrolero.", 
-    desarrollo: "Campeche presenta una tensión media por la inseguridad en aumento y los conflictos en el sector petrolero que afectan la economía local. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Nayarit": { 
-    itse: 38.7, 
-    nivel: "Baja", 
-    focos: "Seguridad regional; conflictos menores.", 
-    desarrollo: "Nayarit se encuentra en tensión baja con seguridad regional y conflictos menores. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Durango": { 
-    itse: 37.0, 
-    nivel: "Baja", 
-    focos: "Mejora en paz; conflictos mineros.", 
-    desarrollo: "Durango presenta una tensión baja con una mejora en los indicadores de paz y conflictos mineros localizados. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Baja California Sur": { 
-    itse: 35.7, 
-    nivel: "Baja", 
-    focos: "Conflictos turísticos; agua.", 
-    desarrollo: "Baja California Sur se encuentra en tensión baja debido a conflictos turísticos y por el acceso al agua. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Tlaxcala": { 
-    itse: 33.3, 
-    nivel: "Baja", 
-    focos: "Trata de personas; baja tensión social.", 
-    desarrollo: "Tlaxcala presenta una tensión baja con el problema histórico de la trata de personas y conflictos municipales menores. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
-  },
-  "Coahuila": { 
-    itse: 28.3, 
-    nivel: "Baja", 
-    focos: "Líder en seguridad; estabilidad política.", 
-    desarrollo: "Coahuila se posiciona en tensión baja como líder en seguridad y con estabilidad política. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+  "Colima": { 
+    itse: 61.5, nivel: "Alta", 
+    violencia: "Históricamente alta violencia letal y delitos de alto impacto asociados a puerto, rutas criminales y armas.", 
+    conflictos: "Conflicto sectorial medio: puerto, transporte, servicios y seguridad comunitaria.",
+    gobernabilidad: "Gobernabilidad media-alta por capacidad territorial limitada ante crimen y puerto estratégico."
   },
   "Querétaro": { 
-    itse: 25.3, 
-    nivel: "Baja", 
-    focos: "Crecimiento; tensiones servicios.", 
-    desarrollo: "Querétaro presenta una tensión baja con tensiones por el crecimiento urbano acelerado y los servicios públicos (agua). En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 52.0, nivel: "Media", 
+    violencia: "Violencia media-baja respecto a focos nacionales, aunque con percepción urbana y corredor carretero expuesto.", 
+    conflictos: "Conflicto sectorial alto por agua: pobladores de Santa Rosa Jáuregui bloquearon la Federal 57 por falta de suministro; presión industrial/urbana.",
+    gobernabilidad: "Gobernabilidad media por crecimiento acelerado, agua y movilidad, más que por crimen letal."
+  },
+  "Hidalgo": { 
+    itse: 51.5, nivel: "Media", 
+    violencia: "Violencia media: huachicol, robo, violencia familiar y percepción variable; no entre los máximos nacionales de homicidio.", 
+    conflictos: "Conflicto sectorial alto por agua, transporte, campo, carreteras y afectaciones regionales; aparece en bloqueos agrotransportistas de 2026.",
+    gobernabilidad: "Gobernabilidad media por conflictos municipales, servicios y corredor energético/huachicol."
+  },
+  "Durango": { 
+    itse: 45.5, nivel: "Media", 
+    violencia: "Violencia media: no aparece como foco principal nacional, aunque comparte riesgos regionales con corredor norte y sierra.", 
+    conflictos: "Conflicto sectorial medio-alto: campo, agua y carreteras; presencia en agenda agropecuaria del norte.",
+    gobernabilidad: "Gobernabilidad media-baja: tensiones localizadas, sin escándalo nacional dominante."
+  },
+  "Tlaxcala": { 
+    itse: 42.3, nivel: "Media", 
+    violencia: "Violencia baja-media; riesgo más visible en trata, violencia familiar y corredor con Puebla/Edomex.", 
+    conflictos: "Conflicto sectorial medio por transporte, agua, campo y cercanía a bloqueos regionales.",
+    gobernabilidad: "Gobernabilidad relativamente estable, con vulnerabilidades municipales y de seguridad especializada."
+  },
+  "Campeche": { 
+    itse: 41.0, nivel: "Media", 
+    violencia: "Incidencia delictiva comparativamente baja; en DISI enero-abril 2026 aparece entre tasas bajas de delitos de alto impacto.", 
+    conflictos: "Tensión sectorial por energía, empleo petrolero, pesca y conflictos laborales; impacto de Pemex en Golfo con riesgos ambientales regionales.",
+    gobernabilidad: "Gobernabilidad media por dependencia energética, tensiones laborales y fiscalización local; sin crisis de violencia comparable al norte/occidente."
+  },
+  "Coahuila": { 
+    itse: 39.7, nivel: "Baja", 
+    violencia: "Violencia comparativamente menor en tasa de delitos de alto impacto; DISI lo ubica entre entidades con tasas bajas.", 
+    conflictos: "Conflictos sectoriales por agua, carbón, empleo industrial y transporte; presión regional, pero sin ola estatal sostenida.",
+    gobernabilidad: "Gobernabilidad estable, con riesgos localizados por minería, frontera económica y fiscalización municipal."
+  },
+  "Nayarit": { 
+    itse: 39.5, nivel: "Baja", 
+    violencia: "Violencia baja-media frente a occidente; riesgo localizado por frontera con Jalisco/Sinaloa y narcomenudeo.", 
+    conflictos: "Conflicto sectorial medio por campo, pesca, turismo, agua y condiciones secas anormales reportadas en occidente.",
+    gobernabilidad: "Gobernabilidad baja-media, sin crisis institucional pública de escala nacional."
   },
   "Aguascalientes": { 
-    itse: 20.3, 
-    nivel: "Baja", 
-    focos: "Estabilidad; bajo riesgo.", 
-    desarrollo: "Aguascalientes se encuentra en tensión baja con estabilidad relativa y bajo riesgo. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos and conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 39.0, nivel: "Baja", 
+    violencia: "Violencia por debajo de focos rojos nacionales, pero con exposición a robo, violencia familiar y delitos de alto impacto medida por SESNSP/ENSU.", 
+    conflictos: "Conflicto sectorial moderado: presión hídrica regional y efectos de agricultura/transporte en corredores del Bajío, sin movilización sostenida estatal de alta intensidad.",
+    gobernabilidad: "Gobernabilidad relativamente estable; el riesgo proviene más de presión urbana y coordinación metropolitana que de crisis institucional abierta."
+  },
+  "Baja California Sur": { 
+    itse: 38.9, nivel: "Baja", 
+    violencia: "Violencia baja-media frente al norte fronterizo; riesgos concentrados en violencia familiar, turismo, narcomenudeo y percepción urbana en zonas específicas.", 
+    conflictos: "Conflicto sectorial moderado por agua, crecimiento turístico, vivienda, pesca y servicios; no hay señal nacional de movilización masiva sostenida.",
+    gobernabilidad: "Gobernabilidad estable con vulnerabilidad por crecimiento urbano-turístico y capacidad de servicios."
   },
   "Yucatán": { 
-    itse: 11.7, 
-    nivel: "Baja", 
-    focos: "Excepción nacional de paz; gobernabilidad plena.", 
-    desarrollo: "Yucatán se mantiene como la excepción nacional de paz, con gobernabilidad plena y conflictos sociales mínimos. Esta estabilidad excepcional lo posiciona como un estado de bajo impacto para Morena, donde la competencia se centrará en mantener las condiciones actuales y la percepción de seguridad. Los números reflejan una brecha significativa con el resto del país, confirmando su estatus de baja tensión y consolidando su posición como el estado más pacífico de México. En términos estructurales, la tensión observada no responde a un solo factor, sino a la acumulación de problemas de seguridad, gobernabilidad, servicios públicos y conflictividad social que interactúan entre sí. Esta combinación aumenta la percepción de incertidumbre entre la población, reduce la confianza en las instituciones y dificulta la capacidad de respuesta gubernamental. Asimismo, la persistencia de estos fenómenos genera efectos económicos, sociales y comunitarios que tienden a reproducirse en el tiempo, convirtiendo la tensión en una condición relativamente estable más que en un episodio aislado. Por ello, el principal riesgo para la entidad radica en la normalización del conflicto y en la erosión gradual de la gobernabilidad cotidiana." 
+    itse: 30.3, nivel: "Baja", 
+    violencia: "Baja violencia comparativa; suele ubicarse entre las entidades más pacíficas, aunque con delitos patrimoniales y presión urbana creciente.", 
+    conflictos: "Conflicto sectorial medio-bajo por agua, desarrollo inmobiliario, servicios y crecimiento metropolitano; sin movilización sostenida nacional.",
+    gobernabilidad: "Gobernabilidad baja: estabilidad institucional comparativa, con riesgos por crecimiento y medio ambiente."
   }
 };
 
@@ -221,7 +221,8 @@ function normalizarTexto(texto) {
 
 function obtenerLlaveDataset(nombreGeoJSON) {
     if (!nombreGeoJSON) return null;
-    const geoNorm = normalizarTexto(nombreGeoJSON);
+    let geoNorm = normalizarTexto(nombreGeoJSON);
+    if (geoNorm === "mexico") return "México";
     return Object.keys(dataset).find(key => normalizarTexto(key) === geoNorm) || null;
 }
 
@@ -229,10 +230,10 @@ function obtenerLlaveDataset(nombreGeoJSON) {
 // 4. ESCALA OFICIAL DE COLORES SEGÚN RANGOS DEL ESTUDIO
 // =========================================================================
 function getColor(value) {
-    if (value >= 75) return '#d9534f'; // Crítica (75-100)
-    if (value >= 60) return '#f0ad4e'; // Alta (60-74)
-    if (value >= 40) return '#4e59f0'; // Media (40-59)
-    return '#5cb85c';                  // Baja (0-39)
+    if (value >= 75) return '#9b0b06';   // Crítica
+    if (value >= 60) return '#fe0000eb'; // Alta
+    if (value >= 40) return '#ff7e1c';   // Media
+    return '#5cb85c';                    // Baja
 }
 
 function style(feature) {
@@ -256,13 +257,11 @@ function onEachFeature(feature, layer) {
     if (llave && dataset[llave]) {
         const data = dataset[llave];
         
-        // Tooltip nativo flotante
         layer.bindTooltip(`<b>${llave}</b><br>ITSE: ${data.itse} (${data.nivel})`, {
             className: 'leaflet-tooltip-custom',
             sticky: true
         });
         
-        // Al hacer click, abre su sección correspondiente en el acordeón Diagnóstico
         layer.on('click', () => {
             switchTab('mapa');
             abrirAcordeonEstado(llave);
@@ -270,7 +269,6 @@ function onEachFeature(feature, layer) {
     }
 }
 
-// Inyección de capas geográficas (Usa mexicoGeoJSON global si está cargado o fetch alterno)
 if (typeof mexicoGeoJSON !== 'undefined') {
     geojsonLayer = L.geoJson(mexicoGeoJSON, { style: style, onEachFeature: onEachFeature }).addTo(map);
 } else {
@@ -289,7 +287,6 @@ function generarAcordeonDiagnostico() {
     if (!contenedor) return;
     contenedor.innerHTML = "";
 
-    // Ordenados por nivel crítico y puntuación descendente
     Object.entries(dataset)
       .sort((a, b) => b[1].itse - a[1].itse)
       .forEach(([nombreEstado, datos]) => {
@@ -306,7 +303,7 @@ function generarAcordeonDiagnostico() {
             <button class="acordeon-header" onclick="toggleAcordeon(this)">
                 <div class="acordeon-header-left">
                     <span class="badge-nivel-diag ${badgeClass}">${datos.nivel}</span>
-                    <span style="font-weight:500;">${nombreEstado}</span>
+                    <span style="font-weight:700;">${nombreEstado}</span>
                 </div>
                 <div style="display:flex; gap:10px; align-items:center;">
                    <span style="font-size:0.75rem; color:var(--text2);">ITSE: <b>${datos.itse}</b></span>
@@ -314,15 +311,12 @@ function generarAcordeonDiagnostico() {
                 </div>
             </button>
             <div class="acordeon-body">
-                <div class="contenido-diagnostico">
-                    <div class="bloque-data-diag">
-                        <strong>Focos de Tensión</strong>
-                        <p style="color: #ffcbd1; font-weight: 500; margin:0;">${datos.focos}</p>
-                    </div>
-                    <div class="bloque-data-diag">
-                        <strong>Desarrollo Analítico y Proyección Electoral 2027</strong>
-                        <p style="margin:0; text-align:justify;">${datos.desarrollo}</p>
-                    </div>
+                <div class="contenido-diagnostico" style="padding: 1rem 1rem 1rem 2rem;">
+                    <ul style="margin: 0; padding: 0; list-style-type: disc; color: var(--text);">
+                        <li style="margin-bottom: 0.5rem; line-height: 1.4;">${datos.violencia}</li>
+                        <li style="margin-bottom: 0.5rem; line-height: 1.4;">${datos.conflictos}</li>
+                        <li style="margin-bottom: 0; line-height: 1.4;">${datos.gobernabilidad}</li>
+                    </ul>
                 </div>
             </div>
         `;
@@ -330,100 +324,55 @@ function generarAcordeonDiagnostico() {
     });
 }
 
-function toggleAcordeon(elemento) {
-    const cuerpo = elemento.nextElementSibling;
-    const estaActivo = elemento.classList.contains("active");
-    
-    document.querySelectorAll(".acordeon-header").forEach(h => {
-        h.classList.remove("active");
-        h.nextElementSibling.style.maxHeight = null;
+// Interacciones del Acordeón
+function toggleAcordeon(headerElement) {
+    const item = headerElement.parentElement;
+    const body = item.querySelector('.acordeon-body');
+    const isActive = headerElement.classList.contains('active');
+
+    document.querySelectorAll('.acordeon-header').forEach(h => {
+        h.classList.remove('active');
+        h.parentElement.querySelector('.acordeon-body').style.maxHeight = null;
     });
 
-    if (!estaActivo) {
-        elemento.classList.add("active");
-        cuerpo.style.maxHeight = cuerpo.scrollHeight + "px";
+    if (!isActive) {
+        headerElement.classList.add('active');
+        body.style.maxHeight = body.scrollHeight + "px";
     }
 }
 
 function abrirAcordeonEstado(nombreEstado) {
     const item = document.querySelector(`.acordeon-item[data-estado="${nombreEstado}"]`);
     if (item) {
-        const header = item.querySelector(".acordeon-header");
-        toggleAcordeon(header);
-        setTimeout(() => {
-            item.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }, 150);
+        const header = item.querySelector('.acordeon-header');
+        if (header) {
+            setTimeout(() => {
+                header.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                toggleAcordeon(header);
+            }, 150);
+        }
     }
 }
 
 // =========================================================================
-// 6. RENDERIZADO DE MATRIZ GENERAL, RANKING Y SEMÁFOROS (PROCESAMIENTO)
+// 6. ACTUALIZACIÓN AUTOMÁTICA DE ALERTAS FLOTANTES
 // =========================================================================
-function inicializarPanelesMetricos() {
-    let criticos = [], altos = [], medias = [], bajas = [];
-    let countC = 0, countA = 0, countM = 0, countB = 0;
-    
-    const tbody = document.getElementById("tabla-body");
-    const rankingContainer = document.getElementById("ranking-container");
-    
-    if(tbody) tbody.innerHTML = "";
-    if(rankingContainer) rankingContainer.innerHTML = "";
-
-    // Ordenar de mayor a menor ITSE para el ranking y tabla
-    const estadosOrdenados = Object.entries(dataset).sort((a,b) => b[1].itse - a[1].itse);
-
-    estadosOrdenados.forEach(([estado, datos], index) => {
-        const valor = datos.itse;
-        const colorItem = getColor(valor);
-        
-        // 1. Clasificación en Listas de Semáforos y contadores
-        if (valor >= 75) { criticos.push(`${estado} (${valor})`); countC++; }
-        else if (valor >= 60) { altos.push(`${estado} (${valor})`); countA++; }
-        else if (valor >= 40) { medias.push(`${estado} (${valor})`); countM++; }
-        else { bajas.push(`${estado} (${valor})`); countB++; }
-
-        // 2. Inyección en Matriz General (Tabla)
-        if(tbody) {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td style="font-weight:bold;">${estado}</td>
-                <td style="color:${colorItem}; font-weight:bold;">${valor}</td>
-                <td>${datos.nivel}</td>
-                <td style="font-size:0.75rem; color:var(--text2);">${datos.focos}</td>
-            `;
-            tbody.appendChild(tr);
-        }
-
-        // 3. Inyección en Ranking
-        if(rankingContainer) {
-            const rItem = document.createElement("div");
-            rItem.className = "ranking-item";
-            rItem.innerHTML = `
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <span style="color:var(--text2); font-size:0.75rem; width:20px;">#${index+1}</span>
-                    <span style="font-weight:500;">${estado}</span>
-                </div>
-                <span style="background:${colorItem}; color:#000; padding:2px 6px; border-radius:3px; font-weight:bold; font-size:0.75rem;">${valor}</span>
-            `;
-            rankingContainer.appendChild(rItem);
-        }
+function calcularContadoresAlertas() {
+    let c = 0, a = 0, m = 0, b = 0;
+    Object.values(dataset).forEach(d => {
+        if (d.itse >= 75) c++;
+        else if (d.itse >= 60) a++;
+        else if (d.itse >= 40) m++;
+        else b++;
     });
-
-    // Actualizar Cuadro de Alertas Flotante del Mapa
-    if(document.getElementById('count-critica')) document.getElementById('count-critica').innerText = countC;
-    if(document.getElementById('count-alta')) document.getElementById('count-alta').innerText = countA;
-    if(document.getElementById('count-media')) document.getElementById('count-media').innerText = countM;
-    if(document.getElementById('count-baja')) document.getElementById('count-baja').innerText = countB;
-
-    // Actualizar Textos del Semáforo
-    if(document.getElementById('lista-critico')) document.getElementById('lista-critico').innerText = criticos.join(', ') || 'Ninguno';
-    if(document.getElementById('lista-alto')) document.getElementById('lista-alto').innerText = altos.join(', ') || 'Ninguno';
-    if(document.getElementById('lista-acumulativo')) document.getElementById('lista-acumulativo').innerText = medias.join(', ') || 'Ninguno';
-    if(document.getElementById('lista-estabilidad')) document.getElementById('lista-estabilidad').innerText = bajas.join(', ') || 'Ninguno';
+    
+    if(document.getElementById('count-critica')) document.getElementById('count-critica').innerText = c;
+    if(document.getElementById('count-alta')) document.getElementById('count-alta').innerText = a;
+    if(document.getElementById('count-media')) document.getElementById('count-media').innerText = m;
+    if(document.getElementById('count-baja')) document.getElementById('count-baja').innerText = b;
 }
 
-// Inicialización general automatizada
 document.addEventListener("DOMContentLoaded", () => {
     generarAcordeonDiagnostico();
-    inicializarPanelesMetricos();
+    calcularContadoresAlertas();
 });

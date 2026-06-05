@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tensiones Sociales México 2027 | Dashboard de Inteligencia</title>
+  <title>Tensiones Sociales México 2026 | Dashboard de Inteligencia</title>
   
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   
@@ -13,9 +13,9 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
     :root {
-      --critica: #d9534f;
-      --alta: #f0ad4e;
-      --media: #4e59f0;
+      --critica: #9b0b06;
+      --alta: #fe0000eb;
+      --media: #ff7e1c;
       --baja: #5cb85c;
       --bg: #0D0D0D;
       --bg2: #141414;
@@ -35,46 +35,48 @@
       flex-direction: column;
       overflow: hidden;
     }
-    /* Encabezado */
+    
+    /* ENCABEZADO CON LOGO */
     .header {
       background: var(--bg2);
       border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       flex-shrink: 0;
     }
-    .header h1 { font-family: 'Syne', sans-serif; font-size: 1.2rem; letter-spacing: -0.02em; }
-    
-    /* Barra de Filtros */
-    .filter-container {
-      background: var(--bg2);
-      padding: 0.75rem 2rem;
-      border-bottom: 1px solid var(--border);
+    .header-left-group {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      flex-shrink: 0;
+      gap: 1.25rem;
     }
-    .filter-container label { font-size: 0.8rem; text-transform: uppercase; color: var(--text2); font-weight: bold; }
-    .filter-select {
-      background: var(--bg3);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 0.5rem 1rem;
+    .header-logo {
+      height: 45px;
+      width: auto;
+      object-fit: contain;
       border-radius: 4px;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      min-width: 300px;
+      filter: invert(1) brightness(2); 
+    }
+    .header h1 { 
+      font-family: 'Syne', sans-serif; 
+      font-size: 1.15rem; 
+      letter-spacing: -0.02em; 
+    }
+    .header-subtitle {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      color: var(--text2);
     }
     
-    /* Layout de Pantalla Dividida (Mapa + Panel) */
+    /* LAYOUT PRINCIPAL */
     .layout {
       display: grid;
-      grid-template-columns: 1fr 460px;
+      grid-template-columns: 1fr 480px;
       flex: 1;
       overflow: hidden;
       position: relative;
     }
-    /* Contenedor del Mapa */
     .map-wrapper { 
       position: relative; 
       height: 100%; 
@@ -85,7 +87,7 @@
       height: 100%; 
       width: 100%; 
     }
-    /* Resumen Flotante sobre el mapa */
+    
     .alerts-summary-box {
       position: absolute;
       bottom: 25px;
@@ -103,7 +105,7 @@
     .alert-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 6px; gap: 10px; }
     .alert-count-badge { padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.75rem; color: #000; min-width: 24px; text-align: center; }
     
-    /* Panel Lateral Derecho */
+    /* PANEL LATERAL Y PESTAÑAS */
     .side-panel {
       background: var(--bg2);
       border-left: 1px solid var(--border);
@@ -123,262 +125,360 @@
       border: none;
       color: var(--text2);
       font-family: 'Syne', sans-serif;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       cursor: pointer;
       text-align: center;
       transition: all 0.2s ease;
     }
     .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.02); }
-    .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); background: var(--bg2); }
+    .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); background: var(--bg2); font-weight: bold; }
     
-    .tabs-content { flex: 1; overflow-y: auto; padding: 1.5rem; }
+    .tabs-content { flex: 1; overflow-y: auto; padding: 1.25rem; }
     .tab-pane { display: none; height: 100%; }
     .tab-pane.active { display: block; }
     
-    /* ESTILOS DEL ACORDEÓN DE DIAGNÓSTICO */
-    .contenedor-acordeon {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
+    /* ESTILOS DEL ACORDEÓN */
     .acordeon-item {
-      background-color: var(--bg3);
+      background: var(--bg3);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
       overflow: hidden;
     }
     .acordeon-header {
-      background: transparent;
-      color: var(--text);
-      cursor: pointer;
-      padding: 0.85rem 1rem;
       width: 100%;
+      background: transparent;
       border: none;
-      text-align: left;
-      outline: none;
-      font-size: 0.9rem;
-      font-weight: 600;
+      color: var(--text);
+      padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: background-color 0.2s ease;
+      cursor: pointer;
+      text-align: left;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      transition: background 0.2s;
     }
-    .acordeon-header:hover {
-      background-color: rgba(255, 255, 255, 0.02);
+    .acordeon-header:hover { background: rgba(255,255,255,0.02); }
+    .acordeon-header-left { display: flex; align-items: center; gap: 10px; }
+    
+    .badge-nivel-diag {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-transform: uppercase;
     }
-    .acordeon-header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+    .badge-diag-critica { background: rgba(155, 11, 6, 0.2); color: #ff8884; border: 1px solid rgba(155, 11, 6, 0.4); }
+    .badge-diag-alta { background: rgba(240, 78, 78, 0.2); color: #ffb3b3; border: 1px solid rgba(240, 78, 78, 0.4); }
+    .badge-diag-media { background: rgba(240, 148, 78, 0.2); color: #ffe0b3; border: 1px solid rgba(240, 148, 78, 0.4); }
+    .badge-diag-baja { background: rgba(92, 184, 92, 0.2); color: #b3ffb3; border: 1px solid rgba(92, 184, 92, 0.4); }
+    
+    .acordeon-header .flecha {
+      font-size: 0.7rem;
+      transition: transform 0.2s ease;
+      color: var(--text2);
     }
+    .acordeon-header.active .flecha { transform: rotate(180deg); }
+    
     .acordeon-body {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.25s ease-out;
-      background-color: rgba(0, 0, 0, 0.15);
+      background: rgba(0,0,0,0.15);
     }
-    .contenido-diagnostico {
-      padding: 1rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      font-size: 0.85rem;
-      line-height: 1.45;
-    }
-    .contenido-diagnostico strong {
+    .contenido-diagnostico { padding: 0 1rem 1rem 1rem; font-size: 0.825rem; line-height: 1.5; }
+    
+    /* TABLA ANALÍTICA DEL RANKING ITSE */
+    .table-responsive { width: 100%; overflow-x: auto; }
+    .ranking-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.78rem; }
+    .ranking-table th {
+      background: var(--bg3);
       color: var(--text2);
-      font-size: 0.75rem;
+      font-family: 'Syne', sans-serif;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      display: block;
-      margin-bottom: 0.2rem;
-    }
-    .bloque-data-diag {
-      background: var(--bg2);
-      padding: 0.75rem;
-      border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.02);
-    }
-    .acordeon-header .flecha {
-      font-size: 0.75rem;
-      color: var(--text2);
-      transition: transform 0.2s ease;
-    }
-    .acordeon-header.active .flecha {
-      transform: rotate(180deg);
-    }
-    .badge-nivel-diag {
-      padding: 2px 6px;
-      border-radius: 4px;
       font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
+      padding: 0.65rem 0.5rem;
+      border-bottom: 2px solid var(--border);
+      font-weight: bold;
     }
-    .badge-diag-critica { background: rgba(217, 83, 79, 0.15); color: #d9534f; border: 1px solid rgba(217, 83, 79, 0.3); }
-    .badge-diag-alta { background: rgba(240, 173, 78, 0.15); color: #f0ad4e; border: 1px solid rgba(240, 173, 78, 0.3); }
-    .badge-diag-media { background: rgba(78, 89, 240, 0.15); color: #7c85ff; border: 1px solid rgba(78, 89, 240, 0.3); }
-    .badge-diag-baja { background: rgba(92, 184, 92, 0.15); color: #5cb85c; border: 1px solid rgba(92, 184, 92, 0.3); }
+    .ranking-table td { padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .ranking-table tr:hover { background: rgba(255,255,255,0.02); }
+    .state-name { font-weight: bold; color: var(--text); }
+    .score-cell { text-align: center; font-family: monospace; font-size: 0.85rem; }
 
-    /* Cajas Informativas e Historial */
-    .data-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
-    .data-box h3 { font-size: 0.75rem; text-transform: uppercase; color: var(--text2); margin-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; }
-    .data-box p { font-size: 0.85rem; line-height: 1.5; color: var(--text); text-align: justify; }
-    
-    /* Ranking e Historial */
-    .ranking-list { display: flex; flex-direction: column; gap: 8px; }
-    .ranking-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; }
-    
-    /* Tablas */
-    .table-container { width: 100%; height: 100%; overflow: auto; }
-    .table-view { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 550px; }
-    .table-view th, .table-view td { padding: 12px 10px; text-align: left; border-bottom: 1px solid var(--border); }
-    .table-view th { color: var(--text2); text-transform: uppercase; font-size: 0.75rem; font-family: 'Syne', sans-serif; background: var(--bg); position: sticky; top: 0; z-index: 10; }
-    
-    /* Estilos del Semáforo Prospectivo */
-    .semaforo-container { display: flex; flex-direction: column; gap: 12px; margin-top: 5px; }
-    .semaforo-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; border-left: 4px solid #ccc; }
-    .semaforo-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .semaforo-header h4 { margin: 0; font-size: 0.85rem; font-family: 'Syne', sans-serif; letter-spacing: 0.02em; }
-    .indicador-luz { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-    .estados-lista { font-size: 0.85rem; color: var(--text); line-height: 1.5; text-align: justify; }
-    
-    .semaforo-card.critico { border-left-color: var(--critica); }
-    .semaforo-card.alto { border-left-color: var(--alta); }
-    .semaforo-card.acumulativo { border-left-color: var(--media); }
-    .semaforo-card.estabilidad { border-left-color: var(--baja); }
-    
-    .leaflet-tooltip-custom {
-      background: #1C1C1C !important;
-      border: 1px solid rgba(255,255,255,0.15) !important;
-      color: #FFF !important;
-      font-family: 'DM Sans', sans-serif !important;
-      font-size: 0.8rem !important;
-      border-radius: 4px !important;
-      padding: 6px 10px !important;
+    /* PIE DE PÁGINA */
+    .dashboard-footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 0.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      height: 60px;
     }
+    .footer-contact-info { display: flex; flex-direction: row; gap: 20px; flex-wrap: wrap; }
+    .footer-contact-info span { font-size: 0.75rem; color: var(--text2); }
+    .footer-contact-info strong { color: var(--text); }
     
     @media (max-width: 992px) {
       body { overflow-y: auto; height: auto; }
-      .layout { display: flex; flex-direction: column; height: calc(100vh - 120px); }
-      .map-wrapper { height: 45vh; min-height: 350px; }
-      .side-panel { height: 55vh; min-height: 450px; }
+      .layout { display: flex; flex-direction: column; height: auto; }
+      .header { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .header-left-group { flex-direction: column; gap: 0.5rem; }
+      .dashboard-footer { flex-direction: column; height: auto; gap: 0.75rem; padding: 1rem; }
     }
   </style>
 </head>
 <body>
-  <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
-    <h1>Estudio Nacional de Tensiones Sociales · MÉXICO 2026 </h1>
-    <h1>Proyección de Impacto Electoral 2027 </h1>
+
+  <!-- ENCABEZADO -->
+  <div class="header">
+    <div class="header-left-group">
+      <img src="Firma CL (N).png" alt="Logo de la Empresa" class="header-logo">
+      <div>
+        <h1>Estudio Nacional de Tensiones Sociales · MÉXICO 2026</h1>
+      </div>
+    </div>
+    
+    <div class="header-subtitle">Proyección de Impacto Electoral 2027</div>
   
     <div class="map-controls" style="display: flex; gap: 10px; align-items: center;">
-      <label for="metric-selector" style="font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: var(--text2);">Ponderación de Factores Activa:</label>
-      <select id="metric-selector" class="filter-select" style="min-width: 240px; padding: 6px 12px;" disabled>
+      <label style="font-weight: bold; font-size: 0.75rem; text-transform: uppercase; color: var(--text2);">Factores:</label>
+      <select id="metric-selector" class="filter-select" style="background: var(--bg3); color: var(--text); border: 1px solid var(--border); padding: 4px 8px;" disabled>
         <option value="itse" selected>Evaluación ITSE (0 - 100)</option>
       </select>
     </div>
   </div>
   
   <div class="layout">
+    <!-- MAPA -->
     <div class="map-wrapper">
       <div id="map"></div>
       <div class="alerts-summary-box">
         <h4>Distribución de Tensiones</h4>
-        <div class="alert-row">
-          <span id="label-critica">Crítica (75 - 100)</span>
-          <span class="alert-count-badge" style="background: var(--critica);" id="count-critica">0</span>
-        </div>
-        <div class="alert-row">
-          <span id="label-alta">Alta (60 - 74)</span>
-          <span class="alert-count-badge" style="background: var(--alta); color: #000;" id="count-alta">0</span>
-        </div>
-        <div class="alert-row">
-          <span id="label-media">Media (40 - 49)</span>
-          <span class="alert-count-badge" style="background: var(--media); color: #000;" id="count-media">0</span>
-        </div>
-        <div class="alert-row">
-          <span id="label-baja">Baja (0 - 39)</span>
-          <span class="alert-count-badge" style="background: var(--baja);" id="count-baja">0</span>
-        </div>
+        <div class="alert-row"><span>Crítica (75 - 100)</span><span class="alert-count-badge" style="background: var(--critica);" id="count-critica">0</span></div>
+        <div class="alert-row"><span>Alta (60 - 74)</span><span class="alert-count-badge" style="background: var(--alta);" id="count-alta">0</span></div>
+        <div class="alert-row"><span>Media (40 - 59)</span><span class="alert-count-badge" style="background: var(--media);" id="count-media">0</span></div>
+        <div class="alert-row"><span>Baja (0 - 39)</span><span class="alert-count-badge" style="background: var(--baja);" id="count-baja">0</span></div>
       </div>
     </div>
     
+    <!-- PANEL LATERAL -->
     <div class="side-panel">
       <div class="tabs-header">
         <button class="tab-btn active" onclick="switchTab('mapa', event)">Diagnóstico</button>
-
-        <button class="tab-btn" onclick="switchTab('ranking', event)" id="tab-ranking-label">Ranking ITSE</button>
-        <button class="tab-btn" onclick="switchTab('semaforo', event)">Semáforo</button>
+        <button class="tab-btn" onclick="switchTab('ranking', event)">Ranking ITSE</button>
       </div>
       
       <div class="tabs-content">
-        <!-- PESTAÑA DIAGNÓSTICO: AHORA RENDERIZA EL ACORDEÓN DINÁMICO DE LOS 32 ESTADOS -->
+        <!-- PESTAÑA 1: DIAGNÓSTICO -->
         <div id="pane-mapa" class="tab-pane active">
-          <div style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
-            <p style="font-size:0.75rem; color:var(--text2); text-transform:uppercase; font-weight:bold; letter-spacing:0.5px;">Metodología del Índice</p>
-            <p style="font-size:0.8rem; color:#FFF; margin-top:0.25rem; line-height:1.4;">
-              Violencia: 40% | Conflictos Sociales: 33.3% | Gobernabilidad: 26.7%
-            </p>
+          <div id="lista-diagnostico-acordeon">
+            <p style="color:var(--text2); font-size:0.8rem; text-align:center; padding:2rem;">Cargando matriz analítica de estados...</p>
           </div>
-          <div id="lista-diagnostico-acordeon" class="contenedor-acordeon"></div>
         </div>
         
-        <div id="pane-tabla" class="tab-pane">
-          <div class="table-container">
-            <table class="table-view">
+        <!-- PESTAÑA 2: RANKING ITSE COMPLETO (32 ESTADOS) -->
+        <div id="pane-ranking" class="tab-pane">
+          <div class="table-responsive">
+            <table class="ranking-table">
               <thead>
                 <tr>
                   <th>Estado</th>
-                  <th>ITSE</th>
-                  <th>Nivel</th>
-                  <th>Focos de Tensión</th>
+                  <th style="text-align:center;">ITSE</th>
+                  <th style="text-align:center;">Viol.</th>
+                  <th style="text-align:center;">Conf.</th>
+                  <th style="text-align:center;">Gob.</th>
                 </tr>
               </thead>
-              <tbody id="tabla-body"></tbody>
+              <tbody>
+                <!-- CRÍTICA -->
+                <tr style="border-left: 3px solid var(--critica);">
+                  <td><span class="state-name">Sinaloa</span><br><small style="color:var(--critica)">Crítica</small></td>
+                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">84.5</td>
+                  <td class="score-cell">90</td><td class="score-cell">78</td><td class="score-cell">85</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--critica);">
+                  <td><span class="state-name">Guerrero</span><br><small style="color:var(--critica)">Crítica</small></td>
+                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">81.0</td>
+                  <td class="score-cell">88</td><td class="score-cell">75</td><td class="score-cell">78</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--critica);">
+                  <td><span class="state-name">Michoacán</span><br><small style="color:var(--critica)">Crítica</small></td>
+                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">78.1</td>
+                  <td class="score-cell">82</td><td class="score-cell">78</td><td class="score-cell">72</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--critica);">
+                  <td><span class="state-name">Guanajuato</span><br><small style="color:var(--critica)">Crítica</small></td>
+                  <td class="score-cell" style="color:var(--critica); font-weight:bold;">76.0</td>
+                  <td class="score-cell">85</td><td class="score-cell">70</td><td class="score-cell">70</td>
+                </tr>
+                
+                <!-- ALTA -->
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Chihuahua</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">74.3</td>
+                  <td class="score-cell">82</td><td class="score-cell">65</td><td class="score-cell">75</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Estado de México</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">71.3</td>
+                  <td class="score-cell">72</td><td class="score-cell">75</td><td class="score-cell">65</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Jalisco</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">71.2</td>
+                  <td class="score-cell">78</td><td class="score-cell">68</td><td class="score-cell">65</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Veracruz</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">70.8</td>
+                  <td class="score-cell">72</td><td class="score-cell">70</td><td class="score-cell">70</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Zacatecas</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">69.0</td>
+                  <td class="score-cell">75</td><td class="score-cell">65</td><td class="score-cell">65</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Oaxaca</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">68.2</td>
+                  <td class="score-cell">58</td><td class="score-cell">82</td><td class="score-cell">65</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Morelos</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">67.8</td>
+                  <td class="score-cell">70</td><td class="score-cell">65</td><td class="score-cell">68</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Sonora</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">67.3</td>
+                  <td class="score-cell">70</td><td class="score-cell">68</td><td class="score-cell">62</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Tamaulipas</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">66.0</td>
+                  <td class="score-cell">70</td><td class="score-cell">62</td><td class="score-cell">65</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Baja California</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">65.5</td>
+                  <td class="score-cell">78</td><td class="score-cell">55</td><td class="score-cell">60</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Ciudad de México</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">64.9</td>
+                  <td class="score-cell">58</td><td class="score-cell">80</td><td class="score-cell">55</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Puebla</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">64.3</td>
+                  <td class="score-cell">62</td><td class="score-cell">70</td><td class="score-cell">60</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Quintana Roo</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">63.0</td>
+                  <td class="score-cell">68</td><td class="score-cell">58</td><td class="score-cell">62</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Nuevo León</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62.7</td>
+                  <td class="score-cell">65</td><td class="score-cell">62</td><td class="score-cell">60</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Chiapas</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62.5</td>
+                  <td class="score-cell">62</td><td class="score-cell">65</td><td class="score-cell">60</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">San Luis Potosí</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62.0</td>
+                  <td class="score-cell">60</td><td class="score-cell">55</td><td class="score-cell">75</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Tabasco</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">62.0</td>
+                  <td class="score-cell">62</td><td class="score-cell">60</td><td class="score-cell">65</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--alta);">
+                  <td><span class="state-name">Colima</span><br><small style="color:var(--alta)">Alta</small></td>
+                  <td class="score-cell" style="color:var(--alta); font-weight:bold;">61.5</td>
+                  <td class="score-cell">80</td><td class="score-cell">45</td><td class="score-cell">55</td>
+                </tr>
+                
+                <!-- MEDIA -->
+                <tr style="border-left: 3px solid var(--media);">
+                  <td><span class="state-name">Querétaro</span><br><small style="color:var(--media)">Media</small></td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">52.0</td>
+                  <td class="score-cell">45</td><td class="score-cell">65</td><td class="score-cell">45</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--media);">
+                  <td><span class="state-name">Hidalgo</span><br><small style="color:var(--media)">Media</small></td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">51.5</td>
+                  <td class="score-cell">48</td><td class="score-cell">60</td><td class="score-cell">45</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--media);">
+                  <td><span class="state-name">Durango</span><br><small style="color:var(--media)">Media</small></td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">45.5</td>
+                  <td class="score-cell">45</td><td class="score-cell">50</td><td class="score-cell">40</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--media);">
+                  <td><span class="state-name">Tlaxcala</span><br><small style="color:var(--media)">Media</small></td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">42.3</td>
+                  <td class="score-cell">40</td><td class="score-cell">48</td><td class="score-cell">38</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--media);">
+                  <td><span class="state-name">Campeche</span><br><small style="color:var(--media)">Media</small></td>
+                  <td class="score-cell" style="color:var(--media); font-weight:bold;">41.0</td>
+                  <td class="score-cell">35</td><td class="score-cell">45</td><td class="score-cell">45</td>
+                </tr>
+                
+                <!-- BAJA -->
+                <tr style="border-left: 3px solid var(--baja);">
+                  <td><span class="state-name">Coahuila</span><br><small style="color:var(--baja)">Baja</small></td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">39.7</td>
+                  <td class="score-cell">38</td><td class="score-cell">45</td><td class="score-cell">35</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--baja);">
+                  <td><span class="state-name">Nayarit</span><br><small style="color:var(--baja)">Baja</small></td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">39.5</td>
+                  <td class="score-cell">40</td><td class="score-cell">42</td><td class="score-cell">35</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--baja);">
+                  <td><span class="state-name">Aguascalientes</span><br><small style="color:var(--baja)">Baja</small></td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">39.0</td>
+                  <td class="score-cell">45</td><td class="score-cell">35</td><td class="score-cell">35</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--baja);">
+                  <td><span class="state-name">Baja California Sur</span><br><small style="color:var(--baja)">Baja</small></td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">38.9</td>
+                  <td class="score-cell">42</td><td class="score-cell">38</td><td class="score-cell">35</td>
+                </tr>
+                <tr style="border-left: 3px solid var(--baja);">
+                  <td><span class="state-name">Yucatán</span><br><small style="color:var(--baja)">Baja</small></td>
+                  <td class="score-cell" style="color:var(--baja); font-weight:bold;">30.3</td>
+                  <td class="score-cell">25</td><td class="score-cell">38</td><td class="score-cell">28</td>
+                </tr>
+              </tbody>
             </table>
-          </div>
-        </div>
-        
-        <div id="pane-ranking" class="tab-pane">
-          <div class="ranking-list" id="ranking-container"></div>
-        </div>
-        
-        <div id="pane-semaforo" class="tab-pane">
-          <div class="semaforo-container">
-            <div class="semaforo-card critico">
-              <div class="semaforo-header">
-                <span class="indicador-luz" style="background: var(--critica);"></span>
-                <h4 style="color: var(--critica)">🔴 Tensión Crítica</h4>
-              </div>
-              <p id="lista-critico" class="estados-lista">Calculando algoritmos...</p>
-            </div>
-            <div class="semaforo-card alto">
-              <div class="semaforo-header">
-                <span class="indicador-luz" style="background: var(--alta);"></span>
-                <h4 style="color: var(--alta)">🟠 Tensión Alta</h4>
-              </div>
-              <p id="lista-alto" class="estados-lista">Calculando algoritmos...</p>
-            </div>
-            <div class="semaforo-card acumulativo">
-              <div class="semaforo-header">
-                <span class="indicador-luz" style="background: var(--media);"></span>
-                <h4 style="color: var(--media)">🟡 Tensión Media</h4>
-              </div>
-              <p id="lista-acumulativo" class="estados-lista">Calculando algoritmos...</p>
-            </div>
-            <div class="semaforo-card estabilidad">
-              <div class="semaforo-header">
-                <span class="indicador-luz" style="background: var(--baja);"></span>
-                <h4 style="color: var(--baja)">🟢 Tensión Baja</h4>
-              </div>
-              <p id="lista-estabilidad" class="estados-lista">Calculando algoritmos...</p>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="dashboard-footer">
+    <div class="footer-contact-info">
+      <span>WhatsApp: <strong>+52 722 254 94 05</strong></span>
+      <span>TikTok: <strong>@carlos.lorenzana1</strong></span>
+      <span>Facebook: <strong>@carlos.lorenzana</strong></span>
+      <span>Correo electrónico: <strong>carloslorenzana01@gmail.com</strong></span>
+    </div>
+  </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="mexicoGeoJSON.js"></script> 
@@ -388,8 +488,15 @@
       document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       
-      document.getElementById('pane-' + tabId).classList.add('active');
-      if (event) event.target.classList.add('active');
+      const targetPane = document.getElementById('pane-' + tabId);
+      if (targetPane) targetPane.classList.add('active');
+      
+      if (event) {
+        event.target.classList.add('active');
+      } else {
+        const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.textContent.toLowerCase().includes(tabId));
+        if (btn) btn.classList.add('active');
+      }
     }
   </script>
 </body>
