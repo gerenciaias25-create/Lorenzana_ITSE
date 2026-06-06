@@ -220,34 +220,59 @@
     .contenido-diagnostico { padding: 0 1rem 1rem 1rem; font-size: 0.825rem; line-height: 1.5; }
     
     /* TABLA ANALÍTICA DEL RANKING ITSE */
-    .table-responsive { 
-      width: 100%; 
-      overflow-x: auto; 
-      max-height: 100%;
-    }
-.ranking-section {
-  position: relative;
-  margin-top: 100px; /* Al menos 100px para que empiece abajo del buscador flotante */
-  padding: 1rem;
-  background: var(--bg2);
-  border-radius: 12px;
-  border: 1px solid var(--border);
+   #pane-ranking {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+#pane-ranking.active {
+  display: flex;
 }
 
-/* Asegúrate de que el contenedor de la barra de búsqueda tenga un z-index alto pero controlado */
+/* Contenedor del Buscador */
 .search-container {
-  position: relative; /* O fixed / sticky según lo tengas configurado */
-  z-index: 10;        /* Mantiene el buscador arriba de los datos */
-  margin-bottom: 20px;
+  width: 100%;
+  margin-bottom: 5px;
+  position: relative;
+  z-index: 5;
 }
 
-/* Evita que los textos largos de los estados desalineen las celdas */
+/* Contenedor principal que envuelve AMBAS secciones de tablas */
+.ranking-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Separación física real entre la tabla de arriba y la de abajo */
+  width: 100%;
+}
 
-.ranking-table td { padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    .ranking-table tr:hover { background: rgba(255,255,255,0.02); }
-    .state-name { font-weight: bold; color: var(--text); }
-    .score-cell { text-align: center; font-family: monospace; font-size: 0.85rem; }
+/* Tarjetas/Contenedores de cada sección de tabla */
+.ranking-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+}
 
+/* Contenedor interno para el scroll horizontal de la tabla si es necesario */
+.table-responsive-container {
+  width: 100%;
+  overflow-x: auto; /* Scroll horizontal limpio si la pantalla se reduce */
+  margin-top: 15px;
+}
+
+/* Estilo limpio para las tablas */
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.ranking-table th, .ranking-table td {
+  padding: 12px 16px;
+  vertical-align: middle;
+}
 
     /* PIE DE PÁGINA */
     .dashboard-footer {
@@ -289,11 +314,22 @@
       .side-panel {
         border-left: none;
         border-top: 1px solid var(--border);
-        height: 550px; /* Suficiente espacio para interactuar de forma independiente con scroll interno */
+        height: auto;
+        min-height: 400px;
       }
 
       .tabs-content {
-        overflow-y: auto;
+        overflow-y: visible;
+        height: auto;
+      }
+
+      .tab-pane {
+        height: auto;
+        overflow: visible;
+      }
+
+      .tab-pane.active {
+        height: auto;
       }
       
       .header { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1rem; }
