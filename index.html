@@ -262,16 +262,72 @@
   margin-top: 15px;
 }
 
-/* Estilo limpio para las tablas */
+/* TABLA DE RANKING - Formato visual mejorado */
 .ranking-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  font-size: 0.85rem;
 }
 
-.ranking-table th, .ranking-table td {
-  padding: 12px 16px;
+/* Encabezados */
+.ranking-table thead tr {
+  background: var(--bg);
+  border-bottom: 2px solid var(--accent);
+}
+
+.ranking-table th {
+  padding: 10px 14px;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  font-weight: 700;
   vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Celdas de datos */
+.ranking-table td {
+  padding: 9px 14px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* Filas alternadas */
+.ranking-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Hover en filas */
+.ranking-table tbody tr:hover {
+  background: rgba(212, 168, 67, 0.06);
+  transition: background 0.15s ease;
+}
+
+/* Celda de puntaje numérico centrada */
+.score-cell {
+  text-align: center !important;
+  font-variant-numeric: tabular-nums;
+  color: var(--text2);
+  font-size: 0.82rem;
+}
+
+/* Nombre del estado */
+.state-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+/* Columna ITSE: destacada con fondo sutil */
+.ranking-table td:last-child,
+.ranking-table th:last-child {
+  background: rgba(212, 168, 67, 0.05);
+  border-left: 1px solid rgba(212, 168, 67, 0.15);
+  text-align: center;
 }
 
     /* PIE DE PÁGINA */
@@ -291,50 +347,141 @@
     
     /* MODIFICACIONES ADAPTATIVAS PARA TELÉFONOS */
     @media (max-width: 992px) {
-      body { overflow-y: auto; height: auto; }
-      .layout { display: flex; flex-direction: column; height: auto; }
-      
+
+      /* El body y el html deben scrollear verticalmente */
+      html, body {
+        height: auto !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+      }
+
+      /* Layout pasa a columna y no corta nada */
+      .layout {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        overflow: visible !important;
+        flex: none !important;
+      }
+
+      /* El mapa ocupa una altura fija razonable */
       .map-wrapper {
-        height: 400px; 
-        width: 100%;
-        position: relative;
+        position: relative !important;
+        height: 320px !important;
+        width: 100% !important;
+        flex-shrink: 0;
       }
-      
-      /* Solución de encimado: Se inserta al flujo normal debajo del mapa en móviles */
+
+      #map {
+        height: 320px !important;
+        width: 100% !important;
+      }
+
+      /* Distribución de Tensiones: se queda dentro del mapa (posición absoluta)
+         pegado a la parte inferior-izquierda del mapa como simbología */
       .alerts-summary-box {
-        position: relative;
-        bottom: auto;
-        left: auto;
-        margin: 15px auto;
-        width: calc(100% - 30px);
-        box-shadow: none;
-        background: var(--bg2); 
+        position: absolute !important;
+        bottom: 8px !important;
+        left: 8px !important;
+        right: auto !important;
+        margin: 0 !important;
+        width: auto !important;
+        min-width: 200px !important;
+        max-width: 260px !important;
+        padding: 10px 14px !important;
+        border-radius: 6px !important;
+        z-index: 1000 !important;
+        background: rgba(20, 20, 20, 0.92) !important;
+        display: block !important;
       }
-      
+
+      .alerts-summary-box h4 {
+        font-size: 0.65rem !important;
+        margin-bottom: 5px !important;
+      }
+
+      /* Filas de distribución en horizontal para ahorrar espacio vertical */
+      .alerts-summary-box .alert-row {
+        display: inline-flex !important;
+        margin-bottom: 0 !important;
+        font-size: 0.72rem !important;
+      }
+
+      /* Envolver las 4 filas en una fila horizontal */
+      .alerts-summary-box > .alert-row {
+        flex: none !important;
+      }
+
+      /* Panel lateral: queda debajo del mapa, crece con su contenido */
       .side-panel {
-        border-left: none;
-        border-top: 1px solid var(--border);
-        height: auto;
-        min-height: 400px;
+        border-left: none !important;
+        border-top: 1px solid var(--border) !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-shrink: 0 !important;
       }
 
+      /* Las pestañas (botones) no encogen */
+      .tabs-header {
+        flex-shrink: 0;
+      }
+
+      /* El área de contenido de pestañas NO tiene altura fija ni overflow oculto */
       .tabs-content {
-        overflow-y: visible;
-        height: auto;
+        flex: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 1rem !important;
       }
 
+      /* Todas las pestañas fluyen con su contenido */
       .tab-pane {
-        height: auto;
-        overflow: visible;
+        display: none !important;
+        height: auto !important;
+        overflow: visible !important;
       }
 
       .tab-pane.active {
-        height: auto;
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
       }
-      
-      .header { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1rem; }
-      .header-left-group { flex-direction: column; gap: 0.5rem; }
-      .dashboard-footer { flex-direction: column; height: auto; gap: 0.75rem; padding: 1rem; text-align: center; }
+
+      /* Tabla: permite scroll horizontal si no cabe */
+      .table-responsive,
+      .table-responsive-container {
+        overflow-x: auto !important;
+        width: 100% !important;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .ranking-table {
+        min-width: 300px;
+      }
+
+      /* Header adaptado */
+      .header {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        text-align: center !important;
+        padding: 1rem !important;
+      }
+      .header-left-group {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+      }
+
+      /* Footer adaptado */
+      .dashboard-footer {
+        flex-direction: column !important;
+        height: auto !important;
+        gap: 0.75rem !important;
+        padding: 1rem !important;
+        text-align: center !important;
+      }
     }
   </style>
 </head>
